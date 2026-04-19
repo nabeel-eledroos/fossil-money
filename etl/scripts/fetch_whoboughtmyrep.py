@@ -57,46 +57,58 @@ def is_fossil_fuel_donation(sector_tag, donor_name, sectors_config):
     
     return False
 
-def fetch_donations_for_politician(bioguide_id, api_key):
-    """Fetch donations for a politician from WhoBoughtMyRep"""
-    # Note: This is a placeholder URL structure - actual API may differ
-    # Check WhoBoughtMyRep documentation for correct endpoint
-    url = f"https://api.whoboughtmyrep.com/v1/contributions"
+def fetch_politician_data(bioguide_id, api_key):
+    """Fetch politician profile with industry data from WhoBoughtMyRep"""
+    url = f"https://whoboughtmyrep.com/api/v1/reps/{bioguide_id}"
     
     headers = {
-        "Authorization": f"Bearer {api_key}",
+        "x-api-key": api_key,
         "Accept": "application/json"
     }
     
-    params = {
-        "bioguide_id": bioguide_id,
-        "limit": 1000
-    }
-    
     try:
-        response = requests.get(url, headers=headers, params=params, timeout=30)
+        response = requests.get(url, headers=headers, timeout=30)
         response.raise_for_status()
         return response.json()
     except requests.exceptions.RequestException as e:
-        print(f"  Error fetching donations for {bioguide_id}: {e}")
+        print(f"  Error fetching data for {bioguide_id}: {e}")
         return None
 
-def transform_donation(donation, politician_id, sectors_config):
-    """Transform API donation to our schema"""
-    sector_tag = donation.get("sector_code") or donation.get("industry_code")
-    donor_name = donation.get("contributor_name") or donation.get("donor_name")
+FOSSIL_FUEL_INDUSTRIES = [
+    "oil & gas",
+    "mining",
+    "coal mining", 
+    "electric utilities",
+    "energy & natural resources",
+    "misc energy"
+]
+
+def extract_fossil_fuel_from_industries(industries, politician_id, sectors_config):
+    """Extract fossil fuel donations from top industries data"""
+    donations = []
     
-    return {
-        "politician_id": politician_id,
-        "amount": float(donation.get("amount", 0)),
-        "donor_name": donor_name,
-        "donor_type": donation.get("contributor_type", "unknown"),
-        "sector_tag": sector_tag,
-        "is_fossil_fuel": is_fossil_fuel_donation(sector_tag, donor_name, sectors_config),
-        "cycle_year": int(donation.get("cycle", datetime.now().year)),
-        "source": "whoboughtmyrep",
-        "source_transaction_id": donation.get("transaction_id") or donation.get("id")
-    }
+    for industry in industries:
+        industry_name = industry.get("industry", "").lower()
+        amount = float(industry.get("total_attributed", 0))
+        
+        if amount <= 0:
+            continue
+        
+        is_fossil = any(ff in industry_name for ff in FOSSIL_FUEL_INDUSTRIES)
+        
+        donations.append({
+            "politician_id": politician_id,
+            "amount": amount,
+            "donor_name": industry.get("industry", "Unknown Industry"),
+            "donor_type": "industry_aggregate",
+            "sector_tag": industry.get("industry"),
+            "is_fossil_fuel": is_fossil,
+            "cycle_year": 2024,  # Current cycle
+            "source": "whoboughtmyrep",
+            "source_transaction_id": f"{politician_id}_{industry.get('industry', 'unknown')}_{2024}"
+        })
+    
+    return donations
 
 def upsert_donations(supabase, donations):
     """Upsert donations to database"""
@@ -128,26 +140,32 @@ def main():
     # Get all politicians with bioguide IDs
     politicians = supabase.table("politicians").select("id, bioguide_id, name").not_.is_("bioguide_id", "null").execute()
     
-    print(f"Fetching donations for {len(politicians.data)} politicians...")
+    print(f"Fetching industry data for {len(politicians.data)} politicians...")
     
+    success_count = 0
     for pol in politicians.data:
         print(f"  Processing {pol['name']}...")
         
-        api_donations = fetch_donations_for_politician(pol["bioguide_id"], WHOBOUGHTMYREP_API_KEY)
+        api_response = fetch_politician_data(pol["bioguide_id"], WHOBOUGHTMYREP_API_KEY)
         
-        if not api_donations:
+        if not api_response or not api_response.get("success"):
             continue
         
-        donations = [
-            transform_donation(d, pol["id"], sectors_config)
-            for d in api_donations.get("contributions", [])
-        ]
+        data = api_response.get("data", {})
+        industries = data.get("top_industries", [])
+        
+        if not industries:
+            continue
+        
+        donations = extract_fossil_fuel_from_industries(industries, pol["id"], sectors_config)
         
         if donations:
             upsert_donations(supabase, donations)
-            print(f"    Upserted {len(donations)} donations")
+            fossil_count = sum(1 for d in donations if d["is_fossil_fuel"])
+            print(f"    Upserted {len(donations)} industry records ({fossil_count} fossil fuel)")
+            success_count += 1
     
-    print("Donation fetch complete")
+    print(f"Industry data fetch complete. Processed {success_count} politicians.")
 
 if __name__ == "__main__":
     main()
