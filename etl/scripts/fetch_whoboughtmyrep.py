@@ -137,20 +137,48 @@ def main():
     supabase = get_supabase_client()
     sectors_config = load_fossil_fuel_sectors()
     
+    # Get politicians that already have donation data
+    existing = supabase.table("donations").select("politician_id").execute()
+    already_fetched = set(d["politician_id"] for d in existing.data)
+    
     # Get all politicians with bioguide IDs
     politicians = supabase.table("politicians").select("id, bioguide_id, name").not_.is_("bioguide_id", "null").execute()
     
-    print(f"Fetching industry data for {len(politicians.data)} politicians...")
+    # Filter to only those without data
+    to_fetch = [p for p in politicians.data if p["id"] not in already_fetched]
+    
+    print(f"Total politicians: {len(politicians.data)}")
+    print(f"Already have data: {len(already_fetched)}")
+    print(f"Need to fetch: {len(to_fetch)}")
+    print()
+    
+    if not to_fetch:
+        print("All politicians already have industry data!")
+        return
     
     success_count = 0
-    for pol in politicians.data:
+    error_count = 0
+    
+    for pol in to_fetch:
         print(f"  Processing {pol['name']}...")
         
         api_response = fetch_politician_data(pol["bioguide_id"], WHOBOUGHTMYREP_API_KEY)
         
-        if not api_response or not api_response.get("success"):
+        if not api_response:
+            error_count += 1
+            if error_count >= 5:
+                print("  Too many errors - likely hit rate limit. Stopping.")
+                break
             continue
         
+        if not api_response.get("success"):
+            # Check for rate limit error
+            if "rate" in str(api_response.get("error", "")).lower():
+                print("  Hit API rate limit. Stopping.")
+                break
+            continue
+        
+        error_count = 0  # Reset on success
         data = api_response.get("data", {})
         industries = data.get("top_industries", [])
         
@@ -165,7 +193,9 @@ def main():
             print(f"    Upserted {len(donations)} industry records ({fossil_count} fossil fuel)")
             success_count += 1
     
-    print(f"Industry data fetch complete. Processed {success_count} politicians.")
+    print()
+    print(f"Industry data fetch complete. Processed {success_count} new politicians.")
+    print(f"Remaining: {len(to_fetch) - success_count}")
 
 if __name__ == "__main__":
     main()

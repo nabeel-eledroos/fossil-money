@@ -97,14 +97,75 @@ def parse_lcv_csv(csv_path):
     
     return records
 
+def normalize_name(name):
+    """Normalize name for matching - remove middle initials, suffixes, etc."""
+    import re
+    name = name.lower().strip()
+    # Remove common suffixes
+    name = re.sub(r',?\s*(jr\.?|sr\.?|iii?|iv)$', '', name, flags=re.IGNORECASE)
+    # Remove middle initials (single letters followed by period or space)
+    name = re.sub(r'\s+[a-z]\.?\s+', ' ', name)
+    # Remove periods
+    name = name.replace('.', '')
+    # Normalize whitespace
+    name = re.sub(r'\s+', ' ', name).strip()
+    return name
+
 def match_politician(supabase, name, state, chamber):
     """Find politician in database by name, state, and chamber"""
     result = supabase.table("politicians").select("id, name").eq("state", state).eq("chamber", chamber).execute()
     
+    lcv_normalized = normalize_name(name)
+    lcv_parts = set(lcv_normalized.split())
+    
+    # Also handle Bernie -> Bernard type variations
+    name_aliases = {
+        'bernie': 'bernard',
+        'dick': 'richard',
+        'bob': 'robert',
+        'mike': 'michael',
+        'bill': 'william',
+        'jim': 'james',
+        'joe': 'joseph',
+        'tom': 'thomas',
+        'ted': 'edward',
+        'dan': 'daniel',
+        'chris': 'christopher',
+        'chuck': 'charles',
+        'ed': 'edward',
+        'tim': 'timothy',
+        'tony': 'anthony',
+        'pete': 'peter',
+        'jerry': 'gerald',
+        'margie': 'marjorie',
+        'maggie': 'margaret',
+    }
+    
     for pol in result.data or []:
-        # Simple name matching - could be improved with fuzzy matching
-        if name.lower() in pol["name"].lower() or pol["name"].lower() in name.lower():
+        db_normalized = normalize_name(pol["name"])
+        db_parts = set(db_normalized.split())
+        
+        # Direct match
+        if lcv_normalized == db_normalized:
             return pol["id"]
+        
+        # Check if last names match and first name is similar
+        lcv_first = lcv_normalized.split()[0] if lcv_normalized.split() else ''
+        db_first = db_normalized.split()[0] if db_normalized.split() else ''
+        lcv_last = lcv_normalized.split()[-1] if lcv_normalized.split() else ''
+        db_last = db_normalized.split()[-1] if db_normalized.split() else ''
+        
+        if lcv_last == db_last:
+            # Check first name match or alias
+            if lcv_first == db_first:
+                return pol["id"]
+            if name_aliases.get(lcv_first) == db_first:
+                return pol["id"]
+            if name_aliases.get(db_first) == lcv_first:
+                return pol["id"]
+            # Check if one contains the other (handles partial names)
+            if lcv_first in db_first or db_first in lcv_first:
+                return pol["id"]
     
     return None
 
