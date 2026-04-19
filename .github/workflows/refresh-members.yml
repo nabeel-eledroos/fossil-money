@@ -1,0 +1,25 @@
+name: Refresh Congress Members
+
+on:
+  workflow_dispatch:      # Manual trigger only (run when special election occurs)
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r etl/requirements.txt
+
+      - name: Refresh congress members
+        run: python etl/scripts/refresh_members.py
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}

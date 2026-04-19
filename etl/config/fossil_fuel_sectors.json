@@ -1,0 +1,36 @@
+{
+  "fossil_fuel_sectors": [
+    "oil_gas",
+    "coal",
+    "oil_gas_production",
+    "oil_gas_services",
+    "petroleum_refining",
+    "natural_gas_pipelines",
+    "coal_mining",
+    "electric_utilities",
+    "mining"
+  ],
+  "sector_mappings": {
+    "E01": "oil_gas",
+    "E02": "oil_gas",
+    "E03": "mining",
+    "E04": "mining",
+    "E1100": "oil_gas_production",
+    "E1120": "natural_gas_pipelines",
+    "E1140": "petroleum_refining",
+    "E1200": "coal_mining",
+    "E1300": "mining"
+  },
+  "keywords": [
+    "oil",
+    "gas",
+    "petroleum",
+    "coal",
+    "energy",
+    "drilling",
+    "pipeline",
+    "refining",
+    "fracking",
+    "fossil"
+  ]
+}
