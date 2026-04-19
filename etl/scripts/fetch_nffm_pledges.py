@@ -5,10 +5,20 @@ Note: This data needs to be maintained manually or scraped from NFFM Coalition w
 import os
 from supabase import create_client
 from dotenv import load_dotenv
+from pathlib import Path
 
-load_dotenv()
+# Load .env from etl/ dir or project root
+env_paths = [
+    Path(__file__).parent.parent / '.env',
+    Path(__file__).parent.parent.parent / '.env',
+    Path(__file__).parent.parent.parent / '.env.local',
+]
+for env_path in env_paths:
+    if env_path.exists():
+        load_dotenv(env_path)
+        break
 
-SUPABASE_URL = os.environ.get("SUPABASE_URL")
+SUPABASE_URL = os.environ.get("SUPABASE_URL") or os.environ.get("NEXT_PUBLIC_SUPABASE_URL")
 SUPABASE_KEY = os.environ.get("SUPABASE_SERVICE_KEY")
 
 # Known pledge signers (bioguide_ids) - update this list periodically
