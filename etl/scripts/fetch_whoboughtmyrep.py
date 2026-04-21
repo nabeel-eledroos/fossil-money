@@ -125,6 +125,14 @@ def upsert_donations(supabase, donations):
             supabase.table("donations").insert(donation).execute()
 
 def main():
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--refresh', action='store_true', 
+                        help='Refresh all data, not just missing politicians')
+    parser.add_argument('--limit', type=int, default=100,
+                        help='Max politicians to fetch (default: 100 for free tier)')
+    args = parser.parse_args()
+    
     if not SUPABASE_URL or not SUPABASE_KEY:
         print("Error: SUPABASE_URL and SUPABASE_SERVICE_KEY environment variables required")
         return
@@ -137,19 +145,39 @@ def main():
     supabase = get_supabase_client()
     sectors_config = load_fossil_fuel_sectors()
     
-    # Get politicians that already have donation data
-    existing = supabase.table("donations").select("politician_id").execute()
-    already_fetched = set(d["politician_id"] for d in existing.data)
-    
     # Get all politicians with bioguide IDs
     politicians = supabase.table("politicians").select("id, bioguide_id, name").not_.is_("bioguide_id", "null").execute()
     
-    # Filter to only those without data
-    to_fetch = [p for p in politicians.data if p["id"] not in already_fetched]
+    if args.refresh:
+        # Refresh mode: fetch all, starting with oldest updated
+        # Get last update times from donations
+        print("REFRESH MODE: Updating all politicians (oldest first)")
+        donations = supabase.table("donations").select("politician_id, created_at").order("created_at").execute()
+        
+        # Build order: politicians with oldest data first, then those with no data
+        fetched_order = {}
+        for d in donations.data:
+            if d["politician_id"] not in fetched_order:
+                fetched_order[d["politician_id"]] = d["created_at"]
+        
+        # Sort: no data first, then oldest data
+        def sort_key(p):
+            if p["id"] in fetched_order:
+                return (1, fetched_order[p["id"]])  # Has data, sort by age
+            return (0, "")  # No data, fetch first
+        
+        to_fetch = sorted(politicians.data, key=sort_key)
+    else:
+        # Normal mode: only fetch missing
+        existing = supabase.table("donations").select("politician_id").execute()
+        already_fetched = set(d["politician_id"] for d in existing.data)
+        to_fetch = [p for p in politicians.data if p["id"] not in already_fetched]
+        
+        print(f"Total politicians: {len(politicians.data)}")
+        print(f"Already have data: {len(already_fetched)}")
+        print(f"Need to fetch: {len(to_fetch)}")
     
-    print(f"Total politicians: {len(politicians.data)}")
-    print(f"Already have data: {len(already_fetched)}")
-    print(f"Need to fetch: {len(to_fetch)}")
+    print(f"Will fetch up to {args.limit} politicians this run")
     print()
     
     if not to_fetch:
@@ -159,7 +187,7 @@ def main():
     success_count = 0
     error_count = 0
     
-    for pol in to_fetch:
+    for pol in to_fetch[:args.limit]:
         print(f"  Processing {pol['name']}...")
         
         api_response = fetch_politician_data(pol["bioguide_id"], WHOBOUGHTMYREP_API_KEY)
@@ -172,8 +200,8 @@ def main():
             continue
         
         if not api_response.get("success"):
-            # Check for rate limit error
-            if "rate" in str(api_response.get("error", "")).lower():
+            error_msg = str(api_response.get("error", "")).lower()
+            if "rate" in error_msg or "429" in error_msg:
                 print("  Hit API rate limit. Stopping.")
                 break
             continue
@@ -194,8 +222,12 @@ def main():
             success_count += 1
     
     print()
-    print(f"Industry data fetch complete. Processed {success_count} new politicians.")
-    print(f"Remaining: {len(to_fetch) - success_count}")
+    print(f"Industry data fetch complete. Processed {success_count} politicians.")
+    
+    remaining = len(to_fetch) - min(args.limit, len(to_fetch))
+    if remaining > 0:
+        print(f"Remaining to fetch: {remaining}")
+        print(f"Run again tomorrow or use --limit to fetch more")
 
 if __name__ == "__main__":
     main()
