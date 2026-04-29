@@ -129,6 +129,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--refresh', action='store_true', 
                         help='Refresh all data, not just missing politicians')
+    parser.add_argument('--auto', action='store_true',
+                        help='Auto-detect: fill missing first, then refresh oldest')
     parser.add_argument('--limit', type=int, default=100,
                         help='Max politicians to fetch (default: 100 for free tier)')
     args = parser.parse_args()
@@ -147,6 +149,20 @@ def main():
     
     # Get all politicians with bioguide IDs
     politicians = supabase.table("politicians").select("id, bioguide_id, name").not_.is_("bioguide_id", "null").execute()
+    
+    # Get existing donation data
+    existing = supabase.table("donations").select("politician_id").execute()
+    already_fetched = set(d["politician_id"] for d in existing.data)
+    missing_count = len([p for p in politicians.data if p["id"] not in already_fetched])
+    
+    # Auto mode: refresh if all politicians have data, otherwise fill missing
+    if args.auto:
+        if missing_count == 0:
+            print("AUTO MODE: All politicians have data, switching to refresh mode")
+            args.refresh = True
+        else:
+            print(f"AUTO MODE: {missing_count} politicians missing data, filling first")
+            args.refresh = False
     
     if args.refresh:
         # Refresh mode: fetch all, starting with oldest updated
@@ -169,8 +185,6 @@ def main():
         to_fetch = sorted(politicians.data, key=sort_key)
     else:
         # Normal mode: only fetch missing
-        existing = supabase.table("donations").select("politician_id").execute()
-        already_fetched = set(d["politician_id"] for d in existing.data)
         to_fetch = [p for p in politicians.data if p["id"] not in already_fetched]
         
         print(f"Total politicians: {len(politicians.data)}")

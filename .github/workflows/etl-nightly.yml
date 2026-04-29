@@ -26,13 +26,8 @@ jobs:
       - name: Install dependencies
         run: pip install -r etl/requirements.txt
 
-      - name: Fetch industry data (incremental)
-        run: |
-          if [ "${{ inputs.refresh }}" = "true" ]; then
-            python etl/scripts/fetch_whoboughtmyrep.py --refresh --limit 100
-          else
-            python etl/scripts/fetch_whoboughtmyrep.py --limit 100
-          fi
+      - name: Fetch industry data (auto-detects if refresh needed)
+        run: python etl/scripts/fetch_whoboughtmyrep.py --auto --limit 100
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
