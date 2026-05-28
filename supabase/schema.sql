@@ -19,6 +19,7 @@ CREATE TABLE IF NOT EXISTS politicians (
   chamber VARCHAR(50),
   state VARCHAR(2),
   district VARCHAR(10),
+  committee VARCHAR(100),
   photo_url TEXT,
   office_phone VARCHAR(20),
   office_email VARCHAR(255),
@@ -64,6 +65,18 @@ CREATE TABLE IF NOT EXISTS politician_summaries (
   last_updated TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- Homepage aggregate stats (single row, updated by ETL)
+CREATE TABLE IF NOT EXISTS homepage_stats (
+  id INTEGER PRIMARY KEY DEFAULT 1 CHECK (id = 1),
+  total_fossil_fuel_donations DECIMAL(14,2) DEFAULT 0,
+  members_with_fossil_money INTEGER DEFAULT 0,
+  members_with_fossil_money_pct DECIMAL(5,2) DEFAULT 0,
+  avg_lcv_top_50 INTEGER DEFAULT 0,
+  members_with_zero INTEGER DEFAULT 0,
+  avg_lcv_zero_members INTEGER DEFAULT 0,
+  last_updated TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
 -- Indexes for common queries
 CREATE INDEX IF NOT EXISTS idx_politicians_state ON politicians(state);
 CREATE INDEX IF NOT EXISTS idx_politicians_chamber ON politicians(chamber);
@@ -79,6 +92,7 @@ ALTER TABLE politicians ENABLE ROW LEVEL SECURITY;
 ALTER TABLE donations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE lcv_scores ENABLE ROW LEVEL SECURITY;
 ALTER TABLE politician_summaries ENABLE ROW LEVEL SECURITY;
+ALTER TABLE homepage_stats ENABLE ROW LEVEL SECURITY;
 
 -- Public read access policies
 CREATE POLICY "Allow public read access on zip_to_district"
@@ -101,9 +115,14 @@ CREATE POLICY "Allow public read access on politician_summaries"
   ON politician_summaries FOR SELECT
   USING (true);
 
+CREATE POLICY "Allow public read access on homepage_stats"
+  ON homepage_stats FOR SELECT
+  USING (true);
+
 -- Grant permissions
 GRANT SELECT ON zip_to_district TO anon, authenticated;
 GRANT SELECT ON politicians TO anon, authenticated;
 GRANT SELECT ON donations TO anon, authenticated;
 GRANT SELECT ON lcv_scores TO anon, authenticated;
 GRANT SELECT ON politician_summaries TO anon, authenticated;
+GRANT SELECT ON homepage_stats TO anon, authenticated;
