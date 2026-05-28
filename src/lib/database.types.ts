@@ -39,6 +39,7 @@ export interface Database {
           chamber: string | null
           state: string | null
           district: string | null
+          committee: string | null
           photo_url: string | null
           office_phone: string | null
           office_email: string | null
@@ -56,6 +57,7 @@ export interface Database {
           chamber?: string | null
           state?: string | null
           district?: string | null
+          committee?: string | null
           photo_url?: string | null
           office_phone?: string | null
           office_email?: string | null
@@ -73,6 +75,7 @@ export interface Database {
           chamber?: string | null
           state?: string | null
           district?: string | null
+          committee?: string | null
           photo_url?: string | null
           office_phone?: string | null
           office_email?: string | null
@@ -172,6 +175,38 @@ export interface Database {
           last_updated?: string
         }
       }
+      homepage_stats: {
+        Row: {
+          id: number
+          total_fossil_fuel_donations: number
+          members_with_fossil_money: number
+          members_with_fossil_money_pct: number
+          avg_lcv_top_50: number
+          members_with_zero: number
+          avg_lcv_zero_members: number
+          last_updated: string
+        }
+        Insert: {
+          id?: number
+          total_fossil_fuel_donations?: number
+          members_with_fossil_money?: number
+          members_with_fossil_money_pct?: number
+          avg_lcv_top_50?: number
+          members_with_zero?: number
+          avg_lcv_zero_members?: number
+          last_updated?: string
+        }
+        Update: {
+          id?: number
+          total_fossil_fuel_donations?: number
+          members_with_fossil_money?: number
+          members_with_fossil_money_pct?: number
+          avg_lcv_top_50?: number
+          members_with_zero?: number
+          avg_lcv_zero_members?: number
+          last_updated?: string
+        }
+      }
     }
     Views: {
       [_ in never]: never
@@ -190,6 +225,7 @@ export type InsertTables<T extends keyof Database['public']['Tables']> = Databas
 
 export type Politician = Tables<'politicians'>
 export type PoliticianSummary = Tables<'politician_summaries'>
+export type HomepageStats = Tables<'homepage_stats'>
 export type Donation = Tables<'donations'>
 export type LcvScore = Tables<'lcv_scores'>
 export type ZipToDistrict = Tables<'zip_to_district'>

@@ -40,6 +40,10 @@ yarn-error.log*
 
 # vercel
 .vercel
+recovery-codes.txt
+
+# factory
+/factory
 
 # typescript
 *.tsbuildinfo

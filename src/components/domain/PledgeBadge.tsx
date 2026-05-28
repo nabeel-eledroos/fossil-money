@@ -9,7 +9,7 @@ interface PledgeBadgeProps {
 export function PledgeBadge({ signed }: PledgeBadgeProps) {
   if (signed) {
     return (
-      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-green-900/50 border border-green-700 rounded-full text-xs text-green-400">
+      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-success-bg border border-success rounded-full text-[11px] text-success">
         <Check className="w-3 h-3" />
         <span>Signed No Fossil Fuel Pledge</span>
       </div>
@@ -17,7 +17,7 @@ export function PledgeBadge({ signed }: PledgeBadgeProps) {
   }
 
   return (
-    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-red-900/50 border border-red-700 rounded-full text-xs text-red-400">
+    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-error-bg border border-error rounded-full text-[11px] text-error">
       <X className="w-3 h-3" />
       <span>No Pledge Signed</span>
     </div>

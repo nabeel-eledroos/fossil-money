@@ -2,11 +2,11 @@ import { Metadata } from 'next'
 import { supabase } from '@/lib/db'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, Flame, User, ExternalLink, Phone, Mail, Globe } from 'lucide-react'
-import { LcvTrendBadge } from '@/components/LcvTrendBadge'
-import { FossilFuelAmount } from '@/components/FossilFuelAmount'
-import { PledgeBadge } from '@/components/PledgeBadge'
-import { DarkMoneyDisclaimer } from '@/components/DarkMoneyDisclaimer'
+import Image from 'next/image'
+import { ArrowLeft, User, ExternalLink, Phone, Mail, Globe } from 'lucide-react'
+import { LcvTrendBadge, FossilFuelAmount, PledgeBadge, DarkMoneyDisclaimer } from '@/components/domain'
+import { PartyBadge } from '@/components/ui'
+import { cn, getChamberLabel, getDistrictLabel, formatMoneyFull } from '@/lib/utils'
 import type { Politician, PoliticianSummary, Donation, LcvScore } from '@/lib/database.types'
 
 interface PageProps {
@@ -81,61 +81,60 @@ export default async function PoliticianPage({ params }: PageProps) {
   const fossilFuelTotal = summary?.total_fossil_fuel_donations || 0
   const lcvScores = summary?.lcv_score_trend || {}
 
-  const partyColor = politician.party === 'D' 
-    ? 'bg-blue-600' 
-    : politician.party === 'R' 
-    ? 'bg-red-600' 
-    : 'bg-gray-600'
-
-  const chamberLabel = politician.chamber === 'senate' ? 'Senator' : 'Representative'
-  const districtLabel = politician.chamber === 'house' && politician.district 
-    ? `${politician.state}-${politician.district}` 
-    : politician.state
+  const chamberLabel = getChamberLabel(politician.chamber)
+  const districtLabel = getDistrictLabel(politician.state, politician.district, politician.chamber)
+  const isRepublican = politician.party === 'Republican' || politician.party === 'R'
+  const isDemocrat = politician.party === 'Democrat' || politician.party === 'Democratic' || politician.party === 'D'
 
   const fossilFuelDonations = (politician.donations || [])
     .filter((d: { is_fossil_fuel: boolean }) => d.is_fossil_fuel)
     .sort((a: { cycle_year: number }, b: { cycle_year: number }) => b.cycle_year - a.cycle_year)
 
   return (
-    <main className="min-h-screen bg-slate-900">
-      <header className="sticky top-0 z-10 bg-slate-900/95 backdrop-blur border-b border-slate-800">
-        <div className="max-w-4xl mx-auto px-4 py-4">
+    <main className="min-h-screen">
+      <header className="sticky top-0 z-10 bg-surface-secondary/95 backdrop-blur border-b border-border">
+        <div className="max-w-[680px] mx-auto px-6 py-4">
           <Link 
             href="/" 
-            className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors w-fit"
+            className="flex items-center gap-2 text-secondary hover:text-primary transition-colors w-fit"
           >
             <ArrowLeft className="w-5 h-5" />
-            <Flame className="w-6 h-6 text-orange-500" />
-            <span className="font-semibold text-white">Fossil Money</span>
+            <div className="w-3.5 h-3.5 bg-accent rounded-full" />
+            <span className="font-medium text-primary">Fossil Money</span>
           </Link>
         </div>
       </header>
 
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="bg-slate-800 rounded-xl p-6 md:p-8">
+      <div className="max-w-[680px] mx-auto px-6 py-8">
+        <div className="bg-surface rounded-xl p-6 shadow-md">
           <div className="flex flex-col md:flex-row items-start gap-6">
-            <div className={`relative w-24 h-24 md:w-32 md:h-32 rounded-full ${partyColor} flex items-center justify-center flex-shrink-0 overflow-hidden`}>
+            <div className={cn(
+              'relative w-24 h-24 md:w-32 md:h-32 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden',
+              isRepublican && 'bg-party-r',
+              isDemocrat && 'bg-party-d',
+              !isRepublican && !isDemocrat && 'bg-party-i'
+            )}>
               {politician.photo_url ? (
-                <img 
+                <Image 
                   src={politician.photo_url} 
                   alt={politician.name}
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 768px) 96px, 128px"
+                  className="object-cover"
                 />
               ) : (
-                <User className="w-12 h-12 md:w-16 md:h-16 text-white" />
+                <User className="w-12 h-12 md:w-16 md:h-16 text-inverse" />
               )}
             </div>
             
             <div className="flex-1">
               <div className="flex items-center gap-3 flex-wrap mb-2">
-                <h1 className="text-3xl font-bold text-white">
+                <h1 className="text-[28px] font-bold text-primary">
                   {politician.name}
                 </h1>
-                <span className={`px-3 py-1 rounded text-sm font-semibold text-white ${partyColor}`}>
-                  {politician.party}
-                </span>
+                <PartyBadge party={politician.party} />
               </div>
-              <p className="text-lg text-slate-400 mb-3">
+              <p className="text-lg text-secondary mb-3">
                 {chamberLabel} - {districtLabel}
               </p>
               <PledgeBadge signed={politician.signed_nffm_pledge} />
@@ -144,7 +143,7 @@ export default async function PoliticianPage({ params }: PageProps) {
                 {politician.office_phone && (
                   <a 
                     href={`tel:${politician.office_phone}`}
-                    className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors text-sm"
+                    className="flex items-center gap-2 text-secondary hover:text-primary transition-colors text-sm"
                   >
                     <Phone className="w-4 h-4" />
                     {politician.office_phone}
@@ -153,7 +152,7 @@ export default async function PoliticianPage({ params }: PageProps) {
                 {politician.office_email && (
                   <a 
                     href={`mailto:${politician.office_email}`}
-                    className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors text-sm"
+                    className="flex items-center gap-2 text-secondary hover:text-primary transition-colors text-sm"
                   >
                     <Mail className="w-4 h-4" />
                     Email
@@ -164,7 +163,7 @@ export default async function PoliticianPage({ params }: PageProps) {
                     href={politician.website_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors text-sm"
+                    className="flex items-center gap-2 text-secondary hover:text-primary transition-colors text-sm"
                   >
                     <Globe className="w-4 h-4" />
                     Website
@@ -176,12 +175,12 @@ export default async function PoliticianPage({ params }: PageProps) {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-            <div className="bg-slate-900 rounded-lg p-6">
-              <h3 className="text-sm text-slate-400 uppercase tracking-wide mb-3">Total Fossil Fuel Money</h3>
+            <div className="bg-surface-secondary rounded-lg p-6">
+              <h3 className="text-sm text-tertiary uppercase tracking-wide mb-3">Total Fossil Fuel Money</h3>
               <FossilFuelAmount amount={fossilFuelTotal} />
             </div>
-            <div className="bg-slate-900 rounded-lg p-6">
-              <h3 className="text-sm text-slate-400 uppercase tracking-wide mb-3">LCV Score Trend</h3>
+            <div className="bg-surface-secondary rounded-lg p-6">
+              <h3 className="text-sm text-tertiary uppercase tracking-wide mb-3">LCV Score Trend</h3>
               <LcvTrendBadge scores={lcvScores} />
             </div>
           </div>
@@ -191,16 +190,16 @@ export default async function PoliticianPage({ params }: PageProps) {
 
         {fossilFuelDonations.length > 0 && (
           <div className="mt-8">
-            <h2 className="text-xl font-semibold text-white mb-4">Fossil Fuel Donations</h2>
-            <div className="bg-slate-800 rounded-xl overflow-hidden">
+            <h2 className="text-lg font-semibold text-primary mb-4">Fossil Fuel Donations</h2>
+            <div className="bg-surface rounded-xl shadow-md overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="bg-slate-900">
-                      <th className="text-left px-4 py-3 text-sm font-semibold text-slate-400">Donor</th>
-                      <th className="text-left px-4 py-3 text-sm font-semibold text-slate-400">Sector</th>
-                      <th className="text-right px-4 py-3 text-sm font-semibold text-slate-400">Amount</th>
-                      <th className="text-right px-4 py-3 text-sm font-semibold text-slate-400">Year</th>
+                    <tr className="bg-surface-secondary">
+                      <th className="text-left px-4 py-3 text-sm font-semibold text-secondary">Donor</th>
+                      <th className="text-left px-4 py-3 text-sm font-semibold text-secondary">Sector</th>
+                      <th className="text-right px-4 py-3 text-sm font-semibold text-secondary">Amount</th>
+                      <th className="text-right px-4 py-3 text-sm font-semibold text-secondary">Year</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -210,21 +209,17 @@ export default async function PoliticianPage({ params }: PageProps) {
                       amount: number
                       cycle_year: number
                     }, i: number) => (
-                      <tr key={i} className="border-t border-slate-700">
-                        <td className="px-4 py-3 text-sm text-white">
+                      <tr key={i} className="border-t border-border">
+                        <td className="px-4 py-3 text-sm text-primary">
                           {donation.donor_name || 'Unknown'}
                         </td>
-                        <td className="px-4 py-3 text-sm text-slate-400">
+                        <td className="px-4 py-3 text-sm text-secondary">
                           {donation.sector_tag || 'N/A'}
                         </td>
-                        <td className="px-4 py-3 text-sm text-right text-orange-400 font-medium">
-                          {new Intl.NumberFormat('en-US', {
-                            style: 'currency',
-                            currency: 'USD',
-                            minimumFractionDigits: 0,
-                          }).format(donation.amount)}
+                        <td className="px-4 py-3 text-sm text-right text-accent font-medium">
+                          {formatMoneyFull(donation.amount)}
                         </td>
-                        <td className="px-4 py-3 text-sm text-right text-slate-400">
+                        <td className="px-4 py-3 text-sm text-right text-secondary">
                           {donation.cycle_year}
                         </td>
                       </tr>
@@ -233,7 +228,7 @@ export default async function PoliticianPage({ params }: PageProps) {
                 </table>
               </div>
               {fossilFuelDonations.length > 20 && (
-                <div className="px-4 py-3 bg-slate-900 text-center text-sm text-slate-400">
+                <div className="px-4 py-3 bg-surface-secondary text-center text-sm text-secondary">
                   Showing 20 of {fossilFuelDonations.length} donations
                 </div>
               )}
