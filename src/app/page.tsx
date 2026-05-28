@@ -1,17 +1,9 @@
 import Link from 'next/link'
 import { supabase } from '@/lib/db'
-import { ZipSearchForm } from '@/components/ZipSearchForm'
+import { ZipSearchForm } from '@/components/forms'
+import { Footer } from '@/components/layout'
+import { formatMoney, getPartyAbbreviation } from '@/lib/utils'
 import type { HomepageStats } from '@/lib/database.types'
-
-function formatMoney(amount: number): string {
-  if (amount >= 1_000_000) {
-    return `$${(amount / 1_000_000).toFixed(1)}M`
-  }
-  if (amount >= 1_000) {
-    return `$${(amount / 1_000).toFixed(0)}K`
-  }
-  return `$${amount.toFixed(0)}`
-}
 
 interface TopRecipient {
   id: string
@@ -88,23 +80,23 @@ export default async function Home() {
     <main className="py-8 px-6 max-w-[680px] mx-auto">
       {/* Navigation */}
       <nav className="flex items-center justify-between mb-11">
-        <div className="flex items-center gap-[7px] text-[15px] font-medium text-[var(--color-text-primary)]">
-          <div className="w-[14px] h-[14px] bg-[#D85A30] rounded-full" />
+        <div className="flex items-center gap-2 text-[15px] font-medium text-primary">
+          <div className="w-3.5 h-3.5 bg-accent rounded-full" />
           Fossil Money
         </div>
-        <div className="flex gap-[18px]">
-          <Link href="#" className="text-xs text-[var(--color-text-secondary)] no-underline hover:text-[var(--color-text-primary)]">All members</Link>
-          <Link href="#" className="text-xs text-[var(--color-text-secondary)] no-underline hover:text-[var(--color-text-primary)]">By state</Link>
-          <Link href="#" className="text-xs text-[var(--color-text-secondary)] no-underline hover:text-[var(--color-text-primary)]">Methodology</Link>
-          <Link href="#" className="text-xs text-[var(--color-text-secondary)] no-underline hover:text-[var(--color-text-primary)]">About</Link>
+        <div className="flex gap-5">
+          <Link href="#" className="text-xs text-secondary hover:text-primary">All members</Link>
+          <Link href="#" className="text-xs text-secondary hover:text-primary">By state</Link>
+          <Link href="#" className="text-xs text-secondary hover:text-primary">Methodology</Link>
+          <Link href="#" className="text-xs text-secondary hover:text-primary">About</Link>
         </div>
       </nav>
 
       {/* Hero */}
-      <h1 className="text-[34px] font-medium leading-[1.18] text-[var(--color-text-primary)] mb-4 max-w-[560px]">
-        The fossil fuel industry <em className="not-italic border-b-2 border-[#D85A30]">owns Congress</em>.<br />See the receipts.
+      <h1 className="text-[34px] font-medium leading-tight text-primary mb-4 max-w-[560px]">
+        The fossil fuel industry <em className="not-italic border-b-2 border-accent">owns Congress</em>.<br />See the receipts.
       </h1>
-      <p className="text-[15px] text-[var(--color-text-secondary)] leading-[1.65] max-w-[500px] mb-6">
+      <p className="text-[15px] text-secondary leading-relaxed max-w-[500px] mb-6">
         Enter your ZIP code to see every dollar your senators and house representative have taken from oil, gas, and coal — and how they voted on climate.
       </p>
 
@@ -112,43 +104,43 @@ export default async function Home() {
       <ZipSearchForm />
 
       {/* Stat Bar */}
-      <div className="grid grid-cols-4 bg-[var(--color-background-primary)] rounded-2xl overflow-hidden mb-8 shadow-sm">
-        <div className="p-4 px-5 border-r border-[var(--color-border-tertiary)]">
-          <div className="text-[22px] font-medium text-[#993C1D] mb-[3px]">
+      <div className="grid grid-cols-4 bg-surface rounded-2xl overflow-hidden mb-8 shadow-sm">
+        <div className="p-4 px-5 border-r border-border">
+          <div className="text-[22px] font-medium text-accent-dark mb-1">
             {stats ? formatMoney(stats.total_fossil_fuel_donations) : '$--'}
           </div>
-          <div className="text-[11px] text-[var(--color-text-secondary)] leading-[1.4]">Total fossil fuel donations to current Congress</div>
+          <div className="text-[11px] text-secondary leading-snug">Total fossil fuel donations to current Congress</div>
         </div>
-        <div className="p-4 px-5 border-r border-[var(--color-border-tertiary)]">
-          <div className="text-[22px] font-medium mb-[3px]">
+        <div className="p-4 px-5 border-r border-border">
+          <div className="text-[22px] font-medium mb-1">
             {stats?.members_with_fossil_money ?? '--'}
           </div>
-          <div className="text-[11px] text-[var(--color-text-secondary)] leading-[1.4]">Members who took fossil fuel money this cycle</div>
-          <div className="text-[11px] text-[var(--color-text-tertiary)] mt-[3px]">
+          <div className="text-[11px] text-secondary leading-snug">Members who took fossil fuel money this cycle</div>
+          <div className="text-[11px] text-tertiary mt-1">
             {stats ? `${stats.members_with_fossil_money_pct}% of Congress` : ''}
           </div>
         </div>
-        <div className="p-4 px-5 border-r border-[var(--color-border-tertiary)]">
-          <div className="text-[22px] font-medium text-[#993C1D] mb-[3px]">
+        <div className="p-4 px-5 border-r border-border">
+          <div className="text-[22px] font-medium text-accent-dark mb-1">
             {stats ? `${stats.avg_lcv_top_50}%` : '--%'}
           </div>
-          <div className="text-[11px] text-[var(--color-text-secondary)] leading-[1.4]">Avg LCV score among top 50 recipients</div>
+          <div className="text-[11px] text-secondary leading-snug">Avg LCV score among top 50 recipients</div>
         </div>
         <div className="p-4 px-5">
-          <div className="text-[22px] font-medium mb-[3px]">$0</div>
-          <div className="text-[11px] text-[var(--color-text-secondary)] leading-[1.4]">
+          <div className="text-[22px] font-medium mb-1">$0</div>
+          <div className="text-[11px] text-secondary leading-snug">
             Fossil fuel money taken by {stats?.members_with_zero ?? '--'} members
           </div>
-          <div className="text-[11px] text-[var(--color-text-tertiary)] mt-[3px]">
+          <div className="text-[11px] text-tertiary mt-1">
             {stats ? `LCV avg: ${stats.avg_lcv_zero_members}%` : ''}
           </div>
         </div>
       </div>
 
       {/* Leaderboard Section */}
-      <div className="flex items-baseline justify-between mb-[0.875rem]">
-        <span className="text-[11px] font-medium text-[var(--color-text-tertiary)] uppercase tracking-[0.06em]">Top recipients this cycle</span>
-        <Link href="#" className="text-xs text-[var(--color-text-secondary)] no-underline hover:text-[var(--color-text-primary)]">View all 535 members →</Link>
+      <div className="flex items-baseline justify-between mb-3">
+        <span className="text-[11px] font-medium text-tertiary uppercase tracking-wider">Top recipients this cycle</span>
+        <Link href="#" className="text-xs text-secondary hover:text-primary">View all 535 members →</Link>
       </div>
 
       {/* Leaderboard */}
@@ -156,30 +148,31 @@ export default async function Home() {
         {topRecipients.map((rep, index) => {
           const barWidth = (rep.total_fossil_fuel_donations / maxDonation) * 100
           const stateDisplay = rep.district ? `${rep.state}-${rep.district}` : rep.state
+          const isRepublican = rep.party === 'Republican' || rep.party === 'R'
 
           return (
             <Link
               key={rep.id}
               href={`/politician/${rep.id}`}
-              className="grid grid-cols-[24px_1fr_auto] items-center gap-3 p-[0.875rem_1rem] bg-[var(--color-background-primary)] rounded-xl cursor-pointer hover:bg-[var(--color-background-secondary)] no-underline transition-colors shadow-sm"
+              className="grid grid-cols-[24px_1fr_auto] items-center gap-3 p-3 px-4 bg-surface rounded-xl hover:bg-surface-secondary transition-colors shadow-sm"
             >
-              <span className="text-xs text-[var(--color-text-tertiary)] text-center">{index + 1}</span>
+              <span className="text-xs text-tertiary text-center">{index + 1}</span>
               <div className="min-w-0">
-                <div className="text-sm font-medium text-[var(--color-text-primary)] mb-[2px] whitespace-nowrap overflow-hidden text-ellipsis">{rep.name}</div>
-                <div className="text-[11px] text-[var(--color-text-secondary)] flex items-center gap-2">
+                <div className="text-sm font-medium text-primary mb-0.5 truncate">{rep.name}</div>
+                <div className="text-[11px] text-secondary flex items-center gap-2">
                   <span className="flex items-center">
-                    <span className={`inline-block w-[7px] h-[7px] rounded-full mr-1 ${rep.party === 'Republican' || rep.party === 'R' ? 'bg-[#E24B4A]' : 'bg-[#378ADD]'}`} />
-                    {rep.party?.charAt(0)} · {stateDisplay}
+                    <span className={`inline-block w-2 h-2 rounded-full mr-1 ${isRepublican ? 'bg-party-r' : 'bg-party-d'}`} />
+                    {getPartyAbbreviation(rep.party)} · {stateDisplay}
                   </span>
                   <span>{rep.chamber}{rep.committee ? ` · ${rep.committee}` : ''}</span>
                 </div>
-                <div className="w-full h-[3px] bg-[var(--color-border-tertiary)] rounded-full mt-[6px] overflow-hidden">
-                  <div className="h-full rounded-full bg-[#D85A30]" style={{ width: `${barWidth}%` }} />
+                <div className="w-full h-[3px] bg-border rounded-full mt-1.5 overflow-hidden">
+                  <div className="h-full rounded-full bg-accent" style={{ width: `${barWidth}%` }} />
                 </div>
               </div>
               <div className="text-right min-w-[80px]">
-                <span className="text-[15px] font-medium text-[#993C1D] block mb-[2px]">{formatMoney(rep.total_fossil_fuel_donations)}</span>
-                <span className="text-[11px] text-[var(--color-text-secondary)]">
+                <span className="text-[15px] font-medium text-accent-dark block mb-0.5">{formatMoney(rep.total_fossil_fuel_donations)}</span>
+                <span className="text-[11px] text-secondary">
                   {rep.latest_lcv_score !== null ? `LCV ${rep.latest_lcv_score}%` : 'LCV --'}
                 </span>
               </div>
@@ -189,14 +182,7 @@ export default async function Home() {
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-between pt-4 border-t border-[var(--color-border-tertiary)]">
-        <span className="text-[11px] text-[var(--color-text-tertiary)]">Data: FEC filings · WhoBoughtMyRep · LCV Scorecard 2024. Disclosed contributions only.</span>
-        <div className="flex gap-[14px]">
-          <Link href="#" className="text-[11px] text-[var(--color-text-tertiary)] no-underline hover:text-[var(--color-text-secondary)]">GitHub</Link>
-          <Link href="#" className="text-[11px] text-[var(--color-text-tertiary)] no-underline hover:text-[var(--color-text-secondary)]">Methodology</Link>
-          <span className="text-[11px] text-[var(--color-text-tertiary)]">Updated May 2026</span>
-        </div>
-      </div>
+      <Footer />
     </main>
   )
 }

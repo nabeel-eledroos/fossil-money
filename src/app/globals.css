@@ -1,40 +1,51 @@
 @import "tailwindcss";
 
-:root {
-  --background: #F5F5F3;
-  --foreground: #1A1A1A;
+@theme {
+  /* Colors - these become Tailwind utilities like bg-primary, text-secondary, etc. */
+  --color-primary: #1A1A1A;
+  --color-secondary: #5C5C5C;
+  --color-tertiary: #8A8A8A;
+  --color-inverse: #FFFFFF;
   
-  --color-text-primary: #1A1A1A;
-  --color-text-secondary: #5C5C5C;
-  --color-text-tertiary: #8A8A8A;
+  --color-surface: #FFFFFF;
+  --color-surface-secondary: #F5F5F3;
+  --color-surface-tertiary: #EBEBEB;
   
-  --color-background-primary: #FFFFFF;
-  --color-background-secondary: #F5F5F3;
-  
-  --color-border-primary: #E0E0E0;
-  --color-border-secondary: #D4D4D4;
-  --color-border-tertiary: #E8E8E6;
+  --color-border: #E8E8E6;
+  --color-border-strong: #D4D4D4;
   
   --color-accent: #D85A30;
   --color-accent-dark: #993C1D;
   
   --color-party-r: #E24B4A;
+  --color-party-r-bg: #FEE2E2;
   --color-party-d: #378ADD;
+  --color-party-d-bg: #DBEAFE;
+  --color-party-i: #6B7280;
+  --color-party-i-bg: #F3F4F6;
   
-  --border-radius-md: 8px;
-  --border-radius-lg: 12px;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-inter);
-  --font-mono: var(--font-geist-mono);
+  --color-success: #10B981;
+  --color-success-bg: #D1FAE5;
+  --color-warning: #F59E0B;
+  --color-warning-bg: #FEF3C7;
+  --color-error: #EF4444;
+  --color-error-bg: #FEE2E2;
+  --color-info: #3B82F6;
+  --color-info-bg: #DBEAFE;
+  
+  /* Font family */
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: system-ui, -apple-system, sans-serif;
+  background-color: #F5F5F3;
+  color: #1A1A1A;
+  font-family: var(--font-sans);
   min-height: 100vh;
+}
+
+/* Focus styles */
+*:focus-visible {
+  outline: 2px solid #D85A30;
+  outline-offset: 2px;
 }

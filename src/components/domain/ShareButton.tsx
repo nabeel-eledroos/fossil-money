@@ -39,12 +39,12 @@ export function ShareButton({ politicianId, name }: ShareButtonProps) {
   return (
     <button
       onClick={handleShare}
-      className="flex items-center justify-center gap-2 px-4 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors"
+      className="flex items-center justify-center gap-2 px-4 py-3 bg-surface border border-border-strong hover:bg-surface-secondary text-primary rounded-lg transition-colors"
     >
       {copied ? (
         <>
-          <Check className="w-4 h-4 text-green-400" />
-          <span className="text-green-400">Copied!</span>
+          <Check className="w-4 h-4 text-success" />
+          <span className="text-success">Copied!</span>
         </>
       ) : (
         <>

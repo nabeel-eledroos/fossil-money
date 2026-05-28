@@ -13,10 +13,7 @@ interface ContactButtonProps {
 export function ContactButton({ email, repName, zip, amount }: ContactButtonProps) {
   if (!email) {
     return (
-      <button
-        disabled
-        className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-slate-700 text-slate-500 rounded-lg cursor-not-allowed"
-      >
+      <button disabled className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-surface-tertiary text-tertiary rounded-lg cursor-not-allowed">
         <Mail className="w-4 h-4" />
         <span>No email available</span>
       </button>
@@ -33,7 +30,7 @@ export function ContactButton({ email, repName, zip, amount }: ContactButtonProp
   return (
     <a
       href={mailtoLink}
-      className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors font-medium"
+      className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-accent hover:bg-accent-dark text-inverse rounded-lg transition-colors font-medium"
     >
       <Mail className="w-4 h-4" />
       <span>Contact</span>

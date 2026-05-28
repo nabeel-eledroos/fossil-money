@@ -1,6 +1,7 @@
 'use client'
 
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 interface LcvTrendBadgeProps {
   scores: Record<string, number>
@@ -12,7 +13,7 @@ export function LcvTrendBadge({ scores }: LcvTrendBadgeProps) {
   if (years.length === 0) {
     return (
       <div className="flex items-center gap-2">
-        <span className="text-slate-500 text-sm">No data</span>
+        <span className="text-tertiary text-sm">No data</span>
       </div>
     )
   }
@@ -31,25 +32,28 @@ export function LcvTrendBadge({ scores }: LcvTrendBadgeProps) {
     else if (trendDiff < 0) trend = 'down'
   }
 
-  const scoreColor = latestScore >= 70 
-    ? 'text-green-400' 
-    : latestScore >= 40 
-    ? 'text-yellow-400' 
-    : 'text-red-400'
-
   const TrendIcon = trend === 'up' ? TrendingUp : trend === 'down' ? TrendingDown : Minus
-  const trendColor = trend === 'up' ? 'text-green-400' : trend === 'down' ? 'text-red-400' : 'text-slate-400'
 
   return (
     <div className="flex flex-col">
       <div className="flex items-center gap-2">
-        <span className={`text-2xl font-bold ${scoreColor}`}>
+        <span className={cn(
+          'text-[22px] font-bold',
+          latestScore >= 70 && 'text-success',
+          latestScore >= 40 && latestScore < 70 && 'text-warning',
+          latestScore < 40 && 'text-error'
+        )}>
           {latestScore}%
         </span>
         {previousScore !== null && (
-          <div className={`flex items-center ${trendColor}`}>
+          <div className={cn(
+            'flex items-center',
+            trend === 'up' && 'text-success',
+            trend === 'down' && 'text-error',
+            trend === 'stable' && 'text-tertiary'
+          )}>
             <TrendIcon className="w-4 h-4" />
-            <span className="text-xs ml-0.5">
+            <span className="text-[11px] ml-0.5">
               {trendDiff > 0 ? '+' : ''}{trendDiff}
             </span>
           </div>
@@ -59,8 +63,8 @@ export function LcvTrendBadge({ scores }: LcvTrendBadgeProps) {
       {years.length > 1 && (
         <div className="flex gap-2 mt-2">
           {years.slice(0, 3).map((year) => (
-            <div key={year} className="text-xs text-slate-500">
-              <span className="text-slate-400">{year.slice(-2)}:</span> {scores[year]}%
+            <div key={year} className="text-[11px] text-tertiary">
+              <span className="text-secondary">{year.slice(-2)}:</span> {scores[year]}%
             </div>
           ))}
         </div>
