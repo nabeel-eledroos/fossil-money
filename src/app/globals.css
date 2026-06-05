@@ -1,51 +1,304 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+
 @import "tailwindcss";
 
-@theme {
-  /* Colors - these become Tailwind utilities like bg-primary, text-secondary, etc. */
-  --color-primary: #1A1A1A;
-  --color-secondary: #5C5C5C;
-  --color-tertiary: #8A8A8A;
-  --color-inverse: #FFFFFF;
-  
-  --color-surface: #FFFFFF;
-  --color-surface-secondary: #F5F5F3;
-  --color-surface-tertiary: #EBEBEB;
-  
-  --color-border: #E8E8E6;
-  --color-border-strong: #D4D4D4;
-  
-  --color-accent: #D85A30;
-  --color-accent-dark: #993C1D;
-  
-  --color-party-r: #E24B4A;
-  --color-party-r-bg: #FEE2E2;
-  --color-party-d: #378ADD;
-  --color-party-d-bg: #DBEAFE;
-  --color-party-i: #6B7280;
-  --color-party-i-bg: #F3F4F6;
-  
-  --color-success: #10B981;
-  --color-success-bg: #D1FAE5;
-  --color-warning: #F59E0B;
-  --color-warning-bg: #FEF3C7;
-  --color-error: #EF4444;
-  --color-error-bg: #FEE2E2;
-  --color-info: #3B82F6;
-  --color-info-bg: #DBEAFE;
-  
-  /* Font family */
-  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+@layer base {
+  :root {
+    /* Fossil Money Design System - from prototype */
+    --color-bg: #faf9f6;
+    --color-surface: #ffffff;
+    --color-ink: #17160f;
+    --color-text: #1a1914;
+    --color-text-soft: #8a897f;
+    --color-text-mute: #aeada3;
+    --color-hair: #eae9e3;
+    --color-hair-strong: #dddcd4;
+    
+    /* Accent colors */
+    --color-crude: #c85a26;
+    --color-crude-soft: #f7ddca;
+    --color-crude-deep: #9c4310;
+    
+    --color-leaf: #3f9d52;
+    --color-leaf-soft: #d3ecd6;
+    --color-leaf-deep: #2c7038;
+    
+    /* Industry colors */
+    --color-coal: #4f3a2c;
+    --color-util: #dca42a;
+    --color-mining: #9a8052;
+    --color-dark: #6354c4;
+    --color-dark-soft: #e4e1f6;
+    
+    /* Alert colors */
+    --color-alarm: #cf3320;
+    --color-alarm-soft: #f8d7d0;
+    
+    /* Party colors */
+    --color-party-d: #2563a8;
+    --color-party-d-bg: #dde9f5;
+    --color-party-r: #b1331f;
+    --color-party-r-bg: #f6dad3;
+    --color-party-np: #8a897f;
+    --color-party-np-bg: #eae9e3;
+    
+    /* Font families */
+    --font-display: "Bricolage Grotesque", sans-serif;
+    --font-body: "Hanken Grotesk", -apple-system, sans-serif;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.6;
+    font-feature-settings: "tnum" 1, "ss01" 1;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 }
 
-body {
-  background-color: #F5F5F3;
-  color: #1A1A1A;
-  font-family: var(--font-sans);
-  min-height: 100vh;
+@layer utilities {
+  /* Font utilities */
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-body {
+    font-family: var(--font-body);
+  }
+
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .label {
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-text-soft);
+  }
+
+  /* Text colors */
+  .text-ink { color: var(--color-ink) !important; }
+  .text-text { color: var(--color-text) !important; }
+  .text-text-soft { color: var(--color-text-soft) !important; }
+  .text-text-mute { color: var(--color-text-mute) !important; }
+  .text-crude { color: var(--color-crude) !important; }
+  .text-crude-deep { color: var(--color-crude-deep) !important; }
+  .text-leaf { color: var(--color-leaf) !important; }
+  .text-leaf-deep { color: var(--color-leaf-deep) !important; }
+  .text-dark { color: var(--color-dark) !important; }
+  .text-alarm { color: var(--color-alarm) !important; }
+  .text-coal { color: var(--color-coal) !important; }
+
+  /* Background colors */
+  .bg-bg { background-color: var(--color-bg) !important; }
+  .bg-surface { background-color: var(--color-surface) !important; }
+  .bg-crude { background-color: var(--color-crude) !important; }
+  .bg-crude-soft { background-color: var(--color-crude-soft) !important; }
+  .bg-leaf { background-color: var(--color-leaf) !important; }
+  .bg-leaf-soft { background-color: var(--color-leaf-soft) !important; }
+  .bg-dark { background-color: var(--color-dark) !important; }
+  .bg-alarm { background-color: var(--color-alarm) !important; }
+  .bg-alarm-soft { background-color: var(--color-alarm-soft) !important; }
+  .bg-hair { background-color: var(--color-hair) !important; }
+  .bg-ink { background-color: var(--color-ink) !important; }
+
+  /* Border colors */
+  .border-hair { border-color: var(--color-hair) !important; }
+  .border-hair-strong { border-color: var(--color-hair-strong) !important; }
+  .border-ink { border-color: var(--color-ink) !important; }
+  .border-crude { border-color: var(--color-crude) !important; }
+
+  /* Animation */
+  .animate-rise {
+    animation: rise 0.7s ease both;
+  }
+
+  .animate-fade {
+    animation: fade 0.5s ease both;
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* Focus styles */
 *:focus-visible {
-  outline: 2px solid #D85A30;
+  outline: 2px solid var(--color-crude);
   outline-offset: 2px;
 }
+
+/* Party badge styles */
+.chip {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 3px 8px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.chip.party-d {
+  background: var(--color-party-d-bg);
+  color: var(--color-party-d);
+}
+
+.chip.party-r {
+  background: var(--color-party-r-bg);
+  color: var(--color-party-r);
+}
+
+.chip.party-np {
+  background: var(--color-party-np-bg);
+  color: var(--color-party-np);
+}
+
+.chip.pledge-signed {
+  background: var(--color-leaf-soft);
+  color: var(--color-leaf-deep);
+}
+
+.chip.pledge-broke {
+  background: var(--color-alarm-soft);
+  color: var(--color-alarm);
+}
+
+.chip.lever {
+  background: #f7e6c0;
+  color: #8a5e10;
+}
+
+.chip.soon {
+  background: var(--color-hair);
+  color: var(--color-text-soft);
+}
+
+/* Meter bar */
+.meter {
+  height: 4px;
+  border-radius: 3px;
+  background: var(--color-hair);
+  overflow: hidden;
+}
+
+.meter i {
+  display: block;
+  height: 100%;
+  border-radius: 3px;
+}
+
+.meter.crude i { background: var(--color-crude); }
+.meter.leaf i { background: var(--color-leaf); }
+
+/* Segmented bar */
+.segbar {
+  display: flex;
+  height: 12px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--color-hair);
+}
+
+.segbar i {
+  height: 100%;
+  transition: width 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Bar chart */
+.barchart {
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(8px, 2vw, 22px);
+  height: 200px;
+  padding-top: 24px;
+  border-bottom: 1px solid var(--color-hair);
+}
+
+.barchart .bcol {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  gap: 9px;
+}
+
+.barchart .bar {
+  width: 100%;
+  max-width: 36px;
+  border-radius: 5px 5px 0 0;
+  background: var(--color-crude);
+  position: relative;
+  transition: height 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+  min-height: 2px;
+}
+
+.barchart .bar .amt {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-crude-deep);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.barchart .yr {
+  font-size: 12px;
+  color: var(--color-text-mute);
+}
+
+/* Hover styles for links */
+.hover\:text-ink:hover { color: var(--color-ink) !important; }
+.hover\:border-ink:hover { border-color: var(--color-ink) !important; }

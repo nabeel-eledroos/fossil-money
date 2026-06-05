@@ -1,0 +1,9 @@
+{
+  "scope_label": "U.S. Congress · 2023–2024 cycle",
+  "scope_levels": ["federal"],
+  "cycle_window": { "from": 2023, "to": 2024 },
+  "pct_denominator": "total_receipts",
+  "utilities_are_fossil": true,
+  "clean_energy_tags": ["solar", "wind", "storage", "E1500", "E1600"],
+  "pledge_source": "curated"
+}
