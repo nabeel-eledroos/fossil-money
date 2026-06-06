@@ -1,0 +1,10 @@
+{
+  "api_key_env": "FEC_API_KEY",
+  "base_url": "https://api.open.fec.gov/v1",
+  "cycles": [2024, 2022, 2020, 2018, 2016, 2014],
+  "per_page": 100,
+  "rate_limit_per_hour": 1000,
+  "request_delay_seconds": 3.6,
+  "fossil_committee_cache": "etl/data/fec_fossil_committees.json",
+  "progress_file": "etl/data/fec_fetch_progress.json"
+}

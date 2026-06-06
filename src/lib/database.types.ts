@@ -123,6 +123,12 @@ export interface Donation {
   employer: string | null
   recipient_committee_id: string | null
   cycle_year: number
+  contribution_date: string | null
+  contributor_city: string | null
+  contributor_state: string | null
+  committee_name: string | null
+  fec_committee_id: string | null
+  fec_file_number: string | null
   source: string
   source_transaction_id: string | null
   source_url: string | null
