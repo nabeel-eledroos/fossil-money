@@ -5,15 +5,27 @@ on:
     - cron: '0 3 * * *'  # 3am UTC daily
   workflow_dispatch:      # Manual trigger
     inputs:
-      refresh:
-        description: 'Refresh all data (not just missing)'
+      full_refresh:
+        description: 'Full refresh (all cycles, ignore progress)'
         required: false
         default: 'false'
         type: boolean
+      limit:
+        description: 'Max politicians to process (default: 100)'
+        required: false
+        default: '100'
+        type: string
+
+env:
+  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+  SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+  FEC_API_KEY: ${{ secrets.FEC_API_KEY }}
 
 jobs:
   etl:
     runs-on: ubuntu-latest
+    timeout-minutes: 330  # 5.5 hours max (leave buffer before 6hr GitHub limit)
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -26,15 +38,116 @@ jobs:
       - name: Install dependencies
         run: pip install -r etl/requirements.txt
 
-      - name: Fetch industry data (auto-detects if refresh needed)
-        run: python etl/scripts/fetch_whoboughtmyrep.py --auto --limit 100
-        env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
-          WHOBOUGHTMYREP_API_KEY: ${{ secrets.WHOBOUGHTMYREP_API_KEY }}
+      - name: Download progress file (if exists)
+        continue-on-error: true
+        run: |
+          # Fetch progress from previous runs stored in Supabase
+          # This allows resuming across workflow runs
+          python -c "
+          import os
+          import json
+          from supabase import create_client
+          
+          client = create_client(os.environ['SUPABASE_URL'], os.environ['SUPABASE_SERVICE_KEY'])
+          result = client.table('etl_runs').select('notes').eq('script', 'fec_progress').order('started_at', desc=True).limit(1).execute()
+          
+          if result.data and result.data[0].get('notes'):
+              progress = json.loads(result.data[0]['notes'])
+              os.makedirs('etl/data', exist_ok=True)
+              with open('etl/data/fec_fetch_progress.json', 'w') as f:
+                  json.dump(progress, f)
+              print(f'Restored progress: {len(progress.get(\"completed_politicians\", {}))} politicians completed')
+          else:
+              print('No previous progress found, starting fresh')
+          "
+
+      - name: Ensure fossil committee cache exists
+        run: |
+          if [ ! -f "etl/data/fec_fossil_committees.json" ]; then
+            echo "Building fossil committee cache (this may take a while on first run)..."
+            timeout 3600 python etl/scripts/fetch_fec_committees.py || true
+          else
+            echo "Fossil committee cache exists"
+          fi
+
+      - name: Fetch FEC contributions
+        run: |
+          if [ "${{ inputs.full_refresh }}" = "true" ]; then
+            echo "Full refresh mode - fetching all cycles"
+            python etl/scripts/fetch_fec_contributions.py --limit ${{ inputs.limit || '100' }}
+          else
+            # Check if initial load is complete
+            COMPLETED=$(python -c "
+          import json
+          from pathlib import Path
+          p = Path('etl/data/fec_fetch_progress.json')
+          if p.exists():
+              data = json.load(open(p))
+              print(len(data.get('completed_politicians', {})))
+          else:
+              print(0)
+          ")
+            
+            if [ "$COMPLETED" -lt 535 ]; then
+              echo "Initial load in progress ($COMPLETED/535 complete)"
+              python etl/scripts/fetch_fec_contributions.py --limit ${{ inputs.limit || '100' }}
+            else
+              echo "Initial load complete, running incremental update"
+              python etl/scripts/fetch_fec_contributions.py --incremental --limit 600
+            fi
+          fi
+
+      - name: Save progress to Supabase
+        if: always()
+        run: |
+          python -c "
+          import os
+          import json
+          from datetime import datetime
+          from supabase import create_client
+          from pathlib import Path
+          
+          client = create_client(os.environ['SUPABASE_URL'], os.environ['SUPABASE_SERVICE_KEY'])
+          
+          progress_path = Path('etl/data/fec_fetch_progress.json')
+          if progress_path.exists():
+              with open(progress_path) as f:
+                  progress = json.load(f)
+              
+              # Store progress in etl_runs table
+              client.table('etl_runs').insert({
+                  'script': 'fec_progress',
+                  'status': 'success',
+                  'rows_upserted': len(progress.get('completed_politicians', {})),
+                  'started_at': datetime.utcnow().isoformat(),
+                  'finished_at': datetime.utcnow().isoformat(),
+                  'notes': json.dumps(progress)
+              }).execute()
+              
+              print(f'Saved progress: {len(progress.get(\"completed_politicians\", {}))} politicians')
+          "
+
+      - name: Fetch outside spending (weekly on Sundays)
+        if: github.event.schedule == '0 3 * * 0' || inputs.full_refresh == 'true'
+        run: python etl/scripts/fetch_fec_outside_spending.py --limit 100
+        continue-on-error: true
 
       - name: Aggregate summaries
         run: python etl/scripts/aggregate_summaries.py
-        env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+
+      - name: Log completion
+        run: |
+          python -c "
+          import os
+          from datetime import datetime
+          from supabase import create_client
+          
+          client = create_client(os.environ['SUPABASE_URL'], os.environ['SUPABASE_SERVICE_KEY'])
+          client.table('etl_runs').insert({
+              'script': 'etl-nightly',
+              'status': 'success',
+              'started_at': datetime.utcnow().isoformat(),
+              'finished_at': datetime.utcnow().isoformat(),
+              'notes': 'FEC contributions + aggregation complete'
+          }).execute()
+          "

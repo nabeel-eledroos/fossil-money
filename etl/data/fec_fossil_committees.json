@@ -1,0 +1,1615 @@
+{
+  "generated_at": "2026-06-05 18:31:32",
+  "total_scanned": 35147,
+  "fossil_count": 268,
+  "committees": {
+    "C00194266": {
+      "name": "AGRIFUELS REFINING CORPORATION POLITICAL ACTION COMMITTEE",
+      "subsector": "refining",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00835736": {
+      "name": "AL-CORN CLEAN FUEL PAC",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00330233": {
+      "name": "ALLIANCE COAL, LLC PAC",
+      "subsector": "coal",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00132084": {
+      "name": "ALLIED GASOLINE RETAILERS ASSOCIATION P A C",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00201400": {
+      "name": "A L WILLIAMS & ASSOCIATES POLITICAL ACTION COMMITTEE INC",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00342089": {
+      "name": "AMERICAN COAL COMPANY (PAC)",
+      "subsector": "coal",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00234963": {
+      "name": "AMERICAN ELECTRIC POWER FUEL SUPPLY POLITICAL ACTION COMMITTEE",
+      "subsector": "utilities",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00007450": {
+      "name": "AMERICAN GAS ASSOCIATION POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00081075": {
+      "name": "AMERICAN INDEPENDENT REFINERS ASS'N PAC (FORMERLY: AMERICAN PETROLEUM REFINERS...)",
+      "subsector": "refining",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00485250": {
+      "name": "AMERICAN NATURAL GAS ALLIANCE INC. POLITICAL ACTION COMMITTEE (NATGASPAC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00129528": {
+      "name": "AMERICAN NATURAL RESOURCES COAL POLITICAL ACTION COMMITTEE (ANR COAL PAC)",
+      "subsector": "coal",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00043257": {
+      "name": "AMERICAN NATURAL RESOURCES GAS POLITICAL ACTION COMMITTEE (ANR GAS PAC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00630574": {
+      "name": "AMERICAN OLIVE OIL PRODUCERS ASSOCIATION FEDERAL PAC",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00483677": {
+      "name": "AMERICAN PETROLEUM INSTITUTE POLITICAL ACTION COMMITTEE (API PAC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00453613": {
+      "name": "AMERICANS UNITED FOR FUEL PRICE CONTROLS",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00594036": {
+      "name": "AMERICA'S PETROLEUM INDUSTRY ROUNDTABLE",
+      "subsector": "oil_gas",
+      "committee_type": "O",
+      "designation": "U"
+    },
+    "C00231951": {
+      "name": "ANADARKO PETROLEUM CORPORATION POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00472308": {
+      "name": "ARKHAN CORPORATION POLITICAL ACTION COMMITTEE - CHEVRON CORPORATION",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00452292": {
+      "name": "ATLAS OIL COMPANY FEDERAL PAC",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00155358": {
+      "name": "A.T. MASSEY COAL COMPANY, INC., PAC",
+      "subsector": "coal",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00147819": {
+      "name": "BAY STATE GAS COMPANY POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00141150": {
+      "name": "BROOKLYN UNION GAS COMPANY FEDERAL PAC",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00087791": {
+      "name": "BROWN & WILLIAMSON TOBACCO CORPORATION EMPLOYEE POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00399196": {
+      "name": "BUILDING RELATIONSHIPS IN DIVERSE GEOGRAPHIC ENVIRONMENTS PAC (BRIDGE PAC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "D"
+    },
+    "C00523779": {
+      "name": "BUILD THE KEYSTONE PIPELINE",
+      "subsector": "pipeline",
+      "committee_type": "O",
+      "designation": "U"
+    },
+    "C00727511": {
+      "name": "BUTTIGIEG-WILLIAMSON-2000",
+      "subsector": "oil_gas",
+      "committee_type": "O",
+      "designation": "U"
+    },
+    "C00243865": {
+      "name": "CABOT OIL & GAS POLITICAL ACTION COMMITTEE (COGPAC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00318766": {
+      "name": "CALIFORNIA INDEPENDENT PETROLEUM ASSOCIATION FEDERAL PAC",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00030544": {
+      "name": "CANE SUGAR REFINERS POLITICAL ACTION COMMITTEE",
+      "subsector": "refining",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00430157": {
+      "name": "CHENIERE ENERGY, INC. PAC",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00035006": {
+      "name": "CHEVRON EMPLOYEES POLITICAL ACTION COMMITTEE - CHEVRON CORPORATION",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00298752": {
+      "name": "CHEVRON EMPLOYEES TEXAS PAC (CETXPAC)",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00235911": {
+      "name": "CHROMALLOY CORPORATION/CHROMALLOY GAS TURBINE LLC PAC (CHROMALLOY PAC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00193185": {
+      "name": "CINCINNATI GAS & ELECTRIC COMPANY EMPLOYEE PAC, THE",
+      "subsector": "utilities",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00130567": {
+      "name": "CLARK OIL & REFINING CORPORATION POLITICAL AWARENESS COMMITTEE",
+      "subsector": "refining",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00661322": {
+      "name": "CMOC MINING USA PAC",
+      "subsector": "mining",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00327726": {
+      "name": "COAL ACT REFORM POLITICAL ACTION COMMITTEE, THE",
+      "subsector": "coal",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00815498": {
+      "name": "COAL COUNTRY CONSERVATIVES POLITICAL ACTION COMMITTEE",
+      "subsector": "coal",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00889295": {
+      "name": "COAL COUNTRY CONSERVATIVES POLITICAL ACTION COMMITTEE",
+      "subsector": "coal",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00109819": {
+      "name": "COALPAC, A POLITICAL ACTION COMMITTEE OF THE NATIONAL MINING ASSOCIATION",
+      "subsector": "mining",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00563072": {
+      "name": "COEUR MINING, INC. PAC",
+      "subsector": "mining",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00054890": {
+      "name": "COLUMBIA GAS OF OHIO INC. PAC",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00055236": {
+      "name": "COLUMBIA GAS TRANSMISSION CORP. PAC",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00575340": {
+      "name": "COLUMBIA PIPELINE GROUP, INC. PAC",
+      "subsector": "pipeline",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00250910": {
+      "name": "COMMITTEE FOR EFFECTIVE GOVERNMENT VIRGINIA NATURAL GAS INC",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00110825": {
+      "name": "COMMITTEE FOR ENERGY INDEPENDENCE (MINING AND RECLAMATION COUNCIL OF AMERICA)",
+      "subsector": "mining",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00161745": {
+      "name": "COMMITTEE FOR NERCO OIL AND GAS",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00445429": {
+      "name": "COMMITTEE FOR THE ADVOCACY OF SPACE EXPLORATION",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00099366": {
+      "name": "CONNECTICUT NATURAL GAS CORPORATION POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00112896": {
+      "name": "CONOCOPHILLIPS SPIRIT PAC",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00562520": {
+      "name": "CONSERVATIVES FOR COAL",
+      "subsector": "coal",
+      "committee_type": "O",
+      "designation": "U"
+    },
+    "C00344226": {
+      "name": "CONSOLIDATED NATURAL GAS SERVICE COMPANY INC EMPLOYEES POL PARTICIPATION FUND (CNGEPPF)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00148122": {
+      "name": "CORAL PETROLEUM INC POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00554071": {
+      "name": "CORN REFINERS ASSOCIATION PAC",
+      "subsector": "refining",
+      "committee_type": "N",
+      "designation": "B"
+    },
+    "C00202911": {
+      "name": "CROWN CENTRAL PETROLEUM FEDERAL POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00115345": {
+      "name": "DELHI GAS PIPELINE CORPORATION PAC (FKA-TEXAS OIL & GAS CORP PAC)",
+      "subsector": "pipeline",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00129700": {
+      "name": "DELTAUS CORPORATION POLITICAL ACTION COMMITTEE (FKA DELTA DRILLING)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00881672": {
+      "name": "DERRICK ANDERSON VICTORY FUND",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "J"
+    },
+    "C00625087": {
+      "name": "DERRICK VICTORY FUND",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "J"
+    },
+    "C00354753": {
+      "name": "DEVON ENERGY CORPORATION POLITICAL ACTION COMMITTEE (DEC PAC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00705996": {
+      "name": "DIVERSIFIED GAS & OIL CORPORATION PAC",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00076281": {
+      "name": "DOMESTIC PETROLEUM COUNCIL POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00014472": {
+      "name": "DOMINION-EAST OHIO GAS CO EMPLOYEES VOLUNTARY GOOD GOVERNMENT ASSOC",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00160085": {
+      "name": "DOMINION EXPLORATION & PRODUCTION A POLITICAL ACTION CMTE OF CNG PRODUCING CO (CNGPAC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00033167": {
+      "name": "DOMINION PEOPLES NATURAL GAS COMPANY EMPLOYEES POLITICAL INVOLVEMENT COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00635706": {
+      "name": "DRILLERSPAC, A POLITICAL ACTION COMMITTEE OF THE INTERNATIONAL ASSOCIATION OF DRILLING CONTRACTORS",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00771667": {
+      "name": "DT MIDSTREAM HOLDINGS, LLC PAC",
+      "subsector": "pipeline",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00437186": {
+      "name": "DTX OIL LLC PAC",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00144824": {
+      "name": "DUKE ENERGY PIEDMONT NATURAL GAS COMPANY, INC. PAC",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00612002": {
+      "name": "DUMP THE TERRIFYING RHETORIC UNDERMINING MAINSTREAM POLITICS",
+      "subsector": "mining",
+      "committee_type": "O",
+      "designation": "U"
+    },
+    "C00189969": {
+      "name": "DUTCHESS COUNTY VICTORY 84 COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00184002": {
+      "name": "EDGINGTON OIL COMPANY, INC. POLITICAL ACTION COMMITTEE (\"EDGINGTON PAC\")",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00635037": {
+      "name": "ELECTRIC & GAS FREEDOM COMMITTEE",
+      "subsector": "utilities",
+      "committee_type": "O",
+      "designation": "U"
+    },
+    "C00479626": {
+      "name": "ELECTRO-MOTIVE DIESEL INC PAC",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00102087": {
+      "name": "EMPLOYEES OF MUSTANG FUEL CORPORATION POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00620914": {
+      "name": "ENABLE MIDSTREAM SERVICES LLC POLITICAL ACTION COMMITTEE",
+      "subsector": "pipeline",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00438754": {
+      "name": "ENERGY TRANSFER EMPLOYEE MANAGEMENT COMPANY PAC (ENERGY TRANSFER PAC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00688606": {
+      "name": "EQUITRANS MIDSTREAM CORPORATION PAC",
+      "subsector": "pipeline",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00095406": {
+      "name": "EXXON MOBIL CORPORATION-MOBIL POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00121368": {
+      "name": "EXXON MOBIL CORPORATION POLITICAL ACTION COMMITTEE (EXXONMOBIL PAC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00457523": {
+      "name": "EXXON MOBIL CORPORATION SHAREHOLDERS SUPER PAC",
+      "subsector": "oil_gas",
+      "committee_type": "O",
+      "designation": "B"
+    },
+    "C00091124": {
+      "name": "FOREST OIL CORPORATION POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00819847": {
+      "name": "FTW FUEL THE WORLD",
+      "subsector": "oil_gas",
+      "committee_type": "O",
+      "designation": "U"
+    },
+    "C00283846": {
+      "name": "FUEL CELL FOR CLEAN AMERICA (ZTEK CORPORATION) A POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00855296": {
+      "name": "FUEL FOR THE FUTURE PAC",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00838664": {
+      "name": "FUEL THE WORLD FTW PAC",
+      "subsector": "oil_gas",
+      "committee_type": "V",
+      "designation": "U"
+    },
+    "C00307488": {
+      "name": "GEORGIA ASSOCIATION OF PETROLEUM RETAILERS POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00100289": {
+      "name": "GEORGIA MINING ASSOCIATION POLITICAL ACTION COMMITTEE",
+      "subsector": "mining",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00365627": {
+      "name": "GEORGIA PROPANE PAC INC",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00035238": {
+      "name": "GETTY OIL COMPANY POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00130476": {
+      "name": "GIBBS OIL COMPANY POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00275222": {
+      "name": "GOLD FIELDS MINING CORPORATION POLITICAL ACTION COMMITTEE (\"GOLD FIELDS PAC\")",
+      "subsector": "mining",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00608331": {
+      "name": "GPA MIDSTREAM ASSOCIATION/GPSA ASSOCIATION PAC",
+      "subsector": "pipeline",
+      "committee_type": "N",
+      "designation": "B"
+    },
+    "C00141549": {
+      "name": "GULF STATES OIL & REFINING RESPONSIBLE GOVERNMENT FUNDS",
+      "subsector": "refining",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00035691": {
+      "name": "HALLIBURTON COMPANY PAC",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00246579": {
+      "name": "HALLIBURTON NUS CORPORATION PAC",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00124016": {
+      "name": "HECLA MINING COMPANY/HECLA LIMITED PAC",
+      "subsector": "mining",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00557322": {
+      "name": "HESS CORPORATION POLITICAL ACTION COMMITTEE (HESS PAC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00198366": {
+      "name": "HOPE GAS EMPLOYEES FOR GOOD GOVERNMENT",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00424366": {
+      "name": "HORNBECK OFFSHORE SERVICES INC POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00012815": {
+      "name": "HOUSTON NATURAL GAS CORPORATION POLITICAL ACTION COMMITTEE/HNG POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00035824": {
+      "name": "HOUSTON OIL & MINERALS CORPORATION GOOD GOVERNMENT FUND",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00828848": {
+      "name": "ILLINOIS FUEL & RETAIL ASSOCIATION PAC",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00207910": {
+      "name": "INDEPENDENT COAL OPERATORS ASSOC POLITICAL ACTION COMMITTEE (ICOA PAC)",
+      "subsector": "coal",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00067470": {
+      "name": "INDEPENDENT GASOLINE MARKETERS COUNCIL-POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00183434": {
+      "name": "INDEPENDENT OIL PRODUCERS' AGENCY POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00059329": {
+      "name": "INTERNATIONAL ASSOCIATION OF DRILLING CONTRACTORS POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00493734": {
+      "name": "INTERNATIONAL COAL GROUP INC POLITICAL ACTION COMMITTEE (ICG PAC)",
+      "subsector": "coal",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00116145": {
+      "name": "INTERSTATE NATURAL GAS ASSOCIATION OF AMERICA POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00627679": {
+      "name": "JACKSON OFFSHORE OPERATORS LLC PAC",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00590265": {
+      "name": "JORDAN COVE LNG LLC PAC",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00203570": {
+      "name": "KAISER COAL CORPORATION POLITICAL ACTION COMMITTEE",
+      "subsector": "coal",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00198440": {
+      "name": "KANSAS GAS AND ELECTRIC COMPANY, FEDERAL POLITICAL ACTION COMMITTEE (KG&E FED PAC)",
+      "subsector": "utilities",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00743336": {
+      "name": "KATHLEEN WILLIAMS VICTORY FUND",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "J"
+    },
+    "C00117226": {
+      "name": "KENTUCKY GASOLINE DEALERS ASSOCIATION POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00554691": {
+      "name": "KENTUCKY OIL AND GAS ASSOCIATION PAC (KOGA PAC)",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00236489": {
+      "name": "KOCH, INC. POLITICAL ACTION COMMITTEE (KOCHPAC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00103820": {
+      "name": "KOCH INDUSTRIES INC. POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00334581": {
+      "name": "KOMATSU MINING CORP. POLITICAL ACTION COMMITTEE",
+      "subsector": "mining",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00195776": {
+      "name": "LEAR PETROLEUM CORPORATION POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00091637": {
+      "name": "LEHIGH OIL POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00581769": {
+      "name": "LET'S FIRE TERRIBLE RADICALS UNDERMINING MIDDLE CLASS PEOPLE",
+      "subsector": "mining",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00486779": {
+      "name": "LIQUID ENERGY PIPELINE ASSOCIATION PAC",
+      "subsector": "pipeline",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00216564": {
+      "name": "LOUISIANA LAND AND EXPLORATION COMPANY POLITICAL ACTION COMMITTEE (LL&E-PAC); THE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00203679": {
+      "name": "MACMILLAN RING-FREE OIL CO MACPAC",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00653808": {
+      "name": "(MAC PAC) MINING ADVOCATES CALIFORNIA",
+      "subsector": "mining",
+      "committee_type": "O",
+      "designation": "U"
+    },
+    "C00397711": {
+      "name": "MAGELLAN MIDSTREAM HOLDINGS GP, LLC POLITICAL ACTION COMMITTEE",
+      "subsector": "pipeline",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00040568": {
+      "name": "MARATHON OIL COMPANY EMPLOYEES POLITICAL ACTION COMMITTEE (MEPAC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00602649": {
+      "name": "MARATHON PAC",
+      "subsector": "oil_gas",
+      "committee_type": "O",
+      "designation": "U"
+    },
+    "C00496307": {
+      "name": "MARATHON PETROLEUM CORPORATION EMPLOYEES POLITICAL ACTION COMMITTEE (MPAC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00584938": {
+      "name": "MARATHON PHARMACEUTICALS POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "B"
+    },
+    "C00133587": {
+      "name": "MARLEX PETROLEUM POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00356089": {
+      "name": "MCMORAN EXPLORATION CO. CITIZENSHIP COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00362046": {
+      "name": "MCNAMEE, LOCHNER, TITUS & WILLIAMS PC FEDERAL PAC",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00015925": {
+      "name": "MERIDIAN PUBLIC AFFAIRS COMM (OF INDIANA GAS CO INC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00113365": {
+      "name": "MERIT PETROLEUM, INC POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00815183": {
+      "name": "MERRION OIL & GAS CORPORATION POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00178194": {
+      "name": "MESA PETROLEUM CO POLITICAL ACTION COMMITTEE (MPAC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00951095": {
+      "name": "MEWBOURNE OIL COMPANY POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00083808": {
+      "name": "MICHIGAN OIL AND GAS ASSOCIATION PAC MOGA-PAC",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00109264": {
+      "name": "MID-AMERICAN ENERGY COMPANY P A C - FEDERAL (FKA IOWA-ILLINOIS GAS & ELEC...)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00133462": {
+      "name": "MID-AMERICAN ENERGY COMPANY PAC - GENERAL (FKA IOWA ILLINOIS GAS & ELEC..)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00120808": {
+      "name": "MID-CONTINENT OIL & GAS ASSOCIATION MS/AL DIVISION PAC (MIDCON PAC) (FKA DIX PAC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00329201": {
+      "name": "MIDSTREAM FUEL SERVICE LLC - PAC",
+      "subsector": "pipeline",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00304634": {
+      "name": "MINEPAC, A POLITICAL ACTION COMMITTEE OF THE NATIONAL MINING ASSOCIATION",
+      "subsector": "mining",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00103911": {
+      "name": "MISSISSIPPI VALLEY GAS COMPANY - MVG POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00390062": {
+      "name": "MISSOURI FARMERS FOR BIODIESEL",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00292243": {
+      "name": "MISSOURI GAS ENERGY-CITIZENS FOR RESPONSIBLE ENERGY POLICY",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00531798": {
+      "name": "MONTANA MINING ASSOCIATION PAC",
+      "subsector": "mining",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00283747": {
+      "name": "MONTANA MINING ASSOCIATION POLITICAL ACTION COMMITTEE (MINEPAC)",
+      "subsector": "mining",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00298125": {
+      "name": "MONTANANS FOR MUDD/WILLIAMS",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "J"
+    },
+    "C00145722": {
+      "name": "MURPHY OIL CORPORATION POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00431270": {
+      "name": "NATIONAL BIODIESEL PAC",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00009597": {
+      "name": "NATIONAL COUNCIL OF COAL LESSORS INC PAC",
+      "subsector": "coal",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00388215": {
+      "name": "NATIONAL ENERGY & GAS TRANSMISSION, INC EMPLOYEE POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00083758": {
+      "name": "NATIONAL FUEL GAS COMPANY FEDERAL POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00079681": {
+      "name": "NATIONAL PROPANE GAS ASSOCIATION PAC",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00146951": {
+      "name": "NERCO COAL CORPORATION POLITICAL ACTION COMMITTEE",
+      "subsector": "coal",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00443523": {
+      "name": "NEWFIELD EXPLORATION COMPANY POLITICAL ACTION COMMITTEE (NEWFIELD PAC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00156471": {
+      "name": "NEW YORK STATE ELECTRIC & GAS CORPORATION POLITICAL ACTION COMMITTEE (NYSEGPAC)",
+      "subsector": "utilities",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00778290": {
+      "name": "NIKEMA WILLIAMS HOUSE VICTORY FUND",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "J"
+    },
+    "C00404178": {
+      "name": "NIXON PEABODY LLP PAC",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00135764": {
+      "name": "N J G R A SPECIAL ACCOUNT NEW JERSEY GASOLINE RETAILERS ASSOCIATION",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00686956": {
+      "name": "NO GAS HERE",
+      "subsector": "oil_gas",
+      "committee_type": "O",
+      "designation": "U"
+    },
+    "C00214270": {
+      "name": "NONPARTISAN POLITICAL SUPPORT COMMITTEE FOR KIDDER, PEABODY EMPLOYEES",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00178962": {
+      "name": "NORANDA EXPLORATION, INC POLITICAL ACTION COMMITTEE NORPAC",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00303685": {
+      "name": "NORTH AMERICAN COAL CORP. POLITICAL ACTION COMM. NACPAC",
+      "subsector": "coal",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00115576": {
+      "name": "NORTH AMERICAN COAL POLITICAL ACTION COMMITTEE (NACPAC)",
+      "subsector": "coal",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00746529": {
+      "name": "NORTH DAKOTA PETROLEUM COUNCIL, INC. FEDERAL PAC",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00130880": {
+      "name": "NORTHERN TIER PIPELINE COMPANY POLITICAL ACTION COMMITTEE (NORTHERN TIER PAC)",
+      "subsector": "pipeline",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00282053": {
+      "name": "NUCLEAR FUEL SERVICES INC PAC (NFS PAC)",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00949552": {
+      "name": "OCCIDENTAL CHEMICAL CORPORATION POLITICAL ACTION COMMITTEE (OXYCHEM PAC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00211706": {
+      "name": "OCCIDENTAL NEBRASKA FEDERAL SAVINGS BANK POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00035527": {
+      "name": "OCCIDENTAL OIL & GAS CORPORATION PAC (OOGPAC) (AKA CITIES SERVICE OIL & GAS CORP PAC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00083857": {
+      "name": "OCCIDENTAL PETROLEUM CORPORATION POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00174136": {
+      "name": "OCEAN DRILLING & EXPLORATION COMPANY POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00070391": {
+      "name": "OFFSHORE COMPANY POLITICAL ACTION COMMITTEE; THE",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00455584": {
+      "name": "OFFSHORE MARINE SERVICE ASSOCIATION PAC",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00381277": {
+      "name": "OHIO COAL ASSOCIATION PAC",
+      "subsector": "coal",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00754952": {
+      "name": "OHIO GAS ASSOCIATION FEDERAL PAC",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00482182": {
+      "name": "OHIO PETROLEUM MARKETERS AND CONVENIENCE STORE ASSOCIATION POL ACTION CMTE (OPMCA PAC)",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00139105": {
+      "name": "OHIO PETROLEUM RETAILERS AND REPAIR ASSN",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00255315": {
+      "name": "OHIO VALLEY COAL COMPANY PAC; THE",
+      "subsector": "coal",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00030635": {
+      "name": "OIL, CHEMICAL & ATOMIC WORKERS INTERNATIONAL UNION CMTE ON POLITICAL EDUC FUND (OCAW-COPE)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00624155": {
+      "name": "OIL EXPORT CLUB",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00826826": {
+      "name": "OIL EXPORT CLUB",
+      "subsector": "oil_gas",
+      "committee_type": "O",
+      "designation": "U"
+    },
+    "C00555060": {
+      "name": "OIL FIELD UNION LOCAL #5150",
+      "subsector": "oil_gas",
+      "committee_type": "O",
+      "designation": "U"
+    },
+    "C00450585": {
+      "name": "OIL FREEDOM NOW PAC",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00066985": {
+      "name": "OKLAHOMA GAS AND ELECTRIC COMPANY OG&E EMPLOYEES PAC",
+      "subsector": "utilities",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00554444": {
+      "name": "ONE GAS, INC. POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00337881": {
+      "name": "OREGON GASOLINE DEALERS ASSOCIATION PAC (OGD-PAC)",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00003780": {
+      "name": "PACIFIC GAS AND ELECTRIC COMPANY EMPLOYEES GOOD GOVERNMENT FUND",
+      "subsector": "utilities",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00166082": {
+      "name": "PA INDEPENDENT OIL & GAS ASSOCIATION PIOGA",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00109777": {
+      "name": "PARPAC (PARKER DRILLING COMPANY POLITICAL ACTION COMMITTEE)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00452524": {
+      "name": "PATRIOT COAL CORPORATION POLITICAL ACTION COMMITTEE",
+      "subsector": "coal",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00110478": {
+      "name": "PEABODY ENERGY CORPORATION POLITICAL ACTION COMMITTEE  (PEABODY PAC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00112672": {
+      "name": "PEABODY INTERNATIONAL CORPORATION PAC",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00426478": {
+      "name": "PENNSYLVANIA COAL PAC",
+      "subsector": "coal",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00137901": {
+      "name": "PETROLEUM EMPLOYEES FOR HONESTY IN CAMPAIGNING",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00102376": {
+      "name": "PETROLEUM EXPLORATION PRODUCTION POLITICAL COMMITTEE OF CALIFORNIA SOUTH (AKA PEPPCOM)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00080952": {
+      "name": "PETROLEUM PRODUCERS OF EAST TEXAS POLITICAL ACTION COMMITTEE(PETPAC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00159244": {
+      "name": "PETROLEUM RETAILERS AND AUTO REPAIR ASSOCIATION",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00326603": {
+      "name": "PG&E GAS TRANSMISSION TEXAS CORPORATION POLITICAL ACTION COMMITTEE (PG&E TEXAS PAC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00513549": {
+      "name": "PHILLIPS 66 PAC",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00161273": {
+      "name": "PLUMBERS & GAS FITTERS LOCAL NO 75 POLITICAL ACTION FUND",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00458927": {
+      "name": "POLITICAL EXPLORATION AND AWARENESS COMMITTEE (PEAC)",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00213090": {
+      "name": "PRIDE REFINING CO PAC (PRIDE PAC-FEDERAL)",
+      "subsector": "refining",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00022798": {
+      "name": "PRODUCERS COTTON OIL COMPANY GOOD GOVERNMENT COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00214940": {
+      "name": "PUBLIC SERVICE ELECTRIC AND GAS COMPANY POLITICAL ACTION COMMITTEE (PEGPAC)",
+      "subsector": "utilities",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00610782": {
+      "name": "RESPONSIBLE FEDERAL GOVERNMENT COMMITTEE OF GULF POWER COMPANY EMPLOYEES, INC.",
+      "subsector": "utilities",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00120519": {
+      "name": "RESPONSIBLE GOVERNMENT COMMITTEE OF GULF POWER COMPANY EMPLOYEES INC",
+      "subsector": "utilities",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00205047": {
+      "name": "ROCHESTER GAS & ELECTRIC CORPORATION RG&E EMPLOYEES' FEDERAL POLITICAL COMMITTEE, INC.",
+      "subsector": "utilities",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00131938": {
+      "name": "ROCHESTER & PITTSBURGH COAL COMPANY POLITICAL ACTION COMMITTEE (RAPPAC)",
+      "subsector": "coal",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00540930": {
+      "name": "ROGER WILLIAMS VICTORY FUND",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "J"
+    },
+    "C00063131": {
+      "name": "SAN DIEGO GAS & ELECTRIC CO. CITIZENS FOR GOOD GOVERNMENT COMMITTEE",
+      "subsector": "utilities",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00170027": {
+      "name": "SHERWIN-WILLIAMS POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00118893": {
+      "name": "SLAWSON OIL COMPANIES POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00120030": {
+      "name": "SOCIETY OF INDEPENDENT GASOLINE MARKETERS OF AMERICA PAC (SIGMA: AMERICA'S LEADING FUEL MARKETERS PAC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00145037": {
+      "name": "SOUTHERN COMPANY GAS EMPLOYEES PAC",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00076737": {
+      "name": "SOUTHWEST GAS CORPORATION POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00411116": {
+      "name": "SPACE EXPLORATION TECHNOLOGIES CORP. PAC",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00590752": {
+      "name": "STAND UP TO FRACKING",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00115865": {
+      "name": "SUPERIOR OIL COMPANY POLITICAL ACTION COMMITTEE (SUPAC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00909895": {
+      "name": "TEAM WILLIAMS",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "J"
+    },
+    "C00129270": {
+      "name": "TESORO PETROLEUM CORPORATION POLITICAL ACTION COMMITTEE (TESORO-PAC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00684191": {
+      "name": "TESTER-WILLIAMS VICTORY FUND",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "J"
+    },
+    "C00171397": {
+      "name": "TEXAS CITY REFINING INC GOOD GOVERNMENT FUND",
+      "subsector": "refining",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00032771": {
+      "name": "TEXAS GAS TRANSMISSION CORPORATION PAC",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00444430": {
+      "name": "THE PETROLEUM ALLIANCE OF OKLAHOMA, INC. PAC (PETROLEUM ALLIANCE PAC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00040394": {
+      "name": "THE WILLIAMS COMPANIES, INC. POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00144329": {
+      "name": "TIME OIL CO. POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00281618": {
+      "name": "TOTAL PETROLEUM INC PAC (TOTAL PAC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00035709": {
+      "name": "TRANSMISSION AND PIPELINE POLITICAL ACTION COMMITTEE OF TXU CORP.",
+      "subsector": "pipeline",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00215939": {
+      "name": "ULTRAMAR DIAMOND SHAMROCK EMPLOYEES/VALERO ENERGY CORPORATION PAC",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00001289": {
+      "name": "UNION OIL (UNOCAL) POLITICAL AWARENESS FUND",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00199323": {
+      "name": "UNION TEXAS PETROLEUM HOLDINGS, INC POLITICAL ACTION COMMITTEE (UNION TEXAS PETROPAC)",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00285486": {
+      "name": "UNITED CITIES GAS COMPANY POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00228866": {
+      "name": "UNITED GAS PIPE LINE COMPANY POLITICAL ACTION COMMITTEE (FKA LEPAC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00013342": {
+      "name": "UNITED MINE WORKERS OF AMERICA - COAL MINERS POLITICAL ACTION COMMITTEE",
+      "subsector": "coal",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00259622": {
+      "name": "UNITED REFINING COMPANY POLITICAL ACTION COMMITTEE",
+      "subsector": "refining",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00148106": {
+      "name": "UNITED REFINING COMPANY POLITICAL ACTION COMMITTEE",
+      "subsector": "refining",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00606293": {
+      "name": "UNIVERSE'S GREATEST BILLIONAIRE JOSHUA LAROSE PETROLEUM COMPANIES COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "O",
+      "designation": "U"
+    },
+    "C00755454": {
+      "name": "US ENERGY PAC (THE PAC OF AMERICAN EXPLORATION & PRODUCTION COUNCIL, INC.)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00109546": {
+      "name": "VALERO ENERGY CORPORATION POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00807057": {
+      "name": "WARRIOR MET COAL, INC. FEDERAL POLITICAL ACTION COMMITTEE (WARRIOR MET COAL FEDERAL PAC)",
+      "subsector": "coal",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00102152": {
+      "name": "WASHINGTON GAS LIGHT COMPANY/SEMCO ENERGY EMPLOYEE PAC",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00081471": {
+      "name": "WASHINGTON NATURAL GAS POLITICAL ACTION COMMITTEE (WNGPAC)",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00135103": {
+      "name": "WESTERN COAL TRAFFIC LEAGUE PAC (WESTPAC)",
+      "subsector": "coal",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00456277": {
+      "name": "WESTERN DUBUQUE BIODIESEL LLC PAC",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00246686": {
+      "name": "WESTMORELAND COAL COMPANY POLITICAL ACTION COMMITTEE",
+      "subsector": "coal",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00745513": {
+      "name": "WEST VIRGINIANS FOR COAL",
+      "subsector": "coal",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00261941": {
+      "name": "WHITE AND WILLIAMS POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00481192": {
+      "name": "WHITING PETROLEUM CORPORATION POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00324525": {
+      "name": "WHITT AND WILLIAMS POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00148411": {
+      "name": "WICKLAND OIL COMPANY POLITICAL COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00039206": {
+      "name": "WILLIAMS AND JENSEN, PLLC POLITICAL ACTION COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "B"
+    },
+    "C00167387": {
+      "name": "WILLIAMSBURG COUNTY POLITICAL ACTION COUNCIL",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00146084": {
+      "name": "WILLIAMS COMPANIES POLITICAL ACTION TRUST (\"WILLCO PAT\"); THE",
+      "subsector": "oil_gas",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00515189": {
+      "name": "WILLIAMS MULLEN CLARK & DOBBINS, P.C. POLITICAL ACTION COMMITTEE (WILLIAMS MULLEN PAC)",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "B"
+    },
+    "C00361535": {
+      "name": "WILLIAMS PAC INC (WILLIAMS PAC)",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00681908": {
+      "name": "WILLIAMS VICTORY FUND",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "J"
+    },
+    "C00805929": {
+      "name": "WILLIAMSVILLE FOR AMERICAN PROGRESS",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00601682": {
+      "name": "WORLD'S PETROLEUM COMPANIES ASSOCIATION",
+      "subsector": "oil_gas",
+      "committee_type": "O",
+      "designation": "U"
+    },
+    "C00604835": {
+      "name": "WORLD'S RICHEST PERSON JOSUE LAROSE PETROLEUM COMPANIES COMMITTEE",
+      "subsector": "oil_gas",
+      "committee_type": "O",
+      "designation": "U"
+    },
+    "C00909671": {
+      "name": "W&T OFFSHORE, INC. PAC",
+      "subsector": "oil_gas",
+      "committee_type": "N",
+      "designation": "U"
+    },
+    "C00761874": {
+      "name": "WV COAL VICTORY PAC",
+      "subsector": "coal",
+      "committee_type": "O",
+      "designation": "U"
+    },
+    "C00330837": {
+      "name": "WYOMING REFINING COMPANY POLITICAL ACTION COMMITTEE",
+      "subsector": "refining",
+      "committee_type": "Q",
+      "designation": "U"
+    },
+    "C00267039": {
+      "name": "ZEIGLER COAL HOLDING COMPANY",
+      "subsector": "coal",
+      "committee_type": "Q",
+      "designation": "U"
+    }
+  }
+}
