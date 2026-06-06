@@ -5,6 +5,7 @@
   "per_page": 100,
   "rate_limit_per_hour": 1000,
   "request_delay_seconds": 3.6,
+  "min_contribution_amount": 500,
   "fossil_committee_cache": "etl/data/fec_fossil_committees.json",
   "progress_file": "etl/data/fec_fetch_progress.json"
 }

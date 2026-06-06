@@ -50,6 +50,9 @@ FOSSIL_KEYWORDS = [kw.lower() for kw in FOSSIL_CONFIG.get('keywords', [])]
 FOSSIL_COMPANIES = [c.lower() for c in FOSSIL_CONFIG.get('fossil_company_list', [])]
 CYCLES = FEC_CONFIG.get('cycles', [2024, 2022, 2020, 2018, 2016, 2014])
 REQUEST_DELAY = FEC_CONFIG.get('request_delay_seconds', 3.6)
+# Minimum contribution amount to fetch - filters out small donations at API level
+# $200 is the FEC itemization threshold (below this, contributions aren't individually reported)
+MIN_CONTRIBUTION_AMOUNT = FEC_CONFIG.get('min_contribution_amount', 200)
 
 # Clean energy keywords to identify contrast donations
 CLEAN_KEYWORDS = ['solar', 'wind', 'renewable', 'clean energy', 'green', 'climate action', 'environmental defense', 'sierra club', 'league of conservation']
@@ -178,7 +181,7 @@ def fetch_candidate_committee(fec_candidate_id, target_cycle=2024):
     best = max(results, key=lambda c: max(c.get('cycles', [0])))
     return best.get('committee_id')
 
-def fetch_schedule_a(committee_id, cycle, last_index=None, last_contribution_receipt_date=None):
+def fetch_schedule_a(committee_id, cycle, last_index=None, last_contribution_receipt_date=None, min_amount=None):
     """Fetch a page of Schedule A contributions (ALL types - individuals and PACs)."""
     params = {
         'api_key': FEC_API_KEY,
@@ -189,6 +192,10 @@ def fetch_schedule_a(committee_id, cycle, last_index=None, last_contribution_rec
         # NOTE: Removed is_individual filter to capture PAC contributions
         # PAC contributions are where most fossil fuel money comes from
     }
+    
+    # Add minimum amount filter to reduce API calls dramatically
+    if min_amount:
+        params['min_amount'] = min_amount
     
     if last_index:
         params['last_index'] = last_index
@@ -265,7 +272,7 @@ def process_politician(supabase, politician, fossil_committees, cycles, incremen
             
             while True:
                 try:
-                    data = fetch_schedule_a(committee_id, cycle, last_index, last_date)
+                    data = fetch_schedule_a(committee_id, cycle, last_index, last_date, min_amount=MIN_CONTRIBUTION_AMOUNT)
                     results = data.get('results', [])
                     
                     if not results:
@@ -372,6 +379,8 @@ def main():
     parser.add_argument('--limit', type=int, help='Limit number of politicians to process')
     parser.add_argument('--cycle', type=int, help='Fetch single cycle only')
     parser.add_argument('--resume', action='store_true', help='Resume from last progress (default: True)')
+    parser.add_argument('--batch', type=int, help='Batch number (0-indexed) for parallel processing')
+    parser.add_argument('--total-batches', type=int, default=1, help='Total number of batches for parallel processing')
     args = parser.parse_args()
     
     if not FEC_API_KEY:
@@ -410,6 +419,18 @@ def main():
         # Only skip if completed for ALL requested cycles
         politicians = [p for p in politicians if p['id'] not in completed or 
                       not all(str(c) in progress['completed_politicians'].get(p['id'], {}).get('cycles', []) for c in cycles)]
+    
+    # Sort by name for consistent batching across runs
+    politicians = sorted(politicians, key=lambda p: p['name'])
+    
+    # Apply batch filtering for parallel processing
+    if args.batch is not None and args.total_batches > 1:
+        batch_size = len(politicians) // args.total_batches
+        start_idx = args.batch * batch_size
+        # Last batch gets any remainder
+        end_idx = len(politicians) if args.batch == args.total_batches - 1 else start_idx + batch_size
+        politicians = politicians[start_idx:end_idx]
+        print(f"Batch {args.batch + 1}/{args.total_batches}: processing politicians {start_idx + 1} to {end_idx}")
     
     if args.limit:
         politicians = politicians[:args.limit]
