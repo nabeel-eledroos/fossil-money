@@ -127,6 +127,10 @@ jobs:
               print(f'Saved progress: {len(progress.get(\"completed_politicians\", {}))} politicians')
           "
 
+      - name: Fetch candidate totals (for % of funding)
+        run: python etl/scripts/fetch_fec_totals.py --limit 100
+        continue-on-error: true
+
       - name: Fetch outside spending (weekly on Sundays)
         if: github.event.schedule == '0 3 * * 0' || inputs.full_refresh == 'true'
         run: python etl/scripts/fetch_fec_outside_spending.py --limit 100
