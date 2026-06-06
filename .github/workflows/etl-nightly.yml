@@ -11,9 +11,9 @@ on:
         default: 'false'
         type: boolean
       limit:
-        description: 'Max politicians to process (default: 100)'
+        description: 'Max politicians to process per batch (default: all)'
         required: false
-        default: '100'
+        default: ''
         type: string
 
 env:
@@ -22,9 +22,14 @@ env:
   FEC_API_KEY: ${{ secrets.FEC_API_KEY }}
 
 jobs:
-  etl:
+  # Parallel job: fetch contributions across 4 batches
+  fetch-contributions:
     runs-on: ubuntu-latest
-    timeout-minutes: 330  # 5.5 hours max (leave buffer before 6hr GitHub limit)
+    timeout-minutes: 180  # 3 hours per batch
+    strategy:
+      fail-fast: false
+      matrix:
+        batch: [0, 1, 2, 3]
     
     steps:
       - name: Checkout repository
@@ -41,8 +46,6 @@ jobs:
       - name: Download progress file (if exists)
         continue-on-error: true
         run: |
-          # Fetch progress from previous runs stored in Supabase
-          # This allows resuming across workflow runs
           python -c "
           import os
           import json
@@ -64,19 +67,24 @@ jobs:
       - name: Ensure fossil committee cache exists
         run: |
           if [ ! -f "etl/data/fec_fossil_committees.json" ]; then
-            echo "Building fossil committee cache (this may take a while on first run)..."
+            echo "Building fossil committee cache..."
             timeout 3600 python etl/scripts/fetch_fec_committees.py || true
-          else
-            echo "Fossil committee cache exists"
           fi
 
-      - name: Fetch FEC contributions
+      - name: Fetch FEC contributions (batch ${{ matrix.batch }})
         run: |
+          TOTAL_BATCHES=4
+          BATCH=${{ matrix.batch }}
+          
+          LIMIT_ARG=""
+          if [ -n "${{ inputs.limit }}" ]; then
+            LIMIT_ARG="--limit ${{ inputs.limit }}"
+          fi
+          
           if [ "${{ inputs.full_refresh }}" = "true" ]; then
-            echo "Full refresh mode - fetching all cycles"
-            python etl/scripts/fetch_fec_contributions.py --limit ${{ inputs.limit || '100' }}
+            echo "Full refresh mode - batch $BATCH of $TOTAL_BATCHES"
+            python etl/scripts/fetch_fec_contributions.py --batch $BATCH --total-batches $TOTAL_BATCHES $LIMIT_ARG
           else
-            # Check if initial load is complete
             COMPLETED=$(python -c "
           import json
           from pathlib import Path
@@ -89,15 +97,15 @@ jobs:
           ")
             
             if [ "$COMPLETED" -lt 535 ]; then
-              echo "Initial load in progress ($COMPLETED/535 complete)"
-              python etl/scripts/fetch_fec_contributions.py --limit ${{ inputs.limit || '100' }}
+              echo "Initial load in progress ($COMPLETED/535 complete) - batch $BATCH"
+              python etl/scripts/fetch_fec_contributions.py --batch $BATCH --total-batches $TOTAL_BATCHES $LIMIT_ARG
             else
-              echo "Initial load complete, running incremental update"
-              python etl/scripts/fetch_fec_contributions.py --incremental --limit 600
+              echo "Initial load complete, running incremental update - batch $BATCH"
+              python etl/scripts/fetch_fec_contributions.py --incremental --batch $BATCH --total-batches $TOTAL_BATCHES
             fi
           fi
 
-      - name: Save progress to Supabase
+      - name: Save batch progress to Supabase
         if: always()
         run: |
           python -c "
@@ -114,9 +122,8 @@ jobs:
               with open(progress_path) as f:
                   progress = json.load(f)
               
-              # Store progress in etl_runs table
               client.table('etl_runs').insert({
-                  'script': 'fec_progress',
+                  'script': 'fec_progress_batch_${{ matrix.batch }}',
                   'status': 'success',
                   'rows_upserted': len(progress.get('completed_politicians', {})),
                   'started_at': datetime.utcnow().isoformat(),
@@ -124,16 +131,34 @@ jobs:
                   'notes': json.dumps(progress)
               }).execute()
               
-              print(f'Saved progress: {len(progress.get(\"completed_politicians\", {}))} politicians')
+              print(f'Batch ${{ matrix.batch }} saved progress: {len(progress.get(\"completed_politicians\", {}))} politicians')
           "
 
+  # Sequential job: runs after all batches complete
+  post-fetch:
+    runs-on: ubuntu-latest
+    needs: fetch-contributions
+    timeout-minutes: 60
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r etl/requirements.txt
+
       - name: Fetch candidate totals (for % of funding)
-        run: python etl/scripts/fetch_fec_totals.py --limit 100
+        run: python etl/scripts/fetch_fec_totals.py --limit 200
         continue-on-error: true
 
       - name: Fetch outside spending (weekly on Sundays)
         if: github.event.schedule == '0 3 * * 0' || inputs.full_refresh == 'true'
-        run: python etl/scripts/fetch_fec_outside_spending.py --limit 100
+        run: python etl/scripts/fetch_fec_outside_spending.py --limit 200
         continue-on-error: true
 
       - name: Aggregate summaries
