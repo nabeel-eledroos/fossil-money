@@ -79,12 +79,56 @@ def load_progress():
             return json.load(f)
     return {'completed_politicians': {}, 'last_run': None}
 
-def save_progress(progress):
-    """Save fetch progress."""
+def save_progress(progress, sync_to_db=False, supabase_client=None):
+    """Save fetch progress to local file, optionally sync to Supabase."""
     progress_path = DATA_DIR / 'fec_fetch_progress.json'
     DATA_DIR.mkdir(exist_ok=True)
     with open(progress_path, 'w') as f:
         json.dump(progress, f, indent=2)
+    
+    if sync_to_db and supabase_client:
+        try:
+            supabase_client.table('etl_runs').insert({
+                'script': 'fec_progress',
+                'status': 'success',
+                'rows_upserted': len(progress.get('completed_politicians', {})),
+                'started_at': datetime.now().isoformat(),
+                'finished_at': datetime.now().isoformat(),
+                'notes': json.dumps(progress)
+            }).execute()
+        except Exception as e:
+            print(f"    [Warning: Could not sync to DB: {e}]")
+
+def download_progress_from_db(supabase_client):
+    """Download and merge progress from Supabase DB."""
+    try:
+        # Get merged progress
+        result = supabase_client.table('etl_runs').select('notes').eq('script', 'fec_progress').order('started_at', desc=True).limit(1).execute()
+        
+        if result.data and result.data[0].get('notes'):
+            progress = json.loads(result.data[0]['notes'])
+            print(f"Downloaded progress from DB: {len(progress.get('completed_politicians', {}))} politicians")
+            
+            # Also check individual batch progress (might be newer)
+            for batch in range(4):
+                batch_result = supabase_client.table('etl_runs').select('notes').eq('script', f'fec_progress_batch_{batch}').order('started_at', desc=True).limit(1).execute()
+                if batch_result.data and batch_result.data[0].get('notes'):
+                    batch_progress = json.loads(batch_result.data[0]['notes'])
+                    for pol_id, data in batch_progress.get('completed_politicians', {}).items():
+                        if pol_id not in progress['completed_politicians']:
+                            progress['completed_politicians'][pol_id] = data
+                        else:
+                            existing_cycles = set(progress['completed_politicians'][pol_id].get('cycles', []))
+                            new_cycles = set(data.get('cycles', []))
+                            progress['completed_politicians'][pol_id]['cycles'] = list(existing_cycles | new_cycles)
+            
+            print(f"After merging batches: {len(progress.get('completed_politicians', {}))} politicians")
+            return progress
+        
+        return {'completed_politicians': {}, 'last_run': None}
+    except Exception as e:
+        print(f"Error downloading progress: {e}")
+        return {'completed_politicians': {}, 'last_run': None}
 
 def guess_subsector(text: str) -> str:
     """Guess fossil fuel subsector from employer/occupation."""
@@ -381,6 +425,8 @@ def main():
     parser.add_argument('--resume', action='store_true', help='Resume from last progress (default: True)')
     parser.add_argument('--batch', type=int, help='Batch number (0-indexed) for parallel processing')
     parser.add_argument('--total-batches', type=int, default=1, help='Total number of batches for parallel processing')
+    parser.add_argument('--sync-db', action='store_true', help='Sync progress to Supabase DB (for local runs)')
+    parser.add_argument('--download-progress', action='store_true', help='Download latest progress from Supabase before starting')
     args = parser.parse_args()
     
     if not FEC_API_KEY:
@@ -394,9 +440,18 @@ def main():
     
     supabase = get_supabase()
     fossil_committees = load_fossil_committees()
-    progress = load_progress()
+    
+    # Load progress - optionally download from DB first
+    if args.download_progress:
+        print("Downloading progress from Supabase DB...")
+        progress = download_progress_from_db(supabase)
+        # Save locally for future use
+        save_progress(progress)
+    else:
+        progress = load_progress()
     
     print(f"Loaded {len(fossil_committees)} fossil fuel PACs from cache")
+    print(f"Current progress: {len(progress.get('completed_politicians', {}))} politicians completed")
     
     # Determine cycles to fetch
     cycles = [args.cycle] if args.cycle else CYCLES
@@ -464,12 +519,16 @@ def main():
             progress['completed_politicians'][pol['id']]['last_updated'] = datetime.now().isoformat()
             progress['last_run'] = datetime.now().isoformat()
             
-            # Save progress every 10 politicians
-            if (i + 1) % 10 == 0:
-                save_progress(progress)
+            # Save progress after each politician (safe stop/resume)
+            save_progress(progress)
+            
+            # Sync to DB every 5 politicians (reduces API calls while keeping cloud backup)
+            if args.sync_db and (i + 1) % 5 == 0:
+                save_progress(progress, sync_to_db=True, supabase_client=supabase)
+                print(f"    [Progress synced to DB: {len(progress['completed_politicians'])} politicians complete]", flush=True)
     
     # Final save
-    save_progress(progress)
+    save_progress(progress, sync_to_db=args.sync_db, supabase_client=supabase)
     
     print()
     print("=" * 50)

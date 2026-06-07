@@ -138,6 +138,7 @@ jobs:
   post-fetch:
     runs-on: ubuntu-latest
     needs: fetch-contributions
+    if: always()
     timeout-minutes: 60
     
     steps:
@@ -151,6 +152,56 @@ jobs:
 
       - name: Install dependencies
         run: pip install -r etl/requirements.txt
+
+      - name: Merge batch progress from all batches
+        run: |
+          python -c "
+          import os
+          import json
+          from datetime import datetime
+          from supabase import create_client
+          
+          client = create_client(os.environ['SUPABASE_URL'], os.environ['SUPABASE_SERVICE_KEY'])
+          
+          # Get progress from all 4 batches (most recent for each)
+          merged_progress = {'completed_politicians': {}, 'last_run': None}
+          
+          for batch in range(4):
+              result = client.table('etl_runs').select('notes').eq('script', f'fec_progress_batch_{batch}').order('started_at', desc=True).limit(1).execute()
+              if result.data and result.data[0].get('notes'):
+                  batch_progress = json.loads(result.data[0]['notes'])
+                  # Merge completed politicians
+                  for pol_id, data in batch_progress.get('completed_politicians', {}).items():
+                      if pol_id not in merged_progress['completed_politicians']:
+                          merged_progress['completed_politicians'][pol_id] = data
+                      else:
+                          # Merge cycles
+                          existing_cycles = set(merged_progress['completed_politicians'][pol_id].get('cycles', []))
+                          new_cycles = set(data.get('cycles', []))
+                          merged_progress['completed_politicians'][pol_id]['cycles'] = list(existing_cycles | new_cycles)
+                          # Keep most recent update time
+                          if data.get('last_updated', '') > merged_progress['completed_politicians'][pol_id].get('last_updated', ''):
+                              merged_progress['completed_politicians'][pol_id]['last_updated'] = data['last_updated']
+          
+          merged_progress['last_run'] = datetime.utcnow().isoformat()
+          
+          # Save merged progress to DB
+          client.table('etl_runs').insert({
+              'script': 'fec_progress',
+              'status': 'success',
+              'rows_upserted': len(merged_progress['completed_politicians']),
+              'started_at': datetime.utcnow().isoformat(),
+              'finished_at': datetime.utcnow().isoformat(),
+              'notes': json.dumps(merged_progress)
+          }).execute()
+          
+          print(f'Merged progress from 4 batches: {len(merged_progress[\"completed_politicians\"])} politicians total')
+          
+          # Also save to local file for aggregation step
+          os.makedirs('etl/data', exist_ok=True)
+          with open('etl/data/fec_fetch_progress.json', 'w') as f:
+              json.dump(merged_progress, f, indent=2)
+          "
 
       - name: Fetch candidate totals (for % of funding)
         run: python etl/scripts/fetch_fec_totals.py --limit 200
