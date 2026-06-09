@@ -15,8 +15,30 @@ import argparse
 from datetime import datetime, timedelta
 from pathlib import Path
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 from supabase import create_client
 from dotenv import load_dotenv
+
+# Configure requests session with automatic retries
+def create_retry_session(retries=3, backoff_factor=1, status_forcelist=(429, 500, 502, 503, 504)):
+    """Create a requests session with automatic retry on failures."""
+    session = requests.Session()
+    retry = Retry(
+        total=retries,
+        read=retries,
+        connect=retries,
+        backoff_factor=backoff_factor,  # 1s, 2s, 4s between retries
+        status_forcelist=status_forcelist,
+        allowed_methods=["GET", "POST"]
+    )
+    adapter = HTTPAdapter(max_retries=retry)
+    session.mount("http://", adapter)
+    session.mount("https://", adapter)
+    return session
+
+# Global session for FEC API calls
+fec_session = create_retry_session(retries=5, backoff_factor=2)
 
 # Load environment
 env_paths = [
@@ -207,7 +229,7 @@ def fetch_candidate_committee(fec_candidate_id, target_cycle=2024):
         'per_page': 10
     }
     
-    r = requests.get(f'{FEC_BASE_URL}/candidate/{fec_candidate_id}/committees/', params=params, timeout=30)
+    r = fec_session.get(f'{FEC_BASE_URL}/candidate/{fec_candidate_id}/committees/', params=params, timeout=30)
     r.raise_for_status()
     data = r.json()
     
@@ -245,7 +267,7 @@ def fetch_schedule_a(committee_id, cycle, last_index=None, last_contribution_rec
         params['last_index'] = last_index
         params['last_contribution_receipt_date'] = last_contribution_receipt_date
     
-    r = requests.get(f'{FEC_BASE_URL}/schedules/schedule_a/', params=params, timeout=60)
+    r = fec_session.get(f'{FEC_BASE_URL}/schedules/schedule_a/', params=params, timeout=60)
     r.raise_for_status()
     return r.json()
 
@@ -261,33 +283,52 @@ def fetch_schedule_a_by_contributor(committee_id, min_date=None):
     if min_date:
         params['min_date'] = min_date.strftime('%Y-%m-%d')
     
-    r = requests.get(f'{FEC_BASE_URL}/schedules/schedule_a/', params=params, timeout=60)
+    r = fec_session.get(f'{FEC_BASE_URL}/schedules/schedule_a/', params=params, timeout=60)
     r.raise_for_status()
     return r.json()
 
+def supabase_retry(func, max_retries=3, delay=2):
+    """Retry a Supabase operation with exponential backoff."""
+    for attempt in range(max_retries):
+        try:
+            return func()
+        except Exception as e:
+            if attempt == max_retries - 1:
+                raise
+            print(f"    [Supabase retry {attempt + 1}/{max_retries}: {e}]")
+            time.sleep(delay * (2 ** attempt))
+    return None
+
 def process_politician(supabase, politician, fossil_committees, cycles, incremental=False):
-    """Fetch and store contributions for a single politician."""
+    """Fetch and store contributions for a single politician.
+    
+    Returns: (stored_contributions, fossil_contributions, total_raised)
+    - stored_contributions: number of fossil/clean donations stored in DB
+    - fossil_contributions: number of fossil fuel donations
+    - total_raised: sum of ALL contribution amounts (calculated on-the-fly, not stored)
+    """
     fec_id = politician.get('fec_candidate_id')
     pol_id = politician['id']
     name = politician['name']
     
     if not fec_id:
-        return 0, 0
+        return 0, 0, 0
     
     # Get their principal campaign committee
     try:
         committee_id = fetch_candidate_committee(fec_id)
         if not committee_id:
             print(f"    No committee found for {fec_id}")
-            return 0, 0
+            return 0, 0, 0
     except Exception as e:
         print(f"    Error getting committee for {fec_id}: {e}")
-        return 0, 0
+        return 0, 0, 0
     
     time.sleep(REQUEST_DELAY)
     
-    total_contributions = 0
+    stored_contributions = 0
     fossil_contributions = 0
+    total_raised = 0  # Track ALL contributions for total_raised calculation
     
     if incremental:
         # Fetch only last 48 hours
@@ -297,9 +338,12 @@ def process_politician(supabase, politician, fossil_committees, cycles, incremen
             results = data.get('results', [])
             
             for contrib in results:
-                upserted, is_fossil = process_contribution(supabase, pol_id, contrib, fossil_committees)
-                if upserted:
-                    total_contributions += 1
+                amount = contrib.get('contribution_receipt_amount', 0) or 0
+                if amount > 0:
+                    total_raised += amount
+                stored, is_fossil = process_contribution(supabase, pol_id, contrib, fossil_committees)
+                if stored:
+                    stored_contributions += 1
                     if is_fossil:
                         fossil_contributions += 1
             
@@ -312,7 +356,8 @@ def process_politician(supabase, politician, fossil_committees, cycles, incremen
         for cycle in cycles:
             last_index = None
             last_date = None
-            cycle_count = 0
+            cycle_stored = 0
+            cycle_total = 0
             
             while True:
                 try:
@@ -323,10 +368,14 @@ def process_politician(supabase, politician, fossil_committees, cycles, incremen
                         break
                     
                     for contrib in results:
-                        upserted, is_fossil = process_contribution(supabase, pol_id, contrib, fossil_committees, cycle)
-                        if upserted:
-                            total_contributions += 1
-                            cycle_count += 1
+                        amount = contrib.get('contribution_receipt_amount', 0) or 0
+                        if amount > 0:
+                            total_raised += amount
+                            cycle_total += 1
+                        stored, is_fossil = process_contribution(supabase, pol_id, contrib, fossil_committees, cycle)
+                        if stored:
+                            stored_contributions += 1
+                            cycle_stored += 1
                             if is_fossil:
                                 fossil_contributions += 1
                     
@@ -345,13 +394,26 @@ def process_politician(supabase, politician, fossil_committees, cycles, incremen
                     time.sleep(10)
                     break
             
-            if cycle_count > 0:
-                print(f"      {cycle}: {cycle_count} contributions", flush=True)
+            if cycle_total > 0:
+                print(f"      {cycle}: {cycle_total} total, {cycle_stored} stored (fossil/clean)", flush=True)
     
-    return total_contributions, fossil_contributions
+    # Update politician's total_raised in the database
+    if total_raised > 0:
+        try:
+            supabase_retry(lambda: supabase.table('politicians').update({'total_raised': total_raised}).eq('id', pol_id).execute())
+        except Exception as e:
+            print(f"    Warning: Could not update total_raised: {e}")
+    
+    return stored_contributions, fossil_contributions, total_raised
 
 def process_contribution(supabase, politician_id, contrib, fossil_committees, cycle_year=None):
-    """Process and upsert a single contribution."""
+    """Process and store a contribution if it's fossil fuel or clean energy related.
+    
+    Only stores fossil fuel and clean energy contributions to save DB space.
+    Total raised is calculated on-the-fly in process_politician().
+    
+    Returns: (stored, is_fossil)
+    """
     transaction_id = contrib.get('transaction_id') or contrib.get('sub_id')
     if not transaction_id:
         return False, False
@@ -362,19 +424,14 @@ def process_contribution(supabase, politician_id, contrib, fossil_committees, cy
     
     is_fossil, is_clean, subsector = classify_contribution(contrib, fossil_committees)
     
-    # Store ALL contributions that are either:
-    # 1. Fossil fuel related
-    # 2. Clean energy related  
-    # 3. From PACs/committees (could be fossil-aligned, need for total_raised calc)
-    # 4. Large individual contributions ($1000+, useful for donor analysis)
-    entity_type = contrib.get('entity_type', '')
-    is_pac_or_committee = entity_type in ('COM', 'PAC', 'PTY', 'CCM', 'ORG')
-    is_large_individual = amount >= 1000 and entity_type == 'IND'
-    
-    if not is_fossil and not is_clean and not is_pac_or_committee and not is_large_individual:
+    # Only store fossil fuel and clean energy contributions
+    # Total raised is now calculated on-the-fly, so we don't need to store everything
+    if not is_fossil and not is_clean:
         return False, False
     
-    # Determine donor type (entity_type already extracted above)
+    # Determine donor type
+    entity_type = contrib.get('entity_type', '')
+    is_pac_or_committee = entity_type in ('COM', 'PAC', 'PTY', 'CCM', 'ORG')
     if is_pac_or_committee:
         donor_type = 'PAC'
     else:
@@ -402,18 +459,18 @@ def process_contribution(supabase, politician_id, contrib, fossil_committees, cy
         'source_url': contrib.get('pdf_url')
     }
     
-    # Upsert
+    # Upsert with retry
     try:
-        existing = supabase.table('donations').select('id').eq('source', 'fec').eq('source_transaction_id', str(transaction_id)).execute()
+        existing = supabase_retry(lambda: supabase.table('donations').select('id').eq('source', 'fec').eq('source_transaction_id', str(transaction_id)).execute())
         
-        if existing.data:
-            supabase.table('donations').update(donation).eq('id', existing.data[0]['id']).execute()
+        if existing and existing.data:
+            supabase_retry(lambda: supabase.table('donations').update(donation).eq('id', existing.data[0]['id']).execute())
         else:
-            supabase.table('donations').insert(donation).execute()
+            supabase_retry(lambda: supabase.table('donations').insert(donation).execute())
         
         return True, is_fossil
     except Exception as e:
-        # Likely duplicate, skip
+        print(f"    [DB error, skipping contribution: {e}]")
         return False, False
 
 def main():
@@ -495,19 +552,22 @@ def main():
     print(f"Mode: {'Incremental (last 48h)' if args.incremental else 'Full fetch'}")
     print()
     
-    total_all = 0
+    stored_all = 0
     fossil_all = 0
+    raised_all = 0
+    start_time = datetime.now()
     
     for i, pol in enumerate(politicians):
         print(f"[{i+1}/{len(politicians)}] {pol['name']} ({pol.get('bioguide_id', 'no-bioguide')})", flush=True)
         
-        total, fossil = process_politician(supabase, pol, fossil_committees, cycles, args.incremental)
+        stored, fossil, raised = process_politician(supabase, pol, fossil_committees, cycles, args.incremental)
         
-        total_all += total
+        stored_all += stored
         fossil_all += fossil
+        raised_all += raised
         
-        if total > 0:
-            print(f"    → {total} contributions ({fossil} fossil fuel)", flush=True)
+        if stored > 0 or raised > 0:
+            print(f"    → ${raised:,.0f} total raised, {stored} stored ({fossil} fossil fuel)", flush=True)
         
         # Update progress
         if not args.incremental:
@@ -526,6 +586,24 @@ def main():
             if args.sync_db and (i + 1) % 5 == 0:
                 save_progress(progress, sync_to_db=True, supabase_client=supabase)
                 print(f"    [Progress synced to DB: {len(progress['completed_politicians'])} politicians complete]", flush=True)
+        
+        # Print progress summary every 10 politicians
+        if (i + 1) % 10 == 0:
+            elapsed = datetime.now() - start_time
+            avg_time = elapsed.total_seconds() / (i + 1)
+            remaining = len(politicians) - (i + 1)
+            eta_seconds = avg_time * remaining
+            eta_hours = eta_seconds / 3600
+            print()
+            print(f"{'='*50}")
+            print(f"PROGRESS: {i+1}/{len(politicians)} politicians ({(i+1)/len(politicians)*100:.1f}%)")
+            print(f"  Elapsed: {elapsed}")
+            print(f"  Avg time per politician: {avg_time:.1f}s")
+            print(f"  ETA: {eta_hours:.1f} hours ({remaining} remaining)")
+            print(f"  Total raised so far: ${raised_all:,.0f}")
+            print(f"  Fossil contributions: {fossil_all}")
+            print(f"{'='*50}")
+            print()
     
     # Final save
     save_progress(progress, sync_to_db=args.sync_db, supabase_client=supabase)
@@ -533,7 +611,8 @@ def main():
     print()
     print("=" * 50)
     print(f"Complete! Processed {len(politicians)} politicians")
-    print(f"Total contributions: {total_all}")
+    print(f"Total raised: ${raised_all:,.0f}")
+    print(f"Stored contributions: {stored_all} (fossil fuel + clean energy only)")
     print(f"Fossil fuel contributions: {fossil_all}")
     print()
     print("Next steps:")
