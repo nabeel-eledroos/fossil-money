@@ -1,9 +1,11 @@
 name: Nightly ETL
 
+# TEMPORARILY DISABLED: Running full backfill on DigitalOcean droplet
+# Re-enable after backfill completes (~3 days)
 on:
-  schedule:
-    - cron: '0 3 * * *'  # 3am UTC daily
-  workflow_dispatch:      # Manual trigger
+  # schedule:
+  #   - cron: '0 3 * * *'  # 3am UTC daily
+  workflow_dispatch:      # Manual trigger only
     inputs:
       full_refresh:
         description: 'Full refresh (all cycles, ignore progress)'
