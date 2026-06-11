@@ -68,8 +68,23 @@ with open(CONFIG_DIR / 'fec_config.json') as f:
 with open(CONFIG_DIR / 'fossil_fuel_sectors.json') as f:
     FOSSIL_CONFIG = json.load(f)
 
+# Keywords that can appear anywhere (longer, more specific)
 FOSSIL_KEYWORDS = [kw.lower() for kw in FOSSIL_CONFIG.get('keywords', [])]
+# Keywords that need word boundaries (short words like "oil", "gas", "coal")
+FOSSIL_KEYWORDS_WORD_BOUNDARY = [kw.lower() for kw in FOSSIL_CONFIG.get('keywords_word_boundary', [])]
+# Exclusions to avoid false positives
+KEYWORD_EXCLUSIONS = [exc.lower() for exc in FOSSIL_CONFIG.get('keyword_exclusions', [])]
+NAME_EXCLUSIONS = [exc.lower() for exc in FOSSIL_CONFIG.get('name_exclusions', [])]
+# Known fossil fuel companies
 FOSSIL_COMPANIES = [c.lower() for c in FOSSIL_CONFIG.get('fossil_company_list', [])]
+
+# Load OpenSecrets verified PAC list
+OPENSECRETS_PACS_FILE = DATA_DIR / 'opensecrets_oil_gas_pacs.json'
+OPENSECRETS_PACS = {}
+if OPENSECRETS_PACS_FILE.exists():
+    with open(OPENSECRETS_PACS_FILE) as f:
+        data = json.load(f)
+        OPENSECRETS_PACS = data.get('pacs', {})
 CYCLES = FEC_CONFIG.get('cycles', [2024, 2022, 2020, 2018, 2016, 2014])
 REQUEST_DELAY = FEC_CONFIG.get('request_delay_seconds', 3.6)
 # Minimum contribution amount to fetch - filters out small donations at API level
@@ -172,8 +187,16 @@ def guess_subsector(text: str) -> str:
 def classify_contribution(contrib, fossil_committees):
     """
     Classify a contribution as fossil fuel, clean energy, or neither.
-    Returns: (is_fossil, is_clean, subsector)
+    Returns: (is_fossil, is_clean, subsector, classification_method)
+    
+    Classification methods (in priority order):
+    - 'opensecrets_pac': Matched via OpenSecrets verified PAC list
+    - 'fec_committee_cache': Matched via our cached fossil committee list  
+    - 'company_list': Matched via fossil_company_list in config
+    - 'keyword': Matched via keyword heuristics
     """
+    import re
+    
     # Get the contributing committee ID (for PAC-to-candidate transfers)
     contributor_obj = contrib.get('contributor') or {}
     contributor_committee_id = contributor_obj.get('committee_id') or ''
@@ -184,41 +207,53 @@ def classify_contribution(contrib, fossil_committees):
     
     combined = f"{employer} {occupation} {contributor_name}"
     
+    # Check name exclusions first (SpaceX, Tesla, etc.)
+    for exclusion in NAME_EXCLUSIONS:
+        if exclusion in contributor_name:
+            return False, False, None, None
+    
     # Check clean energy first (to exclude from fossil)
     for kw in CLEAN_KEYWORDS:
         if kw in combined:
-            return False, True, None
+            return False, True, None, None
     
-    # Check if contributing committee is a known fossil PAC
+    # PRIORITY 1: OpenSecrets verified PAC list (most reliable)
+    if contributor_committee_id and contributor_committee_id in OPENSECRETS_PACS:
+        return True, False, 'oil_gas', 'opensecrets_pac'
+    
+    # PRIORITY 2: Our cached fossil committee list
     if contributor_committee_id and contributor_committee_id in fossil_committees:
-        return True, False, fossil_committees[contributor_committee_id].get('subsector', 'oil_gas')
+        return True, False, fossil_committees[contributor_committee_id].get('subsector', 'oil_gas'), 'fec_committee_cache'
     
-    # Check employer against known fossil companies
+    # PRIORITY 3: Check employer against known fossil companies
     for company in FOSSIL_COMPANIES:
         if company in employer:
-            return True, False, guess_subsector(employer)
+            return True, False, guess_subsector(employer), 'company_list'
     
     # Check contributor name (for PACs) against known fossil companies
     for company in FOSSIL_COMPANIES:
         if company in contributor_name:
-            return True, False, guess_subsector(contributor_name)
+            return True, False, guess_subsector(contributor_name), 'company_list'
     
-    # Check keywords in employer/occupation/contributor name
-    # Use word boundaries for short keywords to avoid false positives (coal vs coalition)
-    import re
+    # Check keyword exclusions before keyword matching
+    for exclusion in KEYWORD_EXCLUSIONS:
+        if exclusion in combined:
+            return False, False, None, None
+    
+    # PRIORITY 4: Keyword matching - use specific multi-word phrases to reduce false positives
+    # Keywords are now more specific (e.g., "oil drilling" not just "oil")
     for kw in FOSSIL_KEYWORDS:
-        if len(kw) <= 4:  # Short keywords like "oil", "gas", "coal" need word boundaries
-            pattern = r'\b' + re.escape(kw) + r'\b'
-            if re.search(pattern, employer) or re.search(pattern, occupation) or re.search(pattern, contributor_name):
-                # Extra check: exclude "coalition" for "coal"
-                if kw == 'coal' and 'coalition' in combined:
-                    continue
-                return True, False, guess_subsector(combined)
-        else:
-            if kw in employer or kw in occupation or kw in contributor_name:
-                return True, False, guess_subsector(combined)
+        if kw in employer or kw in occupation or kw in contributor_name:
+            return True, False, guess_subsector(combined), 'keyword'
     
-    return False, False, None
+    # Word boundary keywords are now empty - we rely on specific phrases instead
+    # This prevents "gas station" from matching, while "natural gas production" still matches
+    for kw in FOSSIL_KEYWORDS_WORD_BOUNDARY:
+        pattern = r'\b' + re.escape(kw) + r'\b'
+        if re.search(pattern, employer) or re.search(pattern, occupation) or re.search(pattern, contributor_name):
+            return True, False, guess_subsector(combined), 'keyword'
+    
+    return False, False, None, None
 
 def fetch_candidate_committee(fec_candidate_id, target_cycle=2024):
     """Get the principal campaign committee for a candidate (most recent cycle)."""
@@ -422,7 +457,7 @@ def process_contribution(supabase, politician_id, contrib, fossil_committees, cy
     if not amount or amount <= 0:
         return False, False
     
-    is_fossil, is_clean, subsector = classify_contribution(contrib, fossil_committees)
+    is_fossil, is_clean, subsector, classification_method = classify_contribution(contrib, fossil_committees)
     
     # Only store fossil fuel and clean energy contributions
     # Total raised is now calculated on-the-fly, so we don't need to store everything
@@ -447,6 +482,7 @@ def process_contribution(supabase, politician_id, contrib, fossil_committees, cy
         'industry_subsector': subsector,
         'is_fossil_fuel': is_fossil,
         'is_clean_energy': is_clean,
+        'classification_method': classification_method,
         'cycle_year': cycle_year or contrib.get('two_year_transaction_period'),
         'contribution_date': contrib.get('contribution_receipt_date'),
         'contributor_city': contrib.get('contributor_city'),
