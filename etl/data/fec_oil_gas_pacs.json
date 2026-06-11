@@ -2,7 +2,7 @@
   "description": "Oil & Gas PACs from FEC API search, filtered by name keywords",
   "source": "FEC API committee search",
   "generated_at": "2026-06-10",
-  "count": 390,
+  "count": 289,
   "pacs": {
     "C00081075": {
       "name": "AMERICAN INDEPENDENT REFINERS ASS'N PAC (FORMERLY: AMERICAN PETROLEUM REFINERS...)",
@@ -819,11 +819,6 @@
       "designation": "U",
       "committee_type": "Q"
     },
-    "C00161695": {
-      "name": "CITIZEN/LABOR ENERGY COALITION PAC (A DISTRICT OF COLUMBIA NON-PROFIT CORPORATION)",
-      "designation": "U",
-      "committee_type": "N"
-    },
     "C00455097": {
       "name": "CITIZENS FOR AMERICAN ENERGY FEDERAL PAC",
       "designation": "U",
@@ -1194,325 +1189,25 @@
       "designation": "U",
       "committee_type": "N"
     },
-    "C00329805": {
-      "name": "44TH C D VOTERS DEMOCRATIC COALITION",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00410340": {
-      "name": "7 PILLARS COALITION POLITICAL ACTION COMMITTEE (7-PAC)",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00842963": {
-      "name": "99 COALITION",
-      "designation": "U",
-      "committee_type": "Q"
-    },
-    "C00424697": {
-      "name": "ACCOUNTABILITY COALITION",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00534099": {
-      "name": "ACCOUNTABILITY COALITION",
-      "designation": "U",
-      "committee_type": "O"
-    },
-    "C00636365": {
-      "name": "ACTION COALITION PAC",
-      "designation": "U",
-      "committee_type": "O"
-    },
-    "C00842583": {
-      "name": "AFFORDABLE HOUSING TAX CREDIT COALITION POLITICAL ACTION COMMITTEE (AFFORDABLE HOUSING PAC)",
-      "designation": "U",
-      "committee_type": "Q"
-    },
-    "C00304782": {
-      "name": "AFRICAN AMERICAN LEADERSHIP COALITION PAC",
-      "designation": "U",
-      "committee_type": "Q"
-    },
-    "C00372961": {
-      "name": "AGRIPAC - AGRICULTURAL PRODUCERS OF AMERICA COALITION",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00319640": {
-      "name": "ALABAMA NEW SOUTH COALITION",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00225607": {
-      "name": "ALASKA CRAB COALITION PAC",
-      "designation": "U",
-      "committee_type": "N"
-    },
     "C00330233": {
       "name": "ALLIANCE COAL, LLC PAC",
       "designation": "U",
       "committee_type": "Q"
-    },
-    "C00944413": {
-      "name": "AMERICA FIRST COALITION PAC",
-      "designation": "U",
-      "committee_type": "O"
-    },
-    "C00306027": {
-      "name": "AMERICAN ADVOCACY COALITION",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00342931": {
-      "name": "AMERICAN ANIMAL HUSBANDRY COALITION POLITICAL ACTION COMMITTEE",
-      "designation": "U",
-      "committee_type": "N"
     },
     "C00342089": {
       "name": "AMERICAN COAL COMPANY (PAC)",
       "designation": "U",
       "committee_type": "Q"
     },
-    "C00748491": {
-      "name": "AMERICAN COALITION AGAINST BRUTALITY PAC",
-      "designation": "U",
-      "committee_type": "O"
-    },
-    "C00330738": {
-      "name": "AMERICAN COALITION FOR CENTRAL AND EASTERN EUROPE (ACCEE)",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00709113": {
-      "name": "AMERICAN COALITION FOR CRISIS RELIEF PAC",
-      "designation": "U",
-      "committee_type": "O"
-    },
-    "C00664128": {
-      "name": "AMERICAN COALITION FOR INJURED VETERANS PAC",
-      "designation": "U",
-      "committee_type": "O"
-    },
-    "C00235812": {
-      "name": "AMERICAN COALITION FOR LEGISLATIVE REFORM",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00282780": {
-      "name": "AMERICAN COALITION FOR LIFE POLITICAL ACTION COMMITTEE",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00872648": {
-      "name": "AMERICAN COALITION FOR RURAL ENGAGEMENT, INC. POLITICAL ACTION COMMITTEE",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00235945": {
-      "name": "AMERICAN ETHNIC COALITION POLITICAL ACTION COMMITTEE (AEC-PAC)",
-      "designation": "U",
-      "committee_type": "Q"
-    },
-    "C00879676": {
-      "name": "AMERICAN FREEDOM COALITION PAC",
-      "designation": "U",
-      "committee_type": "O"
-    },
-    "C00438838": {
-      "name": "AMERICAN LIBERTY COALITION; THE",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00625624": {
-      "name": "AMERICAN MADE COALITION PAC",
-      "designation": "B",
-      "committee_type": "N"
-    },
     "C00129528": {
       "name": "AMERICAN NATURAL RESOURCES COAL POLITICAL ACTION COMMITTEE (ANR COAL PAC)",
       "designation": "U",
       "committee_type": "Q"
     },
-    "C00809467": {
-      "name": "AMERICAN POLICE AND TROOPERS COALITION PAC",
-      "designation": "U",
-      "committee_type": "O"
-    },
-    "C00779215": {
-      "name": "AMERICAN PROSPERITY COALITION",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00779348": {
-      "name": "AMERICAN PROSPERITY COALITION PAC",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00358663": {
-      "name": "AMERICAN RESORT DEVELOPMENT ASSOCIATION RESORT OWNERS COALITION PAC (ARDA-ROC PAC)",
-      "designation": "B",
-      "committee_type": "Q"
-    },
-    "C00741892": {
-      "name": "AMERICAN RESTAURANT COALITION",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00444059": {
-      "name": "AMERICAN RETIREMENT SECURITY COALITION POLITICAL ACTION COMMITTEE",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00216911": {
-      "name": "AMERICANS FOR A BI-PARTISAN COALITION",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00468538": {
-      "name": "AMERICANS FOR INDIVIDUAL LIBERTY COALITION",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00450999": {
-      "name": "AMERICAN SMALL MANUFACTURERS COALITION POLITICAL ACTION COMMITTEE",
-      "designation": "B",
-      "committee_type": "N"
-    },
-    "C00512871": {
-      "name": "AMERICAN VALUES COALITION",
-      "designation": "U",
-      "committee_type": "O"
-    },
-    "C00935262": {
-      "name": "AMERICA UNITED COALITION INC.",
-      "designation": "U",
-      "committee_type": "O"
-    },
-    "C00281766": {
-      "name": "ANTIQUE AUTO COALITION PAC",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00659847": {
-      "name": "ASIAN AMERICAN GOP COALITION PAC",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00464461": {
-      "name": "ASSYRIAN AMERICAN NATIONAL COALITION",
-      "designation": "B",
-      "committee_type": "N"
-    },
     "C00155358": {
       "name": "A.T. MASSEY COAL COMPANY, INC., PAC",
       "designation": "U",
       "committee_type": "Q"
-    },
-    "C00673574": {
-      "name": "AUSTIN ASIAN AMERICAN COALITION PAC",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00555599": {
-      "name": "BANGLADESHI AMERICAN DEMOCRATIC COALITION",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00155127": {
-      "name": "BERKELEY CITIZENS ACTION/COALITION CAMPAIGN (FEDERAL FUND)",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00167494": {
-      "name": "BIPARTISAN COALITION FOR AMERICAN EXPORTS (EXPORT PAC)",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00938977": {
-      "name": "BLACK CLERGY OF PHILADELPHIA POLITICAL OUTREACH COALITION",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00749697": {
-      "name": "BLESS YOUR HEART COALITION",
-      "designation": "U",
-      "committee_type": "O"
-    },
-    "C00369819": {
-      "name": "BLUERIBBON COALITION PAC",
-      "designation": "U",
-      "committee_type": "Q"
-    },
-    "C00828251": {
-      "name": "BORDER SECURITY COALITION",
-      "designation": "U",
-      "committee_type": "O"
-    },
-    "C00634907": {
-      "name": "BRIGHTER FUTURE COALITION",
-      "designation": "U",
-      "committee_type": "O"
-    },
-    "C00233288": {
-      "name": "BUSINESS AVIATION COALITION POLITICAL ACTION COMMITTEE (BACPAC)",
-      "designation": "U",
-      "committee_type": "Q"
-    },
-    "C00625848": {
-      "name": "CALIFORNIA PROGRESS COALITION",
-      "designation": "U",
-      "committee_type": "O"
-    },
-    "C00591826": {
-      "name": "CARDIOVASCULAR COALITION, INC. POLITICAL ACTION COMMITTEE",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00166629": {
-      "name": "CAROLINA CONSERVATIVE COALITION-FEDERAL",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00265751": {
-      "name": "CAR RENTAL COALITION POLITICAL ACTION COMMITTEE (PAC)",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00287524": {
-      "name": "CEMENT KILN RECYCLING COALITION POLITICAL ACTION COMM",
-      "designation": "U",
-      "committee_type": "Q"
-    },
-    "C00590349": {
-      "name": "CHRISTIAN COALITION FOR GODLY GOVERNANCE SUPERPAC",
-      "designation": "U",
-      "committee_type": "O"
-    },
-    "C00123273": {
-      "name": "CHRISTIAN COALITION FOR LEGISLATIVE ACTION",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00163808": {
-      "name": "CITIZENS ACTION OF COALITION OF INDIANA INC POLITICAL ACTION COMMITTEE (CACPAC)",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00152926": {
-      "name": "CITIZENS COALITION FOR RESPONSIBLE GOVERNMENT",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00874826": {
-      "name": "CIV - THE COALITION OF INDEPENDENT VOTERS",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00288969": {
-      "name": "CLD COALITION INC POLITICAL ACTION COMMITTEE",
-      "designation": "U",
-      "committee_type": "N"
     },
     "C00327726": {
       "name": "COAL ACT REFORM POLITICAL ACTION COMMITTEE, THE",
@@ -1529,159 +1224,9 @@
       "designation": "U",
       "committee_type": "N"
     },
-    "C00815936": {
-      "name": "COALESCE MISSISSIPPI",
-      "designation": "U",
-      "committee_type": "O"
-    },
     "C00926238": {
       "name": "COAL FAITH FREEDOM COALITION",
       "designation": "J",
-      "committee_type": "N"
-    },
-    "C00623009": {
-      "name": "COALITION",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00573576": {
-      "name": "COALITION AGAINST LIBERAL EXTREMISTS; THE",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00749655": {
-      "name": "COALITION AGAINST VOTER FRAUD",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00300459": {
-      "name": "COALITION FOR A DRUG-FREE AMERICA",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00506113": {
-      "name": "COALITION FOR AMERICAN VALUES PAC",
-      "designation": "U",
-      "committee_type": "O"
-    },
-    "C00567644": {
-      "name": "COALITION FOR AMERICAN VETERANS",
-      "designation": "U",
-      "committee_type": "O"
-    },
-    "C00630608": {
-      "name": "COALITION FOR AMERICAN VETERANS PAC",
-      "designation": "U",
-      "committee_type": "O"
-    },
-    "C00650168": {
-      "name": "COALITION FOR AMERICAN VETERANS POLITICAL ACTION COMMITTEE (COALITION FOR AMERICAN VETERANS PAC) (CAV PAC)",
-      "designation": "U",
-      "committee_type": "O"
-    },
-    "C00378828": {
-      "name": "COALITION FOR AMERICA'S FUTURE",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00783829": {
-      "name": "COALITION FOR AMERICA'S FUTURE",
-      "designation": "U",
-      "committee_type": "O"
-    },
-    "C00218529": {
-      "name": "COALITION FOR A POSITIVE AMERICA POLITICAL ACTION COMMITTEE",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00207860": {
-      "name": "COALITION FOR A PROGRESSIVE AMERICA (PROGRESS PAC)",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00678433": {
-      "name": "COALITION FOR A PROSPEROUS AMERICA",
-      "designation": "U",
-      "committee_type": "O"
-    },
-    "C00366609": {
-      "name": "COALITION FOR A REPUBLICAN MAJORITY INC",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00675579": {
-      "name": "COALITION FOR A SAFE AMERICA",
-      "designation": "U",
-      "committee_type": "O"
-    },
-    "C00236661": {
-      "name": "COALITION FOR ASIAN PACIFIC AMERICANS",
-      "designation": "U",
-      "committee_type": "Q"
-    },
-    "C00276857": {
-      "name": "COALITION FOR BLACK BUSINESSES",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00942771": {
-      "name": "COALITION FOR CFPB REFORM PAC",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00255737": {
-      "name": "COALITION FOR DEMOCRATIC VALUES POLITICAL ACTION COMMITTEE",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00753525": {
-      "name": "COALITION FOR ESSENTIAL WORKERS",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00543645": {
-      "name": "COALITION FOR FINANCIAL FREEDOM",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00384313": {
-      "name": "COALITION FOR GOOD GOVERNMENT",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00547596": {
-      "name": "COALITION FOR GRASSROOTS PROGRESS",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00580134": {
-      "name": "COALITION FOR GREEN JOBS NOW!",
-      "designation": "U",
-      "committee_type": "O"
-    },
-    "C00524330": {
-      "name": "COALITION FOR HEALTHCARE FINANCE POLITICAL ACTION COMMITTEE (CHFPAC)",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00418905": {
-      "name": "COALITION FOR INDIAN HOUSING AND DEVELOPMENT PAC",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00555540": {
-      "name": "COALITION FOR KENTUCKY JOB CREATION ",
-      "designation": "U",
-      "committee_type": "O"
-    },
-    "C00126250": {
-      "name": "COALITION FOR LIFE",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00754838": {
-      "name": "COALITION FOR LIFE CHANGING TECHNOLOGIES PAC CORP",
-      "designation": "B",
       "committee_type": "N"
     },
     "C00661322": {
@@ -1766,21 +1311,6 @@
     },
     "C00194266": {
       "name": "AGRIFUELS REFINING CORPORATION POLITICAL ACTION COMMITTEE",
-      "designation": "U",
-      "committee_type": "N"
-    },
-    "C00030544": {
-      "name": "CANE SUGAR REFINERS POLITICAL ACTION COMMITTEE",
-      "designation": "U",
-      "committee_type": "Q"
-    },
-    "C00554071": {
-      "name": "CORN REFINERS ASSOCIATION PAC",
-      "designation": "B",
-      "committee_type": "N"
-    },
-    "C00213090": {
-      "name": "PRIDE REFINING CO PAC (PRIDE PAC-FEDERAL)",
       "designation": "U",
       "committee_type": "N"
     },
