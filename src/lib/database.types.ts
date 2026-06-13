@@ -339,6 +339,7 @@ export interface PoliticianProfile {
   party: Party
   state: string
   initials: string
+  photoUrl: string | null
   committee: string | null
   committeeLeverage: boolean
   since: string
@@ -424,6 +425,7 @@ export interface RepCard {
   level: Level
   party: Party
   initials: string
+  photoUrl: string | null
   fossilDirect: number
   totalRaised: number
   fossilPct: number
