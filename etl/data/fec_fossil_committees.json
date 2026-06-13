@@ -1,7 +1,7 @@
 {
   "generated_at": "2026-06-05 18:31:32",
   "total_scanned": 35147,
-  "fossil_count": 268,
+  "fossil_count": 266,
   "committees": {
     "C00194266": {
       "name": "AGRIFUELS REFINING CORPORATION POLITICAL ACTION COMMITTEE",
@@ -283,12 +283,6 @@
       "name": "COMMITTEE FOR NERCO OIL AND GAS",
       "subsector": "oil_gas",
       "committee_type": "Q",
-      "designation": "U"
-    },
-    "C00445429": {
-      "name": "COMMITTEE FOR THE ADVOCACY OF SPACE EXPLORATION",
-      "subsector": "oil_gas",
-      "committee_type": "N",
       "designation": "U"
     },
     "C00099366": {
@@ -1322,12 +1316,6 @@
       "subsector": "oil_gas",
       "committee_type": "Q",
       "designation": "U"
-    },
-    "C00411116": {
-      "name": "SPACE EXPLORATION TECHNOLOGIES CORP. PAC",
-      "subsector": "oil_gas",
-      "committee_type": "Q",
-      "designation": "B"
     },
     "C00590752": {
       "name": "STAND UP TO FRACKING",

@@ -40,12 +40,18 @@ FOSSIL_COMPANIES = [c.lower() for c in FOSSIL_CONFIG.get('fossil_company_list', 
 PAC_KEYWORDS = [
     'petroleum', 'oil & gas', 'oil and gas', 'mining', 'pipeline', 'refin',
     'drilling', 'fracking', 'energy transfer', 'midstream', 'upstream',
-    'exploration', 'natural gas', 'lng', 'propane', 'diesel',
+    'oil exploration', 'gas exploration', 'natural gas', 'lng', 'propane', 'diesel',
     'gasoline', 'offshore', 'wellhead', 'derrick'
 ]
 
 # Keywords that need word boundary matching
 PAC_KEYWORDS_STRICT = ['oil', 'gas', 'coal', 'fuel']
+
+# Committee names to explicitly exclude (false positives)
+PAC_EXCLUSIONS = [
+    'space exploration', 'spacex', 'aerospace', 'rocket', 'satellite',
+    'blue origin', 'virgin galactic', 'nasa', 'aviation'
+]
 
 # Known clean energy keywords to exclude
 CLEAN_KEYWORDS = [
@@ -57,6 +63,11 @@ def is_fossil_committee(name: str) -> tuple:
     """Determine if a committee name indicates fossil fuel industry."""
     import re
     name_lower = name.lower()
+    
+    # Exclude aerospace/space (before any matching)
+    for exc in PAC_EXCLUSIONS:
+        if exc in name_lower:
+            return False, None
     
     # Exclude clean energy
     for kw in CLEAN_KEYWORDS:

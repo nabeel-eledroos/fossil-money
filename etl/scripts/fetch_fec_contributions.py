@@ -204,6 +204,7 @@ def classify_contribution(contrib, fossil_committees):
     employer = (contrib.get('contributor_employer') or '').lower()
     occupation = (contrib.get('contributor_occupation') or '').lower()
     contributor_name = (contrib.get('contributor_name') or '').lower()
+    entity_type = contrib.get('entity_type', '')
     
     combined = f"{employer} {occupation} {contributor_name}"
     
@@ -230,10 +231,13 @@ def classify_contribution(contrib, fossil_committees):
         if company in employer:
             return True, False, guess_subsector(employer), 'company_list'
     
-    # Check contributor name (for PACs) against known fossil companies
-    for company in FOSSIL_COMPANIES:
-        if company in contributor_name:
-            return True, False, guess_subsector(contributor_name), 'company_list'
+    # Check contributor name (for PACs only) against known fossil companies
+    # Skip if it looks like an individual name (contains comma, e.g., "WILLIAMS, KEVIN")
+    is_individual_name = ',' in contributor_name and entity_type not in ('COM', 'PAC', 'PTY', 'CCM', 'ORG')
+    if not is_individual_name:
+        for company in FOSSIL_COMPANIES:
+            if company in contributor_name:
+                return True, False, guess_subsector(contributor_name), 'company_list'
     
     # Check keyword exclusions before keyword matching
     for exclusion in KEYWORD_EXCLUSIONS:
