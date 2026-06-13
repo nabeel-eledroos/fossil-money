@@ -2,6 +2,7 @@
 
 import { useEffect, useState, use, useRef } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import type { PoliticianProfile } from '@/lib/database.types'
 
 function formatMoney(n: number): string {
@@ -175,8 +176,18 @@ Sincerely,
 
         {/* Header */}
         <div className="flex gap-[26px] flex-wrap items-center pb-[30px] border-b border-hair">
-          <div className="w-[88px] h-[88px] rounded-full flex-none bg-surface border border-hair-strong flex items-center justify-center font-display font-semibold text-[30px] text-text-soft">
-            {p.initials}
+          <div className="w-[88px] h-[88px] rounded-full flex-none bg-surface border border-hair-strong flex items-center justify-center font-display font-semibold text-[30px] text-text-soft overflow-hidden">
+            {p.photoUrl ? (
+              <Image 
+                src={p.photoUrl} 
+                alt={p.name}
+                width={88}
+                height={88}
+                className="object-cover w-full h-full"
+              />
+            ) : (
+              p.initials
+            )}
           </div>
           <div className="flex-1 min-w-[260px]">
             <span className="label block mb-[12px]">{p.level} · {p.party === 'NP' ? 'Nonpartisan' : p.party === 'D' ? 'Democrat' : 'Republican'}{p.state && p.party !== 'NP' ? ` · ${p.state}` : ''}</span>

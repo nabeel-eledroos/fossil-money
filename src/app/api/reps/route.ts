@@ -169,6 +169,7 @@ export async function GET(request: NextRequest) {
         level: (p.level ?? 'federal') as Level,
         party: normalizeParty(p.party),
         initials: getInitials(p.name),
+        photoUrl: p.photo_url ?? null,
         fossilDirect,
         totalRaised,
         fossilPct: totalRaised > 0 ? Math.round((fossilDirect / totalRaised) * 100) : 0,

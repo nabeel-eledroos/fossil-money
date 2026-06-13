@@ -146,6 +146,7 @@ export async function GET(
       party: normalizeParty(p.party),
       state: p.state || '',
       initials: getInitials(p.name),
+      photoUrl: p.photo_url ?? null,
       committee: p.committee || null,
       committeeLeverage: summary?.committee_leverage ?? false,
       since: p.term_start?.slice(0, 4) || '—',

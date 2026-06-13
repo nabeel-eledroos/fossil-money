@@ -3,6 +3,7 @@
 import { useEffect, useState, use } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import type { RepsResponse, RepCard, Level, CoverageStatus } from '@/lib/database.types'
 
 function formatMoney(n: number): string {
@@ -44,8 +45,18 @@ function PoliticianCard({ card, maxFossil }: { card: RepCard; maxFossil: number 
         )}
         
         <div className="flex gap-[14px] p-[20px_20px_16px] items-start">
-          <div className="w-[48px] h-[48px] rounded-full flex-none bg-bg border border-hair-strong flex items-center justify-center font-display font-semibold text-[16px] text-text-soft">
-            {card.initials}
+          <div className="w-[48px] h-[48px] rounded-full flex-none bg-bg border border-hair-strong flex items-center justify-center font-display font-semibold text-[16px] text-text-soft overflow-hidden">
+            {card.photoUrl ? (
+              <Image 
+                src={card.photoUrl} 
+                alt={card.name}
+                width={48}
+                height={48}
+                className="object-cover w-full h-full"
+              />
+            ) : (
+              card.initials
+            )}
           </div>
           <div className="flex-1">
             <h4 className="font-body font-bold text-[18px] leading-[1.15] text-ink">{card.name}</h4>
