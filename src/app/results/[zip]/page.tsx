@@ -103,16 +103,25 @@ function PoliticianCard({ card, maxFossil }: { card: RepCard; maxFossil: number 
 }
 
 function TierPending({ tier }: { tier: Tier }) {
+  const isState = tier.key === 'State'
+  const title = isState 
+    ? 'State officials are rolling out state by state'
+    : 'Local officials are rolling out city by city'
+  const description = isState
+    ? 'State senators, state representatives, and statewide officials are added per state via official records. This section will fill in automatically once your state is covered.'
+    : 'Mayors, city council, and county seats are added per region via local records. This section will fill in automatically once your area is covered.'
+  const buttonText = isState ? 'Request my state →' : 'Request my city →'
+
   return (
     <div className="flex gap-[20px] items-start border border-dashed border-hair-strong rounded-[14px] p-[26px_clamp(20px,3vw,30px)] bg-[repeating-linear-gradient(135deg,transparent,transparent_11px,rgba(23,22,15,0.012)_11px,rgba(23,22,15,0.012)_22px)]">
       <div className="w-[42px] h-[42px] rounded-[11px] border border-dashed border-hair-strong flex items-center justify-center text-text-mute text-[18px] flex-none">▢</div>
       <div>
-        <h4 className="font-body text-[16.5px] font-bold text-ink mb-[6px] tracking-normal">Local officials are rolling out city by city</h4>
+        <h4 className="font-body text-[16.5px] font-bold text-ink mb-[6px] tracking-normal">{title}</h4>
         <p className="text-[14.5px] text-text-soft leading-[1.5] max-w-[580px] mb-[14px]">
-          Mayors, city council, and county seats — with the same fossil-money, lobbying, voting, and district-stakes detail as above — are added per region via local records. This slot fills in automatically once your area is covered.
+          {description}
         </p>
         <button className="font-body font-semibold text-[14px] px-[22px] py-[13px] rounded-[9px] border border-hair-strong bg-transparent text-ink cursor-pointer transition-[border-color] duration-200 inline-flex items-center gap-[9px] hover:border-ink">
-          Request my city →
+          {buttonText}
         </button>
       </div>
     </div>

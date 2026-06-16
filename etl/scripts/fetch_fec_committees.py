@@ -37,11 +37,12 @@ FOSSIL_COMPANIES = [c.lower() for c in FOSSIL_CONFIG.get('fossil_company_list', 
 
 # Additional PAC-specific keywords
 # Note: Short words need careful handling to avoid false positives (e.g., "coal" in "coalition")
+# Removed 'derrick' - too often a person's name; removed 'gasoline' - gas stations aren't fossil fuel producers
 PAC_KEYWORDS = [
     'petroleum', 'oil & gas', 'oil and gas', 'mining', 'pipeline', 'refin',
     'drilling', 'fracking', 'energy transfer', 'midstream', 'upstream',
-    'oil exploration', 'gas exploration', 'natural gas', 'lng', 'propane', 'diesel',
-    'gasoline', 'offshore', 'wellhead', 'derrick'
+    'oil exploration', 'gas exploration', 'natural gas', 'lng', 'propane',
+    'offshore', 'wellhead', 'oilfield', 'oil field'
 ]
 
 # Keywords that need word boundary matching
@@ -49,34 +50,66 @@ PAC_KEYWORDS_STRICT = ['oil', 'gas', 'coal', 'fuel']
 
 # Committee names to explicitly exclude (false positives)
 PAC_EXCLUSIONS = [
+    # Aerospace/Space
     'space exploration', 'spacex', 'aerospace', 'rocket', 'satellite',
-    'blue origin', 'virgin galactic', 'nasa', 'aviation'
+    'blue origin', 'virgin galactic', 'nasa', 'aviation',
+    # Food/Agriculture (olive oil, cooking oil, etc.)
+    'olive oil', 'cooking oil', 'vegetable oil', 'canola', 'soybean oil',
+    'corn oil', 'peanut oil', 'sunflower oil',
+    # Biofuels (not fossil)
+    'ethanol', 'biofuel', 'biodiesel', 'clean fuel', 'renewable fuel',
+    'corn fuel', 'al-corn',
+    # Financial services with misleading names
+    'a l williams', 'al williams', 'primerica', 'savings bank', 'credit union',
+    # Tobacco
+    'tobacco', 'cigarette',
+    # Paint/chemicals (not fossil extraction)
+    'sherwin-williams', 'sherwin williams',
+    # Law firms
+    'nixon peabody', 'williams and jensen', 'williams mullen', 'white and williams',
+    'whitt and williams', 'mcnamee, lochner',
+    # Political candidates with fossil-sounding names
+    'victory fund', 'for congress', 'for senate', 'for america', 'for president',
+    # Pharmaceuticals
+    'pharmaceutical', 'pharma',
+    # Other false positives
+    'gaspar', 'vegas', 'williamsburg', 'williamsville',
 ]
 
 # Known clean energy keywords to exclude
-CLEAN_KEYWORDS = [
+CLEAN_KEYWORDS = FOSSIL_CONFIG.get('clean_energy_keywords', [
     'solar', 'wind', 'renewable', 'clean energy', 'green energy',
     'climate', 'environmental', 'conservation', 'sierra', 'league of conservation'
-]
+])
 
 def is_fossil_committee(name: str) -> tuple:
     """Determine if a committee name indicates fossil fuel industry."""
     import re
     name_lower = name.lower()
     
-    # Exclude aerospace/space (before any matching)
+    # Exclude false positives first (before any matching)
     for exc in PAC_EXCLUSIONS:
         if exc in name_lower:
             return False, None
     
     # Exclude clean energy
     for kw in CLEAN_KEYWORDS:
-        if kw in name_lower:
+        if isinstance(kw, str) and kw.lower() in name_lower:
             return False, None
     
     # Check against known fossil companies (most reliable)
+    # Use word boundaries for short company names to avoid false positives
+    SHORT_COMPANY_NAMES = ['apache', 'hess', 'koch', 'marathon', 'baker', 'murphy', 'pioneer', 'range', 'arc']
     for company in FOSSIL_COMPANIES:
-        if company in name_lower:
+        company_lower = company.lower() if isinstance(company, str) else company
+        if company_lower in SHORT_COMPANY_NAMES or len(company_lower) <= 6:
+            # Require word boundary for short names
+            pattern = r'\b' + re.escape(company_lower) + r'\b'
+            if re.search(pattern, name_lower):
+                # Additional context check: must have energy/oil/gas/petroleum context
+                if any(ctx in name_lower for ctx in ['energy', 'oil', 'gas', 'petroleum', 'fuel', 'resources', 'drilling', 'pipeline']):
+                    return True, guess_subsector(name_lower)
+        elif company_lower in name_lower:
             return True, guess_subsector(name_lower)
     
     # Check PAC keywords (longer, less ambiguous)
@@ -92,6 +125,8 @@ def is_fossil_committee(name: str) -> tuple:
             if kw == 'coal' and 'coalition' in name_lower:
                 continue
             if kw == 'gas' and any(x in name_lower for x in ['vegas', 'gaspar']):
+                continue
+            if kw == 'oil' and any(x in name_lower for x in ['olive', 'soil', 'foil', 'coil', 'turmoil']):
                 continue
             return True, guess_subsector(name_lower)
     

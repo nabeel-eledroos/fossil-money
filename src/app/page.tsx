@@ -35,10 +35,10 @@ export default function Home() {
     router.push(`/results/${z}`)
   }
 
-  const trySample = () => {
-    setZip('94110')
-    router.push('/results/94110')
-  }
+  // const trySample = () => {
+  //   setZip('94110')
+  //   router.push('/results/94110')
+  // }
 
   return (
     <>
@@ -130,7 +130,7 @@ export default function Home() {
               onKeyDown={(e) => e.key === 'Enter' && lookup()}
               maxLength={5}
               inputMode="numeric"
-              placeholder="94110"
+              placeholder="94117"
               autoComplete="postal-code"
               className={`flex-1 border bg-surface rounded-[9px] text-[22px] font-semibold tracking-[0.12em] text-ink px-[20px] py-[16px] outline-none w-full transition-[border-color,box-shadow] duration-200 placeholder:text-text-mute placeholder:font-normal ${zipError ? 'border-alarm' : 'border-hair-strong'} focus:border-ink focus:shadow-[0_0_0_4px_rgba(23,22,15,0.06)]`}
             />
@@ -141,12 +141,12 @@ export default function Home() {
               Reveal&nbsp;→
             </button>
           </div>
-          <div className="text-[14px] text-text-mute mt-[14px]">
+          {/* <div className="text-[14px] text-text-mute mt-[14px]">
             Don't have one handy?{' '}
             <b onClick={trySample} className="text-crude-deep cursor-pointer font-semibold border-b border-crude-soft">
               Try a sample district →
             </b>
-          </div>
+          </div> */}
         </div>
 
         {/* National Stats */}

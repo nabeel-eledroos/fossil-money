@@ -91,8 +91,11 @@ REQUEST_DELAY = FEC_CONFIG.get('request_delay_seconds', 3.6)
 # $200 is the FEC itemization threshold (below this, contributions aren't individually reported)
 MIN_CONTRIBUTION_AMOUNT = FEC_CONFIG.get('min_contribution_amount', 200)
 
-# Clean energy keywords to identify contrast donations
-CLEAN_KEYWORDS = ['solar', 'wind', 'renewable', 'clean energy', 'green', 'climate action', 'environmental defense', 'sierra club', 'league of conservation']
+# Clean energy keywords to identify contrast donations (from config)
+CLEAN_KEYWORDS = [kw.lower() for kw in FOSSIL_CONFIG.get('clean_energy_keywords', [
+    'solar', 'wind', 'renewable', 'clean energy', 'green', 'climate action', 
+    'environmental defense', 'sierra club', 'league of conservation'
+])]
 
 def get_supabase():
     return create_client(SUPABASE_URL, SUPABASE_KEY)
@@ -192,8 +195,12 @@ def classify_contribution(contrib, fossil_committees):
     Classification methods (in priority order):
     - 'opensecrets_pac': Matched via OpenSecrets verified PAC list
     - 'fec_committee_cache': Matched via our cached fossil committee list  
-    - 'company_list': Matched via fossil_company_list in config
-    - 'keyword': Matched via keyword heuristics
+    - 'company_list': Matched via fossil_company_list in config (employer only)
+    - 'keyword': Matched via keyword heuristics (employer/occupation only)
+    
+    IMPORTANT: For individual donors, we ONLY check employer and occupation fields.
+    We never match individual names against company lists or keywords to avoid
+    false positives (e.g., "WILLIAMS, KEVIN" matching "Williams Companies").
     """
     import re
     
@@ -206,16 +213,30 @@ def classify_contribution(contrib, fossil_committees):
     contributor_name = (contrib.get('contributor_name') or '').lower()
     entity_type = contrib.get('entity_type', '')
     
-    combined = f"{employer} {occupation} {contributor_name}"
+    # Determine if this is a PAC/committee or an individual
+    is_pac_or_committee = entity_type in ('COM', 'PAC', 'PTY', 'CCM', 'ORG')
     
-    # Check name exclusions first (SpaceX, Tesla, etc.)
+    # For individuals, only use employer and occupation for matching
+    # For PACs/committees, we can also use the contributor name
+    if is_pac_or_committee:
+        text_to_search = f"{employer} {occupation} {contributor_name}"
+    else:
+        text_to_search = f"{employer} {occupation}"
+    
+    # Check name exclusions first (SpaceX, Tesla, etc.) - applies to PAC names
+    if is_pac_or_committee:
+        for exclusion in NAME_EXCLUSIONS:
+            if exclusion in contributor_name:
+                return False, False, None, None
+    
+    # Check employer exclusions for individuals
     for exclusion in NAME_EXCLUSIONS:
-        if exclusion in contributor_name:
+        if exclusion in employer:
             return False, False, None, None
     
     # Check clean energy first (to exclude from fossil)
     for kw in CLEAN_KEYWORDS:
-        if kw in combined:
+        if kw in text_to_search:
             return False, True, None, None
     
     # PRIORITY 1: OpenSecrets verified PAC list (most reliable)
@@ -227,35 +248,42 @@ def classify_contribution(contrib, fossil_committees):
         return True, False, fossil_committees[contributor_committee_id].get('subsector', 'oil_gas'), 'fec_committee_cache'
     
     # PRIORITY 3: Check employer against known fossil companies
+    # Use word boundaries for short/ambiguous company names to avoid false positives
+    SHORT_COMPANY_NAMES = ['apache', 'hess', 'koch', 'marathon', 'baker', 'murphy', 'pioneer', 'range', 'arc', 'spire']
     for company in FOSSIL_COMPANIES:
-        if company in employer:
+        if company in SHORT_COMPANY_NAMES or len(company) <= 6:
+            # Require word boundary for short names
+            pattern = r'\b' + re.escape(company) + r'\b'
+            if re.search(pattern, employer):
+                return True, False, guess_subsector(employer), 'company_list'
+        elif company in employer:
             return True, False, guess_subsector(employer), 'company_list'
     
-    # Check contributor name (for PACs only) against known fossil companies
-    # Skip if it looks like an individual name (contains comma, e.g., "WILLIAMS, KEVIN")
-    is_individual_name = ',' in contributor_name and entity_type not in ('COM', 'PAC', 'PTY', 'CCM', 'ORG')
-    if not is_individual_name:
+    # For PACs only: also check contributor name against fossil companies
+    if is_pac_or_committee:
         for company in FOSSIL_COMPANIES:
-            if company in contributor_name:
+            if company in SHORT_COMPANY_NAMES or len(company) <= 6:
+                pattern = r'\b' + re.escape(company) + r'\b'
+                if re.search(pattern, contributor_name):
+                    return True, False, guess_subsector(contributor_name), 'company_list'
+            elif company in contributor_name:
                 return True, False, guess_subsector(contributor_name), 'company_list'
     
     # Check keyword exclusions before keyword matching
     for exclusion in KEYWORD_EXCLUSIONS:
-        if exclusion in combined:
+        if exclusion in text_to_search:
             return False, False, None, None
     
-    # PRIORITY 4: Keyword matching - use specific multi-word phrases to reduce false positives
-    # Keywords are now more specific (e.g., "oil drilling" not just "oil")
+    # PRIORITY 4: Keyword matching - only on employer/occupation (not individual names)
     for kw in FOSSIL_KEYWORDS:
-        if kw in employer or kw in occupation or kw in contributor_name:
-            return True, False, guess_subsector(combined), 'keyword'
+        if kw in employer or kw in occupation:
+            return True, False, guess_subsector(f"{employer} {occupation}"), 'keyword'
     
-    # Word boundary keywords are now empty - we rely on specific phrases instead
-    # This prevents "gas station" from matching, while "natural gas production" still matches
+    # Word boundary keywords - only on employer/occupation
     for kw in FOSSIL_KEYWORDS_WORD_BOUNDARY:
         pattern = r'\b' + re.escape(kw) + r'\b'
-        if re.search(pattern, employer) or re.search(pattern, occupation) or re.search(pattern, contributor_name):
-            return True, False, guess_subsector(combined), 'keyword'
+        if re.search(pattern, employer) or re.search(pattern, occupation):
+            return True, False, guess_subsector(f"{employer} {occupation}"), 'keyword'
     
     return False, False, None, None
 
@@ -451,6 +479,9 @@ def process_contribution(supabase, politician_id, contrib, fossil_committees, cy
     Only stores fossil fuel and clean energy contributions to save DB space.
     Total raised is calculated on-the-fly in process_politician().
     
+    If a contribution was previously stored but is no longer classified as fossil/clean,
+    it will be deleted from the database.
+    
     Returns: (stored, is_fossil)
     """
     transaction_id = contrib.get('transaction_id') or contrib.get('sub_id')
@@ -463,9 +494,19 @@ def process_contribution(supabase, politician_id, contrib, fossil_committees, cy
     
     is_fossil, is_clean, subsector, classification_method = classify_contribution(contrib, fossil_committees)
     
-    # Only store fossil fuel and clean energy contributions
-    # Total raised is now calculated on-the-fly, so we don't need to store everything
+    # Check if this contribution was previously stored
+    try:
+        existing = supabase_retry(lambda: supabase.table('donations').select('id').eq('source', 'fec').eq('source_transaction_id', str(transaction_id)).execute())
+    except Exception as e:
+        existing = None
+    
+    # If not fossil/clean but was previously stored, delete it (reclassification)
     if not is_fossil and not is_clean:
+        if existing and existing.data:
+            try:
+                supabase_retry(lambda: supabase.table('donations').delete().eq('id', existing.data[0]['id']).execute())
+            except Exception as e:
+                print(f"    [Warning: Could not delete reclassified contribution: {e}]")
         return False, False
     
     # Determine donor type
@@ -499,10 +540,8 @@ def process_contribution(supabase, politician_id, contrib, fossil_committees, cy
         'source_url': contrib.get('pdf_url')
     }
     
-    # Upsert with retry
+    # Upsert with retry (reuse existing query from above)
     try:
-        existing = supabase_retry(lambda: supabase.table('donations').select('id').eq('source', 'fec').eq('source_transaction_id', str(transaction_id)).execute())
-        
         if existing and existing.data:
             supabase_retry(lambda: supabase.table('donations').update(donation).eq('id', existing.data[0]['id']).execute())
         else:
@@ -520,6 +559,7 @@ def main():
     parser.add_argument('--limit', type=int, help='Limit number of politicians to process')
     parser.add_argument('--cycle', type=int, help='Fetch single cycle only')
     parser.add_argument('--resume', action='store_true', help='Resume from last progress (default: True)')
+    parser.add_argument('--reclassify', action='store_true', help='Force full reclassification: ignores progress and re-processes all politicians. Use after updating classification logic.')
     parser.add_argument('--batch', type=int, help='Batch number (0-indexed) for parallel processing')
     parser.add_argument('--total-batches', type=int, default=1, help='Total number of batches for parallel processing')
     parser.add_argument('--sync-db', action='store_true', help='Sync progress to Supabase DB (for local runs)')
@@ -538,8 +578,12 @@ def main():
     supabase = get_supabase()
     fossil_committees = load_fossil_committees()
     
-    # Load progress - optionally download from DB first
-    if args.download_progress:
+    # Load progress - optionally download from DB first, or reset for reclassification
+    if args.reclassify:
+        print("RECLASSIFY MODE: Ignoring progress, will re-process all politicians")
+        print("Previously stored donations will be updated or deleted based on new classification")
+        progress = {'completed_politicians': {}, 'last_run': None}
+    elif args.download_progress:
         print("Downloading progress from Supabase DB...")
         progress = download_progress_from_db(supabase)
         # Save locally for future use
@@ -548,7 +592,8 @@ def main():
         progress = load_progress()
     
     print(f"Loaded {len(fossil_committees)} fossil fuel PACs from cache")
-    print(f"Current progress: {len(progress.get('completed_politicians', {}))} politicians completed")
+    if not args.reclassify:
+        print(f"Current progress: {len(progress.get('completed_politicians', {}))} politicians completed")
     
     # Determine cycles to fetch
     cycles = [args.cycle] if args.cycle else CYCLES
@@ -565,8 +610,8 @@ def main():
         print("No politicians with FEC IDs found")
         return
     
-    # Filter already completed (unless incremental)
-    if not args.incremental and not args.politician:
+    # Filter already completed (unless incremental or reclassify mode)
+    if not args.incremental and not args.politician and not args.reclassify:
         completed = set(progress.get('completed_politicians', {}).keys())
         # Only skip if completed for ALL requested cycles
         politicians = [p for p in politicians if p['id'] not in completed or 
