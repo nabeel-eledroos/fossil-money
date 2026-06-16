@@ -6,7 +6,7 @@ export function DarkMoneyDisclaimer() {
       <Info className="w-4 h-4 text-tertiary flex-shrink-0 mt-0.5" />
       <p className="text-[11px] text-tertiary leading-relaxed">
         These figures represent disclosed donations only. &quot;Dark money&quot; contributions through 
-        PACs and nonprofits may not be included. Data sourced from FEC filings and WhoBoughtMyRep.
+        PACs and nonprofits may not be included. Data sourced from FEC filings and OpenSecrets.
       </p>
     </div>
   )

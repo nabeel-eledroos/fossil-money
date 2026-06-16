@@ -4,6 +4,8 @@ import { useEffect, useState, use, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import type { PoliticianProfile } from '@/lib/database.types'
+import { Header } from '@/components/layout/Header'
+import { Footer } from '@/components/layout/Footer'
 
 function formatMoney(n: number): string {
   return '$' + Math.round(n).toLocaleString('en-US')
@@ -158,15 +160,7 @@ Sincerely,
 
   return (
     <>
-      {/* Header */}
-      <header className="sticky top-0 z-50 flex items-center justify-between px-[clamp(20px,5vw,72px)] py-[18px] bg-[rgba(250,249,246,0.82)] backdrop-blur-[12px] border-b border-hair">
-        <Link href="/" className="flex items-center gap-[11px] cursor-pointer">
-          <div className="w-[22px] h-[22px] rounded-full border-[1.5px] border-ink relative flex-none">
-            <div className="absolute inset-[4px] rounded-full bg-crude" />
-          </div>
-          <b className="font-display font-bold text-[18px] text-ink">Fossil&nbsp;Money</b>
-        </Link>
-      </header>
+      <Header maxWidth="1000px" />
 
       <section className="max-w-[1000px] mx-auto px-[clamp(20px,5vw,72px)] py-[clamp(26px,4vw,52px)] pb-[110px]">
         {/* Back */}
@@ -512,13 +506,7 @@ Sincerely,
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-hair px-[clamp(20px,5vw,72px)] py-[34px] max-w-[1000px] mx-auto flex flex-wrap gap-[18px] justify-between items-center">
-        <p className="text-[13px] text-text-mute leading-[1.65] max-w-[700px]">
-          <b className="text-crude-deep font-semibold">Demonstration mockup.</b> Figures are illustrative sample data, not real records.
-        </p>
-        <span className="text-[11px] font-semibold tracking-[0.1em] uppercase text-text-soft border border-hair px-[13px] py-[6px] rounded-[20px] whitespace-nowrap">v0.2 prototype</span>
-      </footer>
+      <Footer maxWidth="1000px" />
     </>
   )
 }

@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import type { NationalStats } from '@/lib/database.types'
+import { Header } from '@/components/layout/Header'
+import { Footer } from '@/components/layout/Footer'
 
 function formatMoney(n: number): string {
   if (n >= 1e6) return '$' + (n / 1e6).toFixed(1) + 'M'
@@ -35,26 +37,14 @@ export default function Home() {
     router.push(`/results/${z}`)
   }
 
-  const trySample = () => {
-    setZip('94110')
-    router.push('/results/94110')
-  }
+  // const trySample = () => {
+  //   setZip('94110')
+  //   router.push('/results/94110')
+  // }
 
   return (
     <>
-      {/* Header */}
-      <header className="sticky top-0 z-50 flex items-center justify-between px-[clamp(20px,5vw,72px)] py-[18px] bg-[rgba(250,249,246,0.82)] backdrop-blur-[12px] border-b border-hair">
-        <Link href="/" className="flex items-center gap-[11px] cursor-pointer">
-          <div className="w-[22px] h-[22px] rounded-full border-[1.5px] border-ink relative flex-none">
-            <div className="absolute inset-[4px] rounded-full bg-crude" />
-          </div>
-          <b className="font-display font-bold text-[18px] text-ink">Fossil&nbsp;Money</b>
-        </Link>
-        <nav className="flex gap-[26px] items-center">
-          <a onClick={() => setDrawerOpen(true)} className="text-[14px] font-medium text-text-soft cursor-pointer hover:text-ink transition-colors">Data sources</a>
-          <a href="#method" className="text-[14px] font-medium text-text-soft cursor-pointer hover:text-ink transition-colors">Methodology</a>
-        </nav>
-      </header>
+      <Header maxWidth="1080px" />
 
       {/* Data Sources Drawer */}
       {drawerOpen && (
@@ -72,8 +62,8 @@ export default function Home() {
               <p className="text-[13.5px] text-text-soft leading-[1.45]">Address → districts via the free Census Geocoder, joined to officials: <b className="text-crude-deep">federal (congress-legislators) and state (Open States) are live</b>; local is enabled per region via Cicero or curated records.</p>
             </div>
             <div className="py-[14px] border-b border-hair">
-              <h6 className="font-body text-[14.5px] font-bold text-ink mb-[3px]">Federal money &amp; votes <span className="font-medium text-crude-deep text-[12.5px]">FEC via WhoBoughtMyRep</span></h6>
-              <p className="text-[13.5px] text-text-soft leading-[1.45]">FEC + Congress.gov data with industry attribution traced through PAC hops, plus outside (independent-expenditure) spending and voting records.</p>
+              <h6 className="font-body text-[14.5px] font-bold text-ink mb-[3px]">Federal money &amp; votes <span className="font-medium text-crude-deep text-[12.5px]">FEC API · OpenSecrets</span></h6>
+              <p className="text-[13.5px] text-text-soft leading-[1.45]">Direct from FEC Schedule A filings, classified using OpenSecrets industry codes and our own fossil-fuel company database. Includes PAC contributions and individual donations.</p>
             </div>
             <div className="py-[14px] border-b border-hair">
               <h6 className="font-body text-[14.5px] font-bold text-ink mb-[3px]">State &amp; local money <span className="font-medium text-crude-deep text-[12.5px]">FollowTheMoney · state disclosure portals</span></h6>
@@ -104,7 +94,7 @@ export default function Home() {
       )}
 
       {/* Hero */}
-      <section className="max-w-[1080px] mx-auto px-[clamp(20px,5vw,72px)] pt-[clamp(52px,10vw,128px)] pb-[72px]">
+      <section className="max-w-[1080px] mx-auto px-[clamp(20px,5vw,72px)] pt-[clamp(32px,6vw,80px)] pb-[72px]">
         <div className="mb-[28px] animate-rise inline-flex items-center gap-[9px]" style={{ animationDelay: '0.05s' }}>
           <span className="label flex items-center gap-[9px]">
             <span className="w-[6px] h-[6px] rounded-full bg-crude" />
@@ -117,7 +107,7 @@ export default function Home() {
         </h1>
         
         <p className="text-[clamp(18px,2.1vw,21px)] max-w-[580px] mt-[28px] text-text-soft leading-[1.55] animate-rise" style={{ animationDelay: '0.2s' }}>
-          Enter your ZIP to see the federal and state officials who represent you — the fossil-fuel money behind them, their environmental record, and exactly how to push back. Local officials are rolling out city by city.
+          Enter your ZIP to see the federal officials who represent you - the fossil-fuel money behind them, their environmental record, and exactly how you can push back.
         </p>
 
         {/* Search Box */}
@@ -130,23 +120,23 @@ export default function Home() {
               onKeyDown={(e) => e.key === 'Enter' && lookup()}
               maxLength={5}
               inputMode="numeric"
-              placeholder="94110"
+              placeholder="94117"
               autoComplete="postal-code"
               className={`flex-1 border bg-surface rounded-[9px] text-[22px] font-semibold tracking-[0.12em] text-ink px-[20px] py-[16px] outline-none w-full transition-[border-color,box-shadow] duration-200 placeholder:text-text-mute placeholder:font-normal ${zipError ? 'border-alarm' : 'border-hair-strong'} focus:border-ink focus:shadow-[0_0_0_4px_rgba(23,22,15,0.06)]`}
             />
             <button 
               onClick={lookup}
-              className="border-none cursor-pointer bg-ink text-white font-body font-semibold text-[15px] px-[28px] rounded-[9px] transition-[transform,opacity] duration-150 whitespace-nowrap hover:translate-y-[-1px] hover:opacity-90"
+              className="border-none cursor-pointer bg-[var(--color-crude)] text-white font-body font-semibold text-[15px] px-[28px] rounded-[9px] transition-[transform,opacity] duration-150 whitespace-nowrap hover:translate-y-[-1px] hover:opacity-90"
             >
               Reveal&nbsp;→
             </button>
           </div>
-          <div className="text-[14px] text-text-mute mt-[14px]">
+          {/* <div className="text-[14px] text-text-mute mt-[14px]">
             Don't have one handy?{' '}
             <b onClick={trySample} className="text-crude-deep cursor-pointer font-semibold border-b border-crude-soft">
               Try a sample district →
             </b>
-          </div>
+          </div> */}
         </div>
 
         {/* National Stats */}
@@ -214,7 +204,7 @@ export default function Home() {
         <div id="method" className="mt-[80px] border-t border-hair pt-[42px] grid grid-cols-[repeat(auto-fit,minmax(210px,1fr))] gap-[36px]">
           <div>
             <h5 className="text-[11.5px] font-semibold tracking-[0.14em] uppercase text-crude-deep mb-[10px]">The money</h5>
-            <p className="text-[14.5px] text-text-soft leading-[1.5]">Federal from the FEC (via WhoBoughtMyRep), with PAC-hop industry attribution; state &amp; local from FollowTheMoney and state disclosure portals. Each donation is tagged by sub-industry — oil &amp; gas, coal, utilities, mining.</p>
+            <p className="text-[14.5px] text-text-soft leading-[1.5]">Federal contributions pulled directly from the FEC API, classified using OpenSecrets PAC lists and our curated fossil-fuel company database. Each donation is tagged by sub-industry: oil &amp; gas, coal, utilities, mining, pipelines, refining.</p>
           </div>
           <div>
             <h5 className="text-[11.5px] font-semibold tracking-[0.14em] uppercase text-crude-deep mb-[10px]">Outside &amp; dark money</h5>
@@ -239,13 +229,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-hair px-[clamp(20px,5vw,72px)] py-[34px] max-w-[1120px] mx-auto flex flex-wrap gap-[18px] justify-between items-center">
-        <p className="text-[13px] text-text-mute leading-[1.65] max-w-[700px]">
-          <b className="text-crude-deep font-semibold">Fossil Money</b> tracks fossil-fuel contributions to elected officials. Data from FEC, LCV, and state filings. Not affiliated with any campaign or party.
-        </p>
-        <span className="text-[11px] font-semibold tracking-[0.1em] uppercase text-text-soft border border-hair px-[13px] py-[6px] rounded-[20px] whitespace-nowrap">v0.2</span>
-      </footer>
+      <Footer maxWidth="1080px" />
     </>
   )
 }

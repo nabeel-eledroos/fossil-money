@@ -47,6 +47,46 @@
     --font-body: "Hanken Grotesk", -apple-system, sans-serif;
   }
 
+  /* Dark mode */
+  .dark {
+    --color-bg: #121210;
+    --color-surface: #1a1918;
+    --color-ink: #f5f4f0;
+    --color-text: #e8e7e3;
+    --color-text-soft: #9a9990;
+    --color-text-mute: #6a6960;
+    --color-hair: #2a2928;
+    --color-hair-strong: #3a3938;
+    
+    /* Accent colors - slightly brighter for dark mode */
+    --color-crude: #e06a30;
+    --color-crude-soft: #3d2a1e;
+    --color-crude-deep: #f08040;
+    
+    --color-leaf: #4fb862;
+    --color-leaf-soft: #1e3d22;
+    --color-leaf-deep: #6cd080;
+    
+    /* Industry colors */
+    --color-coal: #a08060;
+    --color-util: #ecc050;
+    --color-mining: #c0a070;
+    --color-dark: #8070d0;
+    --color-dark-soft: #2a2840;
+    
+    /* Alert colors */
+    --color-alarm: #e04030;
+    --color-alarm-soft: #3d2020;
+    
+    /* Party colors */
+    --color-party-d: #4090d0;
+    --color-party-d-bg: #1a2a3a;
+    --color-party-r: #d05040;
+    --color-party-r-bg: #3a1a1a;
+    --color-party-np: #9a9990;
+    --color-party-np-bg: #2a2928;
+  }
+
   * {
     margin: 0;
     padding: 0;

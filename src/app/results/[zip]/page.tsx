@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import type { RepsResponse, RepCard, Level, CoverageStatus } from '@/lib/database.types'
+import { Header } from '@/components/layout/Header'
+import { Footer } from '@/components/layout/Footer'
 
 function formatMoney(n: number): string {
   if (n >= 1e6) return '$' + (n / 1e6).toFixed(2) + 'M'
@@ -103,16 +105,25 @@ function PoliticianCard({ card, maxFossil }: { card: RepCard; maxFossil: number 
 }
 
 function TierPending({ tier }: { tier: Tier }) {
+  const isState = tier.key === 'State'
+  const title = isState 
+    ? 'State officials are rolling out state by state'
+    : 'Local officials are rolling out city by city'
+  const description = isState
+    ? 'State senators, state representatives, and statewide officials are added per state via official records. This section will fill in automatically once your state is covered.'
+    : 'Mayors, city council, and county seats are added per region via local records. This section will fill in automatically once your area is covered.'
+  const buttonText = isState ? 'Request my state →' : 'Request my city →'
+
   return (
-    <div className="flex gap-[20px] items-start border border-dashed border-hair-strong rounded-[14px] p-[26px_clamp(20px,3vw,30px)] bg-[repeating-linear-gradient(135deg,transparent,transparent_11px,rgba(23,22,15,0.012)_11px,rgba(23,22,15,0.012)_22px)]">
+    <div className="flex gap-[20px] items-start border border-dashed border-hair-strong rounded-[14px] p-[26px_clamp(20px,3vw,30px)] bg-[repeating-linear-gradient(135deg,transparent,transparent_11px,color-mix(in_srgb,var(--color-hair)_40%,transparent)_11px,color-mix(in_srgb,var(--color-hair)_40%,transparent)_22px)]">
       <div className="w-[42px] h-[42px] rounded-[11px] border border-dashed border-hair-strong flex items-center justify-center text-text-mute text-[18px] flex-none">▢</div>
       <div>
-        <h4 className="font-body text-[16.5px] font-bold text-ink mb-[6px] tracking-normal">Local officials are rolling out city by city</h4>
+        <h4 className="font-body text-[16.5px] font-bold text-ink mb-[6px] tracking-normal">{title}</h4>
         <p className="text-[14.5px] text-text-soft leading-[1.5] max-w-[580px] mb-[14px]">
-          Mayors, city council, and county seats — with the same fossil-money, lobbying, voting, and district-stakes detail as above — are added per region via local records. This slot fills in automatically once your area is covered.
+          {description}
         </p>
         <button className="font-body font-semibold text-[14px] px-[22px] py-[13px] rounded-[9px] border border-hair-strong bg-transparent text-ink cursor-pointer transition-[border-color] duration-200 inline-flex items-center gap-[9px] hover:border-ink">
-          Request my city →
+          {buttonText}
         </button>
       </div>
     </div>
@@ -185,19 +196,7 @@ export default function ResultsPage({ params }: { params: Promise<{ zip: string 
 
   return (
     <>
-      {/* Header */}
-      <header className="sticky top-0 z-50 flex items-center justify-between px-[clamp(20px,5vw,72px)] py-[18px] bg-[rgba(250,249,246,0.82)] backdrop-blur-[12px] border-b border-hair">
-        <Link href="/" className="flex items-center gap-[11px] cursor-pointer">
-          <div className="w-[22px] h-[22px] rounded-full border-[1.5px] border-ink relative flex-none">
-            <div className="absolute inset-[4px] rounded-full bg-crude" />
-          </div>
-          <b className="font-display font-bold text-[18px] text-ink">Fossil&nbsp;Money</b>
-        </Link>
-        <nav className="flex gap-[26px] items-center">
-          <Link href="/" className="text-[14px] font-medium text-text-soft cursor-pointer hover:text-ink transition-colors">Data sources</Link>
-          <Link href="/#method" className="text-[14px] font-medium text-text-soft cursor-pointer hover:text-ink transition-colors">Methodology</Link>
-        </nav>
-      </header>
+      <Header maxWidth="1120px" />
 
       <section className="max-w-[1120px] mx-auto px-[clamp(20px,5vw,72px)] py-[clamp(32px,5vw,64px)] pb-[100px]">
         {/* Back link */}
@@ -260,13 +259,7 @@ export default function ResultsPage({ params }: { params: Promise<{ zip: string 
         ))}
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-hair px-[clamp(20px,5vw,72px)] py-[34px] max-w-[1120px] mx-auto flex flex-wrap gap-[18px] justify-between items-center">
-        <p className="text-[13px] text-text-mute leading-[1.65] max-w-[700px]">
-          <b className="text-crude-deep font-semibold">Demonstration mockup.</b> All names, figures, scores, votes, holdings, and infrastructure shown are illustrative sample data for this prototype. Production figures would come from the sources in the Data sources panel.
-        </p>
-        <span className="text-[11px] font-semibold tracking-[0.1em] uppercase text-text-soft border border-hair px-[13px] py-[6px] rounded-[20px] whitespace-nowrap">v0.2 prototype</span>
-      </footer>
+      <Footer maxWidth="1120px" />
     </>
   )
 }
