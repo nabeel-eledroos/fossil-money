@@ -179,7 +179,7 @@ export async function GET(
         challengers: []
       },
       sources: {
-        money: 'FEC via WhoBoughtMyRep',
+        money: 'FEC API · OpenSecrets',
         moneySynced: new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
       },
       flagged: summary?.flagged ?? false

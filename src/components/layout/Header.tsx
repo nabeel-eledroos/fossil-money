@@ -1,68 +1,40 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { cn } from '@/lib/utils'
+import { useTheme } from '@/components/providers/ThemeProvider'
+import { Sun, Moon } from 'lucide-react'
 
 interface HeaderProps {
-  showBackButton?: boolean
+  maxWidth?: string
 }
 
-export function Header({ showBackButton = false }: HeaderProps) {
-  const pathname = usePathname()
+export function Header({ maxWidth = '1120px' }: HeaderProps) {
+  const { theme, toggleTheme, mounted } = useTheme()
 
   return (
-    <header className="sticky top-0 z-10 bg-surface-secondary/95 backdrop-blur border-b border-border">
-      <div className="max-w-[680px] mx-auto px-6 py-4">
-        <nav className="flex items-center justify-between">
-          <Link 
-            href="/" 
-            className="flex items-center gap-2 text-[15px] font-medium text-primary hover:opacity-80 transition-opacity"
+    <header className="sticky top-0 z-50 bg-[var(--color-bg)]/90 backdrop-blur-[12px] border-b border-[var(--color-hair)]">
+      <div 
+        className="mx-auto px-[clamp(20px,5vw,72px)] py-[18px] flex items-center justify-between"
+        style={{ maxWidth }}
+      >
+        <Link href="/" className="flex items-center gap-[11px] cursor-pointer">
+          <div className="w-[22px] h-[22px] rounded-full border-[1.5px] border-[var(--color-ink)] relative flex-none">
+            <div className="absolute inset-[4px] rounded-full bg-[var(--color-crude)]" />
+          </div>
+          <b className="font-display font-bold text-[18px] text-[var(--color-ink)]">Fossil&nbsp;Money</b>
+        </Link>
+        {mounted ? (
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-md text-[var(--color-text-soft)] hover:text-[var(--color-ink)] hover:bg-[var(--color-hair)] transition-colors"
+            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
           >
-            <div className="w-3.5 h-3.5 bg-accent rounded-full" />
-            Fossil Money
-          </Link>
-
-          {!showBackButton && (
-            <div className="flex gap-5">
-              <NavLink href="/members" active={pathname === '/members'}>
-                All members
-              </NavLink>
-              <NavLink href="/states" active={pathname === '/states'}>
-                By state
-              </NavLink>
-              <NavLink href="/methodology" active={pathname === '/methodology'}>
-                Methodology
-              </NavLink>
-              <NavLink href="/about" active={pathname === '/about'}>
-                About
-              </NavLink>
-            </div>
-          )}
-        </nav>
+            {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+          </button>
+        ) : (
+          <div className="w-9 h-9" />
+        )}
       </div>
     </header>
-  )
-}
-
-function NavLink({ 
-  href, 
-  active, 
-  children 
-}: { 
-  href: string
-  active?: boolean
-  children: React.ReactNode 
-}) {
-  return (
-    <Link
-      href={href}
-      className={cn(
-        'text-xs transition-colors',
-        active ? 'text-primary' : 'text-secondary hover:text-primary'
-      )}
-    >
-      {children}
-    </Link>
   )
 }

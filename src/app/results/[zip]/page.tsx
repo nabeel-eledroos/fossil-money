@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import type { RepsResponse, RepCard, Level, CoverageStatus } from '@/lib/database.types'
+import { Header } from '@/components/layout/Header'
+import { Footer } from '@/components/layout/Footer'
 
 function formatMoney(n: number): string {
   if (n >= 1e6) return '$' + (n / 1e6).toFixed(2) + 'M'
@@ -194,19 +196,7 @@ export default function ResultsPage({ params }: { params: Promise<{ zip: string 
 
   return (
     <>
-      {/* Header */}
-      <header className="sticky top-0 z-50 flex items-center justify-between px-[clamp(20px,5vw,72px)] py-[18px] bg-[rgba(250,249,246,0.82)] backdrop-blur-[12px] border-b border-hair">
-        <Link href="/" className="flex items-center gap-[11px] cursor-pointer">
-          <div className="w-[22px] h-[22px] rounded-full border-[1.5px] border-ink relative flex-none">
-            <div className="absolute inset-[4px] rounded-full bg-crude" />
-          </div>
-          <b className="font-display font-bold text-[18px] text-ink">Fossil&nbsp;Money</b>
-        </Link>
-        <nav className="flex gap-[26px] items-center">
-          <Link href="/" className="text-[14px] font-medium text-text-soft cursor-pointer hover:text-ink transition-colors">Data sources</Link>
-          <Link href="/#method" className="text-[14px] font-medium text-text-soft cursor-pointer hover:text-ink transition-colors">Methodology</Link>
-        </nav>
-      </header>
+      <Header maxWidth="1120px" />
 
       <section className="max-w-[1120px] mx-auto px-[clamp(20px,5vw,72px)] py-[clamp(32px,5vw,64px)] pb-[100px]">
         {/* Back link */}
@@ -269,13 +259,7 @@ export default function ResultsPage({ params }: { params: Promise<{ zip: string 
         ))}
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-hair px-[clamp(20px,5vw,72px)] py-[34px] max-w-[1120px] mx-auto flex flex-wrap gap-[18px] justify-between items-center">
-        <p className="text-[13px] text-text-mute leading-[1.65] max-w-[700px]">
-          <b className="text-crude-deep font-semibold">Demonstration mockup.</b> All names, figures, scores, votes, holdings, and infrastructure shown are illustrative sample data for this prototype. Production figures would come from the sources in the Data sources panel.
-        </p>
-        <span className="text-[11px] font-semibold tracking-[0.1em] uppercase text-text-soft border border-hair px-[13px] py-[6px] rounded-[20px] whitespace-nowrap">v0.2 prototype</span>
-      </footer>
+      <Footer maxWidth="1120px" />
     </>
   )
 }
