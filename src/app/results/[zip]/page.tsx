@@ -115,7 +115,7 @@ function TierPending({ tier }: { tier: Tier }) {
   const buttonText = isState ? 'Request my state →' : 'Request my city →'
 
   return (
-    <div className="flex gap-[20px] items-start border border-dashed border-hair-strong rounded-[14px] p-[26px_clamp(20px,3vw,30px)] bg-[repeating-linear-gradient(135deg,transparent,transparent_11px,rgba(23,22,15,0.012)_11px,rgba(23,22,15,0.012)_22px)]">
+    <div className="flex gap-[20px] items-start border border-dashed border-hair-strong rounded-[14px] p-[26px_clamp(20px,3vw,30px)] bg-[repeating-linear-gradient(135deg,transparent,transparent_11px,color-mix(in_srgb,var(--color-hair)_40%,transparent)_11px,color-mix(in_srgb,var(--color-hair)_40%,transparent)_22px)]">
       <div className="w-[42px] h-[42px] rounded-[11px] border border-dashed border-hair-strong flex items-center justify-center text-text-mute text-[18px] flex-none">▢</div>
       <div>
         <h4 className="font-body text-[16.5px] font-bold text-ink mb-[6px] tracking-normal">{title}</h4>
