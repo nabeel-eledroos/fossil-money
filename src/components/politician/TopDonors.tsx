@@ -15,7 +15,7 @@ export function TopDonors({ donors }: Props) {
       
       {donors.length > 0 ? (
         donors.map((d, i) => (
-          <div key={i} className="grid grid-cols-[1fr_auto] gap-[6px_14px] items-center py-[14px] border-b border-hair last:border-b-0">
+          <div key={i} className="donor-row grid grid-cols-[1fr_auto] gap-[6px_14px] items-center py-[14px] border-b border-hair last:border-b-0 transition-transform duration-200 hover:scale-[1.02]">
             <div className="font-semibold text-[15.5px] text-ink">
               {d.n}
               <small className="block font-normal text-text-mute text-[11.5px] mt-[2px] tracking-[0.02em]">
@@ -24,7 +24,7 @@ export function TopDonors({ donors }: Props) {
             </div>
             <div className="font-bold text-[15.5px] text-crude-deep text-right num">{formatMoney(d.amt)}</div>
             <div className="col-span-2 h-[4px] bg-hair rounded-[3px] overflow-hidden">
-              <i className="block h-full rounded-[3px]" style={{ width: `${Math.round(d.amt / maxDonor * 100)}%`, background: SECTORS[d.sector]?.color }} />
+              <i className="donor-bar block h-full rounded-[3px] transition-all duration-200" style={{ width: `${Math.round(d.amt / maxDonor * 100)}%`, background: SECTORS[d.sector]?.color }} />
             </div>
           </div>
         ))

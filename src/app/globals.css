@@ -283,13 +283,82 @@
   display: flex;
   height: 12px;
   border-radius: 6px;
-  overflow: hidden;
   background: var(--color-hair);
 }
 
 .segbar i {
   height: 100%;
-  transition: width 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: width 1s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.2s ease, filter 0.2s ease;
+  border-radius: 6px;
+}
+
+
+
+/* Linked segbar + labels hover */
+.segbar-group [data-sector] {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.segbar-group:has([data-sector]:hover) [data-sector] {
+  opacity: 0.5;
+}
+
+.segbar-group:has([data-sector]:hover) [data-sector]:hover {
+  opacity: 1;
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+/* Linked hover: when hovering label, highlight corresponding bar */
+.segbar-group:has(.sector-label[data-sector="oil_gas"]:hover) .segbar [data-sector="oil_gas"],
+.segbar-group:has(.sector-label[data-sector="coal"]:hover) .segbar [data-sector="coal"],
+.segbar-group:has(.sector-label[data-sector="utilities"]:hover) .segbar [data-sector="utilities"],
+.segbar-group:has(.sector-label[data-sector="mining"]:hover) .segbar [data-sector="mining"] {
+  opacity: 1 !important;
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+/* Linked hover: when hovering bar, highlight corresponding label */
+.segbar-group:has(.segbar > [data-sector="oil_gas"]:hover) .sector-label[data-sector="oil_gas"],
+.segbar-group:has(.segbar > [data-sector="coal"]:hover) .sector-label[data-sector="coal"],
+.segbar-group:has(.segbar > [data-sector="utilities"]:hover) .sector-label[data-sector="utilities"],
+.segbar-group:has(.segbar > [data-sector="mining"]:hover) .sector-label[data-sector="mining"] {
+  opacity: 1 !important;
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+/* Donor split (PAC vs Individual) hover effects */
+.segbar-group[data-type="donor-split"] [data-donor] {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.segbar-group[data-type="donor-split"]:has([data-donor]:hover) [data-donor] {
+  opacity: 0.5;
+}
+
+.segbar-group[data-type="donor-split"]:has([data-donor]:hover) [data-donor]:hover {
+  opacity: 1;
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+.segbar-group[data-type="donor-split"]:has(.sector-label[data-donor="pac"]:hover) .segbar [data-donor="pac"],
+.segbar-group[data-type="donor-split"]:has(.sector-label[data-donor="individual"]:hover) .segbar [data-donor="individual"],
+.segbar-group[data-type="donor-split"]:has(.segbar [data-donor="pac"]:hover) .sector-label[data-donor="pac"],
+.segbar-group[data-type="donor-split"]:has(.segbar [data-donor="individual"]:hover) .sector-label[data-donor="individual"] {
+  opacity: 1 !important;
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+.sector-label {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.sector-label:hover {
+  transform: scale(1.03);
 }
 
 /* Bar chart */
@@ -309,6 +378,23 @@
   justify-content: flex-end;
   height: 100%;
   gap: 9px;
+  transition: transform 0.2s ease;
+}
+
+.barchart .bcol:hover {
+  transform: scale(1.08);
+}
+
+.barchart .bcol:hover .bar {
+  filter: brightness(1.15);
+}
+
+.barchart .bcol:hover .amt {
+  transform: translateX(-50%) scale(1.1);
+}
+
+.barchart .bcol:hover .yr {
+  color: var(--color-ink);
 }
 
 .barchart .bar {
@@ -317,7 +403,7 @@
   border-radius: 5px 5px 0 0;
   background: var(--color-crude);
   position: relative;
-  transition: height 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: height 1s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.2s ease;
   min-height: 2px;
 }
 
@@ -331,11 +417,19 @@
   color: var(--color-crude-deep);
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
+  transition: transform 0.2s ease;
 }
 
 .barchart .yr {
   font-size: 12px;
   color: var(--color-text-mute);
+  transition: color 0.2s ease;
+}
+
+/* Donor row hover */
+.donor-row:hover .donor-bar {
+  transform: scaleY(1.5);
+  filter: brightness(1.15);
 }
 
 /* Hover styles for links */
