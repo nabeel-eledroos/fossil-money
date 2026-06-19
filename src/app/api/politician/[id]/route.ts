@@ -57,6 +57,7 @@ export async function GET(
           amount,
           donor_name,
           donor_type,
+          employer,
           sector_tag,
           industry_subsector,
           is_fossil_fuel,
@@ -115,18 +116,18 @@ export async function GET(
       .sort(([a], [b]) => Number(a) - Number(b))
       .map(([y, v]) => ({ y, v }))
 
-    const donorMap: Record<string, { amt: number, sector: string, type: string }> = {}
+    const donorMap: Record<string, { amt: number, sector: string, type: string, employer: string | null }> = {}
     fossilDonations.forEach((d: any) => {
       const name = d.donor_name || 'Unknown'
       if (!donorMap[name]) {
-        donorMap[name] = { amt: 0, sector: d.industry_subsector || 'oil_gas', type: d.donor_type || 'Individual' }
+        donorMap[name] = { amt: 0, sector: d.industry_subsector || 'oil_gas', type: d.donor_type || 'Individual', employer: d.employer || null }
       }
       donorMap[name].amt += d.amount || 0
     })
     const donors = Object.entries(donorMap)
       .sort(([, a], [, b]) => b.amt - a.amt)
       .slice(0, 6)
-      .map(([n, { amt, sector, type }]) => ({ n, amt, sector, type: type as 'PAC' | 'Individual' }))
+      .map(([n, { amt, sector, type, employer }]) => ({ n, amt, sector, type: type as 'PAC' | 'Individual', employer }))
 
     const lcvScores = p.lcv_scores || []
     const latestLcv = lcvScores.length > 0 

@@ -313,7 +313,7 @@ Sincerely,
                   <div className="font-semibold text-[15.5px] text-ink">
                     {d.n}
                     <small className="block font-normal text-text-mute text-[11.5px] mt-[2px] tracking-[0.02em]">
-                      {SECTORS[d.sector]?.label || d.sector} · {d.type}
+                      {SECTORS[d.sector]?.label || d.sector} · {d.type}{d.employer && ` · ${d.employer}`}
                     </small>
                   </div>
                   <div className="font-bold text-[15.5px] text-crude-deep text-right num">{formatMoney(d.amt)}</div>
