@@ -239,7 +239,7 @@ export default function ResultsPage({ params }: { params: Promise<{ zip: string 
           <div key={tier.key} className="mt-[52px]">
             <div className="flex items-baseline gap-[14px] mb-[22px]">
               <h3 className="font-display text-[22px] font-bold tracking-[-0.02em]">{tier.key}</h3>
-              <span className="text-[13px] text-text-mute">{tier.note}</span>
+              {/* <span className="text-[13px] text-text-mute">{tier.note}</span> */}
               {tier.status !== 'live' && <span className="chip soon">Coming soon</span>}
               <div className="h-[1px] bg-hair flex-1 self-center" />
             </div>

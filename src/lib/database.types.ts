@@ -267,6 +267,7 @@ export interface TopDonor {
   amt: number
   sector: string
   type: 'PAC' | 'Individual'
+  employer?: string | null
   sourceUrl?: string
 }
 

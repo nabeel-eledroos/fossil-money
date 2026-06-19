@@ -210,7 +210,12 @@
     "hydrogen fuel",
     "fuel cell",
     "electric vehicle",
-    "ev charging"
+    "ev charging",
+    "attorney",
+    "law firm",
+    "law office",
+    "lawyer",
+    "legal"
   ],
   "name_exclusions": [
     "SpaceX",
