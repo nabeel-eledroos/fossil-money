@@ -464,8 +464,10 @@ def process_politician(supabase, politician, fossil_committees, cycles, incremen
             if cycle_total > 0:
                 print(f"      {cycle}: {cycle_total} total, {cycle_stored} stored (fossil/clean)", flush=True)
     
-    # Update politician's total_raised in the database
-    if total_raised > 0:
+    # Update politician's total_raised in the database (only for full fetch, not incremental)
+    # Incremental mode only fetches last 48 hours, so updating total_raised would
+    # incorrectly overwrite the full historical total with just the recent slice
+    if total_raised > 0 and not incremental:
         try:
             supabase_retry(lambda: supabase.table('politicians').update({'total_raised': total_raised}).eq('id', pol_id).execute())
         except Exception as e:

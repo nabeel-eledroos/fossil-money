@@ -51,20 +51,27 @@ def calculate_summaries(supabase, config):
     for pol in politicians.data:
         politician_id = pol["id"]
         
-        # Get all donations for this politician
-        donations = supabase.table("donations").select("amount, is_fossil_fuel, is_clean_energy, donor_type, industry_subsector").eq("politician_id", politician_id).execute()
+        # Get FEC donations for this politician (for fossil_pct calculation)
+        # We use only FEC source for consistency since total_raised comes from FEC API
+        donations = supabase.table("donations").select("amount, is_fossil_fuel, is_clean_energy, donor_type, industry_subsector, source").eq("politician_id", politician_id).execute()
         
-        fossil_donations = [d for d in (donations.data or []) if d.get("is_fossil_fuel")]
-        clean_donations = [d for d in (donations.data or []) if d.get("is_clean_energy")]
+        # Filter to FEC-only for fossil_pct calculation (total_raised is from FEC)
+        fec_donations = [d for d in (donations.data or []) if d.get("source") == "fec"]
+        
+        # Use FEC donations for fossil_pct (consistent with total_raised from FEC API)
+        fossil_donations = [d for d in fec_donations if d.get("is_fossil_fuel")]
+        clean_donations = [d for d in fec_donations if d.get("is_clean_energy")]
         
         total_fossil_fuel = sum(d["amount"] for d in fossil_donations) if fossil_donations else 0
         total_clean_energy = sum(d["amount"] for d in clean_donations) if clean_donations else 0
         
-        # Total raised from politician record or sum of all donations
-        total_raised = pol.get("total_raised") or sum(d["amount"] for d in (donations.data or [])) or 0
+        # Total raised from politician record (set by fetch_fec_contributions.py)
+        # Only use FEC donations sum as fallback since that's what total_raised represents
+        total_raised = pol.get("total_raised") or 0
         
-        # Calculate fossil percentage
+        # Calculate fossil percentage (capped at 100% to handle data anomalies)
         fossil_pct = round((total_fossil_fuel / total_raised * 100), 1) if total_raised > 0 else 0
+        fossil_pct = min(fossil_pct, 100.0)  # Cap at 100% for DB constraint NUMERIC(5,2)
         
         # Subsector breakdown
         subsector_breakdown = {"oil_gas": 0, "coal": 0, "utilities": 0, "mining": 0}
